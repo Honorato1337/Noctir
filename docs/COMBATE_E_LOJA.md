@@ -49,7 +49,7 @@ Os coins da **loja permanente do menu** são outra carteira: vêm da pontuação
 | Item | Efeito |
 | --- | --- |
 | Kit médico | Recupera até 3 pontos de vida; não é consumido se a vida estiver cheia |
-| Bomba orbital | Causa 12 de dano em cada inimigo comum e 24 nos chefes; limpa os projéteis presentes |
+| Bomba orbital | Até 12 inimigos mais próximos; dano base 12 × dano do jogador: 100% até 120 px, 50% até 240 px e 25% até 360 px. Chefes recebem o mesmo dano. Limpa só tiros hostis no raio de 360 px. |
 | Escudo | Concede pelo menos 5 segundos de invulnerabilidade |
 | Sobrecarga | Durante 9 segundos, aumenta o dano em 50% e reduz o intervalo de tiro para 45% |
 
@@ -140,3 +140,16 @@ O progresso continua entre arenas. Completar o contrato paga uma única SpaceCoi
 
 SpaceCoin compra habilidades na Loja; a aba de equipamentos continua como teste.
 
+
+### Bomba: alcance e limite de alvos (0.2.9)
+
+A explosão parte da posição do astronauta e mede distância até o centro de cada inimigo. Atinge no máximo 12 alvos vivos, priorizando os mais próximos, independentemente da ordem de spawn. Fora de 360 px não causa dano.
+
+| Distância | Parcela | Dano com multiplicador do jogador 1× |
+| --- | --- | --- |
+| Até 120 px | 100% | 12 |
+| Acima de 120 até 240 px | 50% | 6 |
+| Acima de 240 até 360 px | 25% | 3 |
+| Acima de 360 px | 0% | 0 |
+
+Não há multiplicador especial para chefes; seus escudos continuam absorvendo o dano normalmente. Os projéteis aliados e os hostis fora do alcance são preservados. Três anéis breves mostram as faixas da explosão. A mina orbital permanece com seu efeito próprio.

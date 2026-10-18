@@ -133,7 +133,8 @@ func run() -> void:
 	game.spawn_enemy()
 	var bomb_target = game.enemies.get_child(game.enemies.get_child_count() - 1)
 	bomb_target.set_physics_process(false)
-	check(game.loot.use_slot(0) and bomb_target.is_queued_for_deletion(), "bomb damages all enemies and consumes slot")
+	bomb_target.position = game.player.position + Vector2(40,0)
+	check(game.loot.use_slot(0) and bomb_target.is_queued_for_deletion(), "bomb damages a nearby enemy and consumes slot")
 	await process_frame
 	game.loot.reset_run()
 	game.rng.seed = 45678

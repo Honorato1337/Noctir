@@ -11,6 +11,12 @@ const ITEMS = {
 	"turret": {"name": "Torreta", "short": "T", "color": Color("91eaff")},
 	"beacon": {"name": "Baliza de contenção", "short": "C", "color": Color("91ffc4")}
 }
+const BOMB_STEP := 120.0
+const BOMB_RADIUS := 360.0
+const BOMB_TARGET_CAP := 12
+const BOMB_BASE_DAMAGE := 12.0
+var bomb_pulses: Array[Dictionary] = []
+
 const ITEM_DROP_CHANCE := 0.025
 const ICONS = {
 	"medkit": preload("res://assets/icons/medkit.svg"),
@@ -31,6 +37,7 @@ func reset_run() -> void:
 	coins = 0
 	slots = ["", ""]
 	drops.clear()
+	bomb_pulses.clear()
 	queue_redraw()
 
 func enemy_died(at: Vector2, boss: bool) -> void:
@@ -77,15 +84,36 @@ func use_slot(index: int) -> bool:
 		"shield": game.player.immunity = maxf(game.player.immunity, 5.0)
 		"overdrive": game.player.overdrive_time = 9.0
 		"bomb":
-			for enemy in game.enemies.get_children():
-				enemy.hurt((24.0 if enemy.boss else 12.0) * game.player.shot_damage())
-			game.clear_container(game.bullets)
+			detonate_bomb()
 			game.flash = 0.5
 			game.fx.explosion(game.player.position, Color("ffb676"), 120)
 	game.fx.explosion(game.player.position, ITEMS[kind].color, 36)
 	game.message = ITEMS[kind].name + " ativado!"
 	game.message_time = 2
 	return true
+
+func bomb_factor(distance: float) -> float:
+	if distance > BOMB_RADIUS: return 0.0
+	if distance <= BOMB_STEP: return 1.0
+	return 0.5 if distance <= BOMB_STEP*2 else 0.25
+
+func detonate_bomb() -> void:
+	var origin: Vector2 = game.player.position
+	var targets: Array[Dictionary] = []
+	for enemy in game.enemies.get_children():
+		if enemy.is_queued_for_deletion() or enemy.health <= 0: continue
+		var distance: float = origin.distance_to(enemy.position)
+		if distance <= BOMB_RADIUS: targets.append({"enemy":enemy,"distance":distance})
+	targets.sort_custom(func(a,b): return a.distance < b.distance)
+	for index in mini(BOMB_TARGET_CAP,targets.size()):
+		var target: Dictionary = targets[index]
+		target.enemy.hurt(BOMB_BASE_DAMAGE * game.player.shot_damage() * bomb_factor(target.distance))
+	for bullet in game.bullets.get_children():
+		if bullet.hostile and not bullet.is_queued_for_deletion() and origin.distance_to(bullet.position) <= BOMB_RADIUS:
+			bullet.queue_free()
+	if bomb_pulses.size() >= 3: bomb_pulses.pop_front()
+	bomb_pulses.append({"pos":origin,"life":0.45})
+	queue_redraw()
 
 func collect(index: int, allow_bonus: bool = true) -> bool:
 	var drop: Dictionary = drops[index]
@@ -116,6 +144,9 @@ func _physics_process(delta: float) -> void:
 		return
 	if game.state not in ["playing", "cleared", "exit"]:
 		return
+	for i in range(bomb_pulses.size()-1,-1,-1):
+		bomb_pulses[i].life -= delta
+		if bomb_pulses[i].life <= 0: bomb_pulses.remove_at(i)
 	clock += delta
 	if Input.is_action_just_pressed("slot_one"):
 		if not swap_nearby(0): use_slot(0)
@@ -140,6 +171,9 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	for pulse in bomb_pulses:
+		for ring in 3:
+			draw_arc(pulse.pos,BOMB_STEP*(ring+1),0,TAU,64,Color(1,.65,.3,float(pulse.life)*(0.9-ring*.2)),2)
 	for drop in drops:
 		var at: Vector2 = drop.pos + Vector2(0, sin(clock * 5 + drop.pos.x) * 2)
 		if drop.type == "coin":

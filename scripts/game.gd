@@ -663,7 +663,7 @@ func refresh_shop() -> void:
 		var unavailable: bool = player.health >= player.max_health if kind == "repair" else full
 		button.text = "%s / %s" % [supplies[kind][1], "X" if sold else str(cost)]
 		button.disabled = sold or unavailable or loot.coins < cost
-		button.tooltip_text = {"repair": "Recupera %d corações imediatamente." % (2 + progression.prestige_cycles), "bomb": "Explosão: 12 de dano (24 em chefes) em todos os inimigos e limpa os projéteis da arena.", "shield": "Proteção por 5 segundos.", "overdrive": "Cadência e poder aumentados por 9 segundos."}[kind] + "\nUma unidade por parada. Custa %d moedas." % cost
+		button.tooltip_text = {"repair": "Recupera %d corações imediatamente." % (2 + progression.prestige_cycles), "bomb": "Até 12 inimigos mais próximos. Dano base 12 × seu dano: 100% até 120px, 50% até 240px e 25% até 360px. Chefes sem bônus. Limpa apenas tiros hostis nesse raio.", "shield": "Proteção por 5 segundos.", "overdrive": "Cadência e poder aumentados por 9 segundos."}[kind] + "\nUma unidade por parada. Custa %d moedas." % cost
 		if sold:
 			button.tooltip_text += "\n%s esgotado nesta parada." % supplies[kind][1]
 		if unavailable:

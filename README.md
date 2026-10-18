@@ -17,6 +17,7 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 - **Campanha:** quatro arenas em Marte, quatro em Netuno, quatro em Júpiter e o confronto final no Nexo.
 - **Sobrevivência:** hordas crescentes em Plutão, inimigos dos três planetas e loja de dez segundos entre ondas.
 - **Superchefes:** ataques próprios, escudos, investidas e eventos de arena. Cada superchefe planetário da campanha devolve uma chance.
+- **Bomba com alcance limitado:** no máximo 12 alvos próximos, com dano de 100%/50%/25% nas faixas de 120/240/360 px.
 - **Extração urgente:** quinze segundos para coletar e embarcar. Atrasar custa os três slots e um terço das moedas da run.
 - **Escolhas entre partidas:** melhorias permanentes, contratos por SpaceCoin, habilidades, Prestígio e skins.
 - **Três dificuldades:** Fácil, Médio e Difícil; teclado, joystick e controles por toque.
