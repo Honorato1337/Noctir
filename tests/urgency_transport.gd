@@ -52,7 +52,7 @@ func run() -> void:
 	await capture("urgent-extraction")
 	game._physics_process(5.1)
 	check(game.state == "shop" and game.shop_left == 20,"collection timeout opens shop with a fresh 20-second deadline")
-	check(game.loot.coins == 27 and game.loot.slots[0] == "bomb" and game.loot.slots[1].is_empty() and game.deployables.inventory == "mine" and game.loot.drops.is_empty(),"uncollected coins and consumables are lost while inventory stays safe")
+	check(game.loot.coins == 18 and game.loot.slots[0].is_empty() and game.loot.slots[1].is_empty() and game.deployables.inventory.is_empty() and game.loot.drops.is_empty(),"timeout loses ground loot, inventory and one third of run coins")
 	check(game.lost_loot.coins == 50 and game.lost_loot.items == 1,"shop reports the exact lost loot")
 	check(not audio.alarm_voice.playing,"siren stops immediately on boarding")
 	check(game.panel.find_child("ShopTimer",true,false).text == "20s","shop visibly shows its deadline")

@@ -141,6 +141,8 @@ const EXTRACTION_RANGE := 100.0
 var travel_clock := 0.0
 const RUN_CHANCES := 3
 var run_chances_left := RUN_CHANCES
+var extraction_penalty := 0
+var rewarded_superboss_rooms: Array[int] = []
 const ENDLESS_BERSERK_COOLDOWN := 90.0
 const ENDLESS_ECHO_COOLDOWN := 45.0
 var berserk_cd := 0.0
@@ -229,6 +231,7 @@ func start_run(as_practice: bool = false, initial_room: int = 0, mode: String = 
 	berserk_cd = 0
 	echo_cd = 0
 	run_chances_left = RUN_CHANCES
+	rewarded_superboss_rooms.clear()
 	contracts.enabled = not smoke_mode and not practice_mode and run_difficulty != "easy"
 	menu_intro_completed = true
 	$MenuMusic.stop()
@@ -267,6 +270,7 @@ func start_room() -> void:
 	shop_left = 0
 	lost_loot = {"coins":0,"items":0}
 	extraction_boarded = false
+	extraction_penalty = 0
 	encounters.reset()
 	deployables.clear_room()
 	environment_clock = 0.0
@@ -634,6 +638,8 @@ func refresh_shop() -> void:
 		button.text = "%s / %d" % [deployables.DATA[kind].name, cost]
 		button.disabled = not deployables.inventory.is_empty() or shop_supplies.has(kind) or loot.coins < cost
 		button.tooltip_text = {"mine": "Mina: explosão de raio 240 px. Arma após 0,65 s; dura 24 s.", "turret": "Torreta: atira automaticamente por 18 s, alcance 460 px.", "beacon": "Baliza: raio de 320 px, lentidão de 80% (50% nos chefes), limpa tiros a cada 0,35 s. Dura 20 s."}[kind] + "\nOcupa só o slot [3]. Coloque no chão durante o combate."
+	if extraction_penalty > 0 or collection_left <= 0 and extraction_boarded:
+		panel.find_child("ShopPhase", true, false).text = "ATRASO / INVENTÁRIO PERDIDO / -%d MOEDAS" % extraction_penalty
 	var full: bool = not loot.slots.has("")
 	panel.find_child("InventoryHint", true, false).text = "Carga cheia. Use [1] e [2] na próxima arena." if full else "Colete itens e use [1] e [2] durante o combate."
 	panel.find_child("InventoryHint", true, false).autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -762,7 +768,7 @@ func finish(won: bool, reason: String, result_sound: bool = true) -> void:
 		save.save("user://record.cfg")
 	show_screen("result")
 	panel.find_child("Title", true, false).text = "ÓRBITA COMPLETA" if won else "SÓ MAIS UMA VEZ?"
-	panel.find_child("Description", true, false).text = reason
+	panel.find_child("Description", true, false).text = reason + ("\nObrigado por jogar One More Orbit!" if won and not practice_mode else "")
 	panel.find_child("Status", true, false).text = "MISSÃO CUMPRIDA" if won else "SINAL PERDIDO  /  RELATÓRIO DA EXPEDIÇÃO"
 	panel.find_child("ScoreValue", true, false).text = "%05d" % score
 	panel.find_child("BestValue", true, false).text = "%05d" % best
@@ -1134,6 +1140,7 @@ func configure_camera() -> void:
 	camera.force_update_scroll()
 
 func _process(delta: float) -> void:
+	$PlanetMusic.pitch_scale = planet_music_rate()
 	$PlanetMusic.volume_db = -80.0 if smoke_mode else (-23.0 if state in ["shop", "paused", "death", "cleared", "travel"] else -16.0)
 	if state in ["menu", "settings", "permanent", "testing", "difficulty"] and not $MenuMusic.playing:
 		on_menu_music_finished()
@@ -1201,7 +1208,20 @@ func _draw() -> void:
 			var direction: Vector2 = player.position.direction_to(target.position)
 			draw_line(player.position + direction * 34, player.position + direction * 48, Color(1, 1, 1, 0.4), 2)
 
+func reward_planet_superboss() -> void:
+	if run_mode != "campaign" or room >= 12 or (room + 1) % ARENAS_PER_PLANET != 0 or rewarded_superboss_rooms.has(room): return
+	rewarded_superboss_rooms.append(room)
+	run_chances_left += 1
+	message = "SUPERCHEFE VENCIDO / +1 CHANCE / %d RESTANTES" % run_chances_left
+	message_time = 4
+	fx.floating(player.position + Vector2(0, -40), "+1 CHANCE", Color("81edac"))
+
+func planet_music_rate() -> float:
+	var mode: float = {"easy":0.96,"medium":1.0,"hard":1.08}[run_difficulty]
+	return mode * (1.0 + (room % ARENAS_PER_PLANET) * 0.025 if run_mode != "endless" else 1.0 + minf(survival.tier * 0.01, 0.2))
+
 func play_planet_music() -> void:
+	$PlanetMusic.pitch_scale = planet_music_rate()
 	if planet_music_index != planet_index or not $PlanetMusic.playing:
 		planet_music_index = planet_index
 		planet_music_stream = load("res://assets/audio/music/%s.wav" % ["mars", "neptune", "jupiter"][mini(planet_index, 2)]).duplicate()
@@ -1291,12 +1311,12 @@ func handle_player_death() -> void:
 	run_chances_left = maxi(0, run_chances_left - 1)
 	player.berserk_time = 0
 	if run_chances_left == 0:
-		finish(false, "As três chances desta expedição acabaram.", false)
+		finish(false, "Todas as chances desta expedição acabaram.", false)
 		return
 	state = "death"
 	player.velocity = Vector2.ZERO
 	show_screen("death")
-	panel.find_child("Chances", true, false).text = "%d DE 3 CHANCES RESTANTES NA RUN" % run_chances_left
+	panel.find_child("Chances", true, false).text = "%d CHANCES RESTANTES NA RUN" % run_chances_left
 	bind_button("ContinueButton", continue_after_death)
 	bind_button("MenuButton", show_menu)
 
@@ -1474,7 +1494,8 @@ func finish_arena() -> void:
 	state = "cleared"
 	collection_left = COLLECTION_DURATION
 	extraction_boarded = false
-	message = "ARENA LIMPA / %d segundos para coletar e embarcar." % int(COLLECTION_DURATION)
+	extraction_penalty = 0
+	message = "EMBARQUE EM %ds / Atraso: perde inventário e 1/3 das moedas." % int(COLLECTION_DURATION)
 	message_time = 0
 	play_sfx("stage_clear")
 	$GameAudio.sync_state()
@@ -1482,6 +1503,11 @@ func finish_arena() -> void:
 func board_after_clear(automatic: bool = false) -> bool:
 	if state != "cleared": return false
 	if not automatic and player.position.distance_to(portal) >= EXTRACTION_RANGE: return false
+	if automatic:
+		extraction_penalty = ceili(loot.coins / 3.0)
+		loot.coins -= extraction_penalty
+		loot.slots.assign(["", ""])
+		deployables.inventory = ""
 	extraction_boarded = true
 	player.velocity = Vector2.ZERO
 	open_shop()

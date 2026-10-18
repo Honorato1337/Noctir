@@ -224,3 +224,10 @@ Teste: `Godot --headless --path . --script tests/skins.gd`. Com `-- --preview`, 
 - Avisos de impacto, preparação dos dashes, intervalos de troca de fase, limites de entidades e limpeza das ameaças na loja foram preservados.
 
 Validação: `tests/rebalance.gd`, campanha completa (`smoke`), `planet_mechanics`, `arena_weather`, `pluto_survival` e `survival`.
+
+### Urgência e recompensas (0.2.5)
+
+- Extração: ao esgotar os 15s, perde os três slots e um terço das moedas da run (arredondado para cima). Embarcar a tempo preserva ambos. Moedas permanentes e SpaceCoins não entram nessa penalidade.
+- Cada superchefe planetário da campanha concede +1 chance por run, podendo ultrapassar as três iniciais.
+- Vitória final agradece ao jogador.
+- Música original: Marte 128 BPM, Netuno 176 BPM com síncopes e baixarias de chorinho eletrônico, Júpiter 216 BPM. O ritmo cresce 2,5% por arena do planeta; fácil ×0,96, médio ×1 e difícil ×1,08. Sobrevivência acelera gradualmente até +20%.

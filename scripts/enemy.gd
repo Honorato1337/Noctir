@@ -205,6 +205,7 @@ func hurt(amount: float) -> void:
 			game.contracts.record("boss")
 		if superboss:
 			game.contracts.record("superboss")
+			game.reward_planet_superboss()
 		game.encounters.clear_owner(self)
 		game.kills += 1
 		game.phase_kills += 1

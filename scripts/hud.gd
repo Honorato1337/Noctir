@@ -43,7 +43,7 @@ func update_game(game: Node2D) -> void:
 	%CleanupShopButton.disabled = game.state != "cleared" or game.player.position.distance_to(game.portal) >= game.EXTRACTION_RANGE
 	%CleanupShopButton.text = ("EMBARCAR" if touch else "[%s] EMBARCAR" % game.controls.hint("interact")) if not %CleanupShopButton.disabled else "SIGA A SETA ATÉ O " + game.extraction_name()
 	$Cleanup/Box/Title.text = "EXTRAÇÃO / %02ds" % ceili(game.collection_left)
-	%CleanupHint.text = "O LOOT NO CHÃO FICA PARA TRÁS"
+	%CleanupHint.text = "ATRASO: PERDE ITENS E 1/3 DAS MOEDAS"
 	if game.loot.nearby_drop() >= 0:
 		%CleanupHint.text = "[%s / %s] ESCOLHER SLOT DO ITEM" % ["1" if touch else game.controls.hint("slot_one"),"2" if touch else game.controls.hint("slot_two")]
 	elif game.loot.nearby_drop(true) >= 0:
@@ -60,7 +60,7 @@ func update_game(game: Node2D) -> void:
 	%ScreenFlash.visible = (game.state == "playing" and game.flash > 0) or game.state == "cleared"
 	%ScreenFlash.color = Color(1,0.08,0.12,game.extraction_pulse()) if game.state == "cleared" else Color(0.3, 0.9, 0.9, minf(game.flash * 0.4, 0.25))
 	%Chances.visible = game.state in ["playing", "cleared", "exit", "paused"]
-	%Chances.text = "RUN %d/3 CHANCES" % game.run_chances_left
+	%Chances.text = "RUN / %d CHANCES" % game.run_chances_left
 	%BerserkCard.position = Vector2(24,view_size.y-(124 if %MiniTutorial.visible else 88))-margin
 	%BerserkCard.visible = game.state in ["playing", "paused"] and game.can_use_berserk() and not touch
 	%DashCard.visible = game.state in ["playing", "paused"] and not touch

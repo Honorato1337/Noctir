@@ -1,26 +1,29 @@
 [
   {
     "file": "mars.wav",
-    "bpm": 112,
+    "bpm": 128,
     "meter": "4/4",
     "bars": 16,
-    "seconds": 34.285714285714285,
-    "original": true
+    "seconds": 30.0,
+    "original": true,
+    "style": "urgent space electronic"
   },
   {
     "file": "neptune.wav",
-    "bpm": 160,
+    "bpm": 176,
     "meter": "4/4",
     "bars": 32,
-    "seconds": 48.0,
-    "original": true
+    "seconds": 43.636371882086166,
+    "original": true,
+    "style": "electronic Brazilian choro, original melody"
   },
   {
     "file": "jupiter.wav",
-    "bpm": 192,
+    "bpm": 216,
     "meter": "6/8",
     "bars": 32,
-    "seconds": 30.0,
-    "original": true
+    "seconds": 26.666666666666668,
+    "original": true,
+    "style": "urgent space electronic"
   }
 ]
