@@ -4,6 +4,20 @@ Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pa
 
 **Para editar o visual no editor:** veja [Editar no Godot](docs/EDITAR_NO_GODOT.md). Menu, controles, HUD, pausa, upgrades, resultado, arena e atores agora possuem cenas `.tscn` próprias em `scenes/`. O tema compartilhado está em `ui_theme.tres`. Importe o `project.godot` da raiz, não o arquivo existente dentro de `docs`.
 
+## Imagens do jogo
+
+![Combate contra o Titã da Tempestade em Júpiter](docs/media/04-jupiter.png)
+
+| Marte | Netuno |
+| --- | --- |
+| ![Combate em Marte](docs/media/02-marte.png) | ![Combate em Netuno](docs/media/03-netuno.png) |
+| **Sobrevivência infinita** | **Loja entre hordas** |
+| ![Berserk no modo infinito](docs/media/05-sobrevivencia.png) | ![Loja da sobrevivência](docs/media/06-loja.png) |
+| **Menu principal** | **Controles por toque** |
+| ![Menu de One More Orbit](docs/media/01-menu.png) | ![Interface para celular](docs/media/07-controles-mobile.png) |
+
+Capturas em **1920×1080**. [Arquivos e instruções de captura](docs/media/README.md). [Fundo de Júpiter em PNG](docs/media/jupiter-fundo.png).
+
 ## Versão atual: 0.1.9
 
 - Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
