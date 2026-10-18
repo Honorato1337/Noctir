@@ -6,6 +6,18 @@ Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pa
 
 ## Imagens do jogo
 
+### Caos no combate e urgência na extração
+
+![Arena tomada por inimigos, Berserk e Deus Alienígena](docs/media/08-caos-total.png)
+
+Mais de 70 inimigos na tela, tiros em todas as direções e dois corações restantes.
+
+![Extração com três segundos restantes e loot para trás](docs/media/09-extracao-urgente.png)
+
+Só três segundos para alcançar o foguete. O loot no chão fica para trás.
+
+### Planetas, modos e interface
+
 ![Combate contra o Titã da Tempestade em Júpiter](docs/media/04-jupiter.png)
 
 | Marte | Netuno |

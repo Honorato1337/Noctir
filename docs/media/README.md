@@ -1,6 +1,6 @@
 # Galeria e fundo de Júpiter
 
-Sete capturas em PNG, 1920×1080: menu, Marte, Netuno, Júpiter, sobrevivência, loja e controles por toque. Imagens capturadas no próprio Godot com a arte e a HUD atuais, sem montagem posterior. As cenas são preparadas para demonstração, com semente fixa e proteção do personagem durante a captura. O progresso salvo não é alterado.
+Nove capturas em PNG, 1920×1080: menu, Marte, Netuno, Júpiter, sobrevivência, loja e controles por toque, além de caos no combate e extração urgente. Imagens capturadas no próprio Godot com a arte e a HUD atuais, sem montagem posterior. As cenas são preparadas para demonstração, com semente fixa e proteção do personagem durante a captura. O progresso salvo não é alterado.
 
 ## Fundo
 
@@ -17,3 +17,20 @@ Godot --path . --script tools/capture_repository.gd
 ```
 
 O script exporta o fundo, o tile e as seis capturas de computador. A sétima imagem usa a mesma cena de Marte com controles por toque; para refazê-la, defina temporariamente `game.preferences.touch_mode = 1` no script e salve a captura de Marte como `07-controles-mobile.png`. O valor normal é 2 (toque desativado para a galeria de computador).
+
+## Pedras de Júpiter
+
+[jupiter-rochas.zip](jupiter-rochas.zip) reúne dois sprites de pedra, um trecho de parede e uma prévia ampliada. Todos os PNGs têm transparência; os sprites mantêm o recorte e a paleta que o jogo aplica ao atlas, sem redesenho.
+
+## Capturas de caos e urgência
+
+- `08-caos-total.png`: mais de 70 inimigos, Deus Alienígena, Berserk, campo da baliza e vida baixa.
+- `09-extracao-urgente.png`: contagem de 3 segundos, alerta vermelho, foguete e loot abandonado.
+
+Para reproduzir essas imagens e a exportação das pedras:
+
+```powershell
+Godot --path . --script tools/capture_chaos.gd
+```
+
+São cenas de demonstração preparadas dentro do jogo, com proteção temporária do personagem, sem montagem posterior e sem alterar o save ou o balanceamento do jogo.
