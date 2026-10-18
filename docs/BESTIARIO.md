@@ -59,10 +59,13 @@ Nomes definidos a partir das artes atuais. As imagens abaixo são os PNGs origin
 | Cubo Investidor | Mesmo sprite cúbico; abre antes da investida e deixa minas elétricas. |
 | Cubo Artilheiro | Mesmo sprite, com marcador amarelo; abre antes da rajada. |
 | Cubo Gravitacional | Mesmo sprite, com aro ciano; cria atração e dispara. |
-| Núcleo da Tormenta | Chefe de corpo geométrico procedural, escudo e investidas. |
-| Titã de Íons | Superchefe procedural envolvido em anéis e partículas, com gravidade e explosões. |
+| Núcleo da Tormenta | Chefe com núcleo cercado por placas flutuantes; escudo e investidas. Sprite autoral `mob_jupiter2`. |
+| Titã de Íons | Superchefe com sprite autoral `mob_jupiter3`, anéis, gravidade e explosões. |
 
-Os chefes de Júpiter ainda não têm arte autoral própria; por isso não reutilizam o sprite do mob comum.
+Os dois chefes usam suas próprias animações de 21 frames, com flutuação, pulsação e rotação durante ataques.
+
+<img src="../assets/mobs_jupiter/mob_jupiter2/pixil-frame-0.png" width="128" alt="Núcleo da Tormenta">
+<img src="../assets/mobs_jupiter/mob_jupiter3/pixil-frame-0.png" width="128" alt="Titã de Íons">
 
 ## Nomes dentro do projeto
 

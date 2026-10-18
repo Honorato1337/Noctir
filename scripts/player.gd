@@ -220,7 +220,11 @@ func fire(origin: Vector2, direction: Vector2, is_echo: bool) -> Array[Vector2]:
 	return fired
 
 func shot_damage() -> float:
-	return damage * (1.5 if overdrive_time > 0 else 1.0) * (1.25 if berserk_time > 0 else 1.0)
+	var multiplier := 1.5 if overdrive_time > 0 else 1.0
+	multiplier *= 1.25 if berserk_time > 0 else 1.0
+	if game.practice_mode:
+		multiplier *= 1000.0
+	return damage * multiplier
 
 func fire_berserk() -> Array[Vector2]:
 	var directions: Array[Vector2] = []

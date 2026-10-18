@@ -4,9 +4,11 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 
 **Sobreviva às hordas, rebobine o combate e alcance a extração antes que o tempo acabe.** One More Orbit é um jogo 2D de ação em pixel art, com campanha pelo Sistema Solar, sobrevivência infinita e progressão entre tentativas.
 
-[**Baixar para Windows**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.0/OneMoreOrbit.exe) · [**Baixar para Android**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.0/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
+[**Baixar para Windows — v0.3.2**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.2/OneMoreOrbit.exe) · [**Baixar para Android — v0.3.0**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.0/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
 
-Últimos instaladores publicados: **v0.3.0**, com Argos e Cubos da Tormenta ampliados, movimentos nos sprites e perfil automático de desempenho para Android.
+Windows: **v0.3.2**, com efeitos adaptativos, colisões otimizadas, texturas preparadas, botão Sair, descrições em caixas e dano de 1000× no modo Teste. Android: último APK publicado **v0.3.0**; os ajustes móveis mais recentes estão no código e ainda precisam de uma nova exportação.
+
+Vai continuar em outro computador? Leia o [guia de continuidade](docs/CONTINUAR_EM_OUTRO_PC.md).
 
 ![Argos, o Olho do Caos, cercado por hordas e rajadas](docs/media/gallery/06-caos-argos.png)
 
@@ -20,7 +22,7 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 - **Bomba com alcance limitado:** no máximo 12 alvos próximos, com dano de 100%/50%/25% nas faixas de 120/240/360 px.
 - **Extração urgente:** quinze segundos para coletar e embarcar. Atrasar custa os três slots e um terço das moedas da run.
 - **Escolhas entre partidas:** melhorias permanentes, contratos por SpaceCoin, habilidades, Prestígio e skins.
-- **Celular mais leve:** menos inimigos por horda, até 32 ativos, partículas reduzidas e renderização interna com limites próprios de efeitos.
+- **Perfil móvel no código atual:** menos inimigos por horda, até 24 ativos, partículas reduzidas e renderização interna com limites próprios de efeitos. O APK 0.3.0 usa os limites anteriores.
 - **Três dificuldades:** Fácil, Médio e Difícil; teclado, joystick e controles por toque.
 
 [Ver a espingarda em Loja → Equipamentos](docs/media/equipamentos-espingarda.png). Compra permanente de **3 SpaceCoins**, seleção salva e arma original gratuita.
@@ -34,8 +36,8 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 | ![Júpiter e Titã de Íons](docs/media/gallery/04-jupiter.png) | ![Hordas em Plutão](docs/media/gallery/05-sobrevivencia.png) |
 | **Extração · Três segundos restantes** | **Loja · Decisões sob pressão** |
 | ![Foguete e prazo de extração](docs/media/gallery/07-extracao.png) | ![Loja entre arenas](docs/media/gallery/08-loja.png) |
-| **Menu principal** | **Júpiter · Chefe** |
-| ![Menu principal](docs/media/gallery/01-menu.png) | ![Chefe de Júpiter](docs/media/gallery/09-chefe-jupiter.png) |
+| **Menu principal** | **Controles para celular** |
+| ![Menu principal](docs/media/gallery/01-menu.png) | ![Controles por toque](docs/media/gallery/09-mobile.png) |
 
 [**Baixar as 10 prints em ZIP**](docs/media/one-more-orbit-prints.zip) · [Galeria completa e legendas](docs/media/README.md)
 
@@ -104,6 +106,8 @@ Importe o `project.godot` da raiz, espere a importação dos recursos e pression
 | [Combate e loja](docs/COMBATE_E_LOJA.md) | Itens, economia e módulos |
 | [Progressão](docs/PROGRESSAO_PERMANENTE.md) | Coins, atributos e saves |
 | [Exportação](docs/EXPORTACAO.md) | Gerar e verificar EXE/APK |
+| [Desempenho](docs/PERFORMANCE.md) | Limites, otimizações e verificações |
+| [Continuar em outro PC](docs/CONTINUAR_EM_OUTRO_PC.md) | Estado atual, instalação e contexto para retomar |
 | [Histórico de implementação](docs/HISTORICO_IMPLEMENTACAO.md) | Registro das etapas anteriores |
 
 Para gerar as capturas atuais:
@@ -117,10 +121,14 @@ Testes de referência: `tests/smoke.gd`, `tests/enemy_art.gd`, `tests/shotgun.gd
 
 ## Arte e áudio
 
-Os sprites do astronauta, Guanapo, espingarda e inimigos foram criados pelo autor do projeto. As artes originais ficam preservadas em `assets/` e `asssets/astronauta/`. Há cenários e efeitos gerados durante o desenvolvimento; os chefes de Júpiter ainda utilizam visuais procedurais. O menu usa o áudio fornecido pelo autor, e as trilhas planetárias originais combinam eletrônica espacial com identidades próprias: Marte a 128 BPM, Netuno com post-punk a 160 BPM e Júpiter a 216 BPM.
+Os sprites do astronauta, Guanapo, espingarda e inimigos foram criados pelo autor do projeto. As artes originais ficam preservadas em `assets/` e `asssets/astronauta/`. Os chefes de Júpiter usam os sprites autorais `mob_jupiter2` e `mob_jupiter3`, com animações e transformações durante ataques. Há cenários e efeitos gerados durante o desenvolvimento. O menu usa o áudio fornecido pelo autor, e as trilhas planetárias originais combinam eletrônica espacial com identidades próprias: Marte a 128 BPM, Netuno com post-punk a 160 BPM e Júpiter a 216 BPM.
 
 Projeto em desenvolvimento. As capturas mostram o estado atual da branch principal; os instaladores seguem a versão indicada na release.
 
-## Atualização 0.3.0
+## Atualização 0.3.2
+
+As otimizações da 0.3.1 estão incorporadas: limites por quadro para partículas, densidade adaptativa, busca espacial para colisões, HUD a 30 Hz e texturas preparadas. O modo Teste causa 1000× de dano; as partidas normais conservam seu dano. A documentação, os links de download e o guia para continuar em outro computador foram atualizados. Veja [desempenho](docs/PERFORMANCE.md) e [tela de conclusão](docs/preview-victory.png).
+
+## Histórico: atualização 0.3.0
 
 Argos ficou duas vezes maior, e os Cubos da Tormenta, 50% maiores, com colisões e navegação ajustadas. As artes existentes ganharam pulsação, flutuação e pequenos saltos por transformação dos sprites. O Android possui perfil automático de desempenho; veja os [limites e detalhes](docs/CONFIGURACOES_E_CONTROLES.md#perfil-de-desempenho-do-celular-030).

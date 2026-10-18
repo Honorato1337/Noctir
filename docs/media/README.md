@@ -2,7 +2,7 @@
 
 [Voltar ao jogo](../../README.md) · [Baixar as 10 prints em ZIP](one-more-orbit-prints.zip) · [Bestiário](../BESTIARIO.md)
 
-Capturas de 18/10/2026, em **1920×1080**, da versão `37e966f`, incluindo os novos sprites e tamanhos dos chefes de Júpiter. Cenários preparados por script e renderizados pelo próprio jogo, sem efeitos externos nos PNGs.
+Capturas de 18/10/2026, em **1920×1080**, da branch principal após a versão 0.2.7, incluindo os novos nomes. Cenários preparados por script e renderizados pelo próprio jogo, sem efeitos externos nos PNGs.
 
 ## Menu principal e astronauta
 
@@ -36,13 +36,19 @@ Capturas de 18/10/2026, em **1920×1080**, da versão `37e966f`, incluindo os no
 
 ![Loja com prazo de 20 segundos e penalidade por atraso](gallery/08-loja.png)
 
-## Chefe de Júpiter com armadura segmentada
+## Interface com controles por toque
 
-![Chefe de Júpiter com armadura segmentada](gallery/09-chefe-jupiter.png)
+![Interface com controles por toque](gallery/09-mobile.png)
 
 ## Configurações de áudio com volumes separados
 
 ![Configurações de áudio com volumes separados](gallery/10-configuracoes.png)
+
+## Conclusão da campanha
+
+![Órbita completa: missão cumprida](../preview-victory.png)
+
+A tela de vitória foi renderizada pelo jogo com estatísticas de demonstração, para apresentar o layout. Não é o registro de uma campanha jogada até o fim.
 
 ## GIFs das mecânicas
 
