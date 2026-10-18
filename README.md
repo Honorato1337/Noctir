@@ -37,6 +37,18 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 
 Capturas Full HD **1920×1080**, renderizadas no Godot a partir da branch `main`. São cenários de demonstração montados por script para mostrar as artes, o combate e as interfaces atuais. Os PNGs não receberam montagens ou efeitos externos. As imagens antigas foram mantidas fora da galeria principal.
 
+## Mecânicas em movimento
+
+| Movimento | Andando e atirando |
+| --- | --- |
+| ![Astronauta andando](docs/media/gifs/01-andando.gif) | ![Astronauta andando e disparando](docs/media/gifs/03-andando-atirando.gif) |
+| **Espingarda** | **Eco temporal** |
+| ![Espingarda: três projéteis](docs/media/gifs/02-espingarda.gif) | ![Eco temporal repetindo os tiros](docs/media/gifs/06-eco.gif) |
+
+[**Ver os oito GIFs**](docs/media/gifs/README.md) · [**Baixar o pacote em ZIP**](docs/media/one-more-orbit-gifs.zip)
+
+Inclui movimento, espingarda parada, movimento com disparos, Prisma, dash, Eco, Berserk e uma demonstração da arma original dos assets. A arma original está identificada como antiga; a espingarda é a arma equipada atualmente.
+
 ## Habitantes de cada órbita
 
 | Local | Inimigos | Chefe | Superchefe |

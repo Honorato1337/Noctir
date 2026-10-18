@@ -44,6 +44,10 @@ Capturas de 18/10/2026, em **1920×1080**, da branch principal após a versão 0
 
 ![Configurações de áudio com volumes separados](gallery/10-configuracoes.png)
 
+## GIFs das mecânicas
+
+[Ver as oito animações](gifs/README.md) · [Baixar GIFs em ZIP](one-more-orbit-gifs.zip).
+
 ## Reproduzir e empacotar
 
 ```powershell

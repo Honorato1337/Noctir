@@ -1,0 +1,90 @@
+{
+  "audio": false,
+  "clips": [
+    {
+      "caption": "Astronauta andando",
+      "file": "01-andando.gif",
+      "fps": 20,
+      "frames": 80,
+      "legacy": false,
+      "title": "MOVIMENTO",
+      "bytes": 227914,
+      "sha256": "5e5ccac0599001d9d08763c1e681eba51e22f58cb07a6a411e41654ae4721586"
+    },
+    {
+      "caption": "3 projéteis por tiro",
+      "file": "02-espingarda.gif",
+      "fps": 20,
+      "frames": 80,
+      "legacy": false,
+      "title": "ESPINGARDA",
+      "bytes": 148092,
+      "sha256": "f3d9223479fb9a41f6570daed71119fd75d744763a663a47091d52732808ac74"
+    },
+    {
+      "caption": "Movimento e disparos simultâneos",
+      "file": "03-andando-atirando.gif",
+      "fps": 20,
+      "frames": 80,
+      "legacy": false,
+      "title": "MOVER + ATIRAR",
+      "bytes": 298763,
+      "sha256": "454d59bbcf835f40ee7e394893ad7f91583d504f4ef61564d983b746ba37993d"
+    },
+    {
+      "caption": "Espingarda com +2 projéteis",
+      "file": "04-prisma.gif",
+      "fps": 20,
+      "frames": 80,
+      "legacy": false,
+      "title": "PRISMA",
+      "bytes": 194208,
+      "sha256": "690029554b7e3dd18d7ac1822fe98df02dfbccac8f66e00a6093f3779f1461ce"
+    },
+    {
+      "caption": "Investida com invulnerabilidade",
+      "file": "05-dash.gif",
+      "fps": 20,
+      "frames": 80,
+      "legacy": false,
+      "title": "DASH",
+      "bytes": 95910,
+      "sha256": "d5609f5709d158daf44d2827f4ddf4224a5761468565105567f5b9679259ac2b"
+    },
+    {
+      "caption": "Rebobina e repete os disparos",
+      "file": "06-eco.gif",
+      "fps": 20,
+      "frames": 120,
+      "legacy": false,
+      "title": "ECO TEMPORAL",
+      "bytes": 564613,
+      "sha256": "3e6635a8a34685532dd24e4c4e36a0f6b4cd65a19187643b148a33957623b9a9"
+    },
+    {
+      "caption": "Rajadas em todas as direções",
+      "file": "07-berserk.gif",
+      "fps": 20,
+      "frames": 80,
+      "legacy": false,
+      "title": "BERSERK",
+      "bytes": 1870141,
+      "sha256": "c619c34070b6bda6792710e773707637d79beb4c6de37353781cec3784a3af29"
+    },
+    {
+      "caption": "Demonstração do asset antigo",
+      "file": "08-arma-original.gif",
+      "fps": 20,
+      "frames": 80,
+      "legacy": true,
+      "title": "ARMA ORIGINAL",
+      "bytes": 122845,
+      "sha256": "35bc153271b476412bcb93e508ebd63723f41aef26179ec2e818b70328395257"
+    }
+  ],
+  "size": [
+    640,
+    360
+  ],
+  "source": "Godot native rendering, staged isolated gameplay"
+}
