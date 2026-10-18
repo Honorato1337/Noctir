@@ -1,10 +1,10 @@
-# NOCTIR: One More Orbit
+# One More Orbit
 
 Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pasta. Importe `project.godot` no gerenciador do Godot e aperte **F6** com a cena principal aberta, ou **F5** para executar o projeto. Não precisa instalar plugins nem baixar assets.
 
 **Para editar o visual no editor:** veja [Editar no Godot](docs/EDITAR_NO_GODOT.md). Menu, controles, HUD, pausa, upgrades, resultado, arena e atores agora possuem cenas `.tscn` próprias em `scenes/`. O tema compartilhado está em `ui_theme.tres`. Importe o `project.godot` da raiz, não o arquivo existente dentro de `docs`.
 
-## Versão atual: 0.1.3
+## Versão atual: 0.1.4
 
 - Após a vitória, 15 segundos para coletar e embarcar. O loot deixado no chão é perdido.
 - Sirene progressiva, alerta vermelho e seta até o veículo; a pausa congela a coleta.
@@ -112,7 +112,7 @@ O teste exercita dano, invulnerabilidade, colisões, histórico, eco, melhorias,
 
 ## Exportar
 
-Instale os **export templates da mesma versão do editor** em Editor > Manage Export Templates. Em Project > Export, crie um preset Windows Desktop e/ou Web. Exporte Windows para `builds/windows/Noctir.exe`; Web para `builds/web/index.html`, com Thread Support desabilitado. Teste o ZIP inteiro no navegador da página da jam; não abra o HTML com `file://`. Veja as instruções completas no guia.
+Instale os **export templates da mesma versão do editor** em Editor > Manage Export Templates. Em Project > Export, crie um preset Windows Desktop e/ou Web. Exporte Windows para `builds/windows/OneMoreOrbit.exe`; Web para `builds/web/index.html`, com Thread Support desabilitado. Teste o ZIP inteiro no navegador da página da jam; não abra o HTML com `file://`. Veja as instruções completas no guia.
 
 ## Sobre o evento
 

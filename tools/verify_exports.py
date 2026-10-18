@@ -4,8 +4,8 @@ root=Path(__file__).resolve().parents[1]
 base=root/'.godot/export-tools'
 java=next(base.glob('jdk*/bin/java.exe'))
 sdk=base/'android-sdk/build-tools/35.0.1'
-apk=root/'builds/android/NOCTIR.apk'
-exe=root/'builds/windows/NOCTIR.exe'
+apk=root/'builds/android/OneMoreOrbit.apk'
+exe=root/'builds/windows/OneMoreOrbit.exe'
 logs=[]
 for name,cmd in [('signature',[str(java),'-jar',str(sdk/'lib/apksigner.jar'),'verify','--verbose',str(apk)]),('alignment',[str(sdk/'zipalign.exe'),'-c','-P','16','4',str(apk)]),('manifest',[str(sdk/'aapt.exe'),'dump','badging',str(apk)])]:
     r=subprocess.run(cmd,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=60)

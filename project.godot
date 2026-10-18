@@ -10,10 +10,14 @@ config_version=5
 
 [application]
 
-config/name="NOCTIR: One More Orbit"
+config/name="One More Orbit"
+config/version="0.1.4"
+config/use_custom_user_dir.windows=true
+config/custom_user_dir_name.windows="Godot/app_userdata/NOCTIR- One More Orbit"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
+config/windows_native_icon="res://assets/branding/one-more-orbit.ico"
 
 [display]
 

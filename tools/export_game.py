@@ -49,7 +49,7 @@ def main():
  text=replace_values(text,'preset.1.options',{'custom_template/release':quote(BASE/'templates'/'windows_release_x86_64.exe')})
  try:
   presets.write_text(text,encoding='utf-8')
-  for preset,output in [('Windows Desktop',ROOT/'builds'/'windows'/'NOCTIR.exe'),('Android',ROOT/'builds'/'android'/'NOCTIR.apk')]:
+  for preset,output in [('Windows Desktop',ROOT/'builds'/'windows'/'OneMoreOrbit.exe'),('Android',ROOT/'builds'/'android'/'OneMoreOrbit.apk')]:
    output.parent.mkdir(parents=True,exist_ok=True)
    log=ROOT/'builds'/('export-windows.log' if preset=='Windows Desktop' else 'export-android.log')
    print('Exporting '+preset,flush=True)
