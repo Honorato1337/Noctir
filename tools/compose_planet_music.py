@@ -18,6 +18,12 @@ def voice(midi, seconds, instrument):
     if instrument == 'pluck':
         y = sum(np.sin(phase * h) * np.exp(-t * (3 + h * 1.5)) / h for h in range(1, 7))
         env = np.minimum(t / .004, 1) * np.exp(-t * 1.9)
+    elif instrument == 'guitar':
+        # Bright, chorus-like picked strings into a restrained soft distortion.
+        y = sum(np.sin(phase*h)*np.exp(-t*(2+h*.8))/h**1.5 for h in range(1,8))
+        y += .22*np.sin(phase*1.004)*np.exp(-t*3)
+        y = np.tanh(y*1.8)
+        env = np.minimum(t/.003,1)*np.exp(-t*2)
     elif instrument == 'piano':
         y = sum(np.sin(phase * h * (1 + h * .00015)) * np.exp(-t * (1.2 + h * .7)) / h ** 1.8 for h in range(1, 6))
         env = np.minimum(t / .006, 1) * np.exp(-t * 1.3)
@@ -67,20 +73,17 @@ def compose(name, bpm, beats, chords, melody, kind):
             for i, step in enumerate([2, 1, 0, 1]):
                 note(chord[step] + (12 if bar % 2 else 0), at + i + .25, .65, .11, 'pluck', .4)
         elif name == 'neptune':
-            # Original choro: syncopated cavaquinho, six-string bass runs,
-            # quick chromatic pickups and a plucked melody over the synth bed.
-            for offset in [0, .75, 1.5, 2, 2.75, 3.5]:
-                for pitch in chord:
-                    note(pitch + 12, at + offset, .16, .072, 'pluck', -.35)
-            next_root = chords[(bar + 1) % len(chords)][0]
-            for offset, pitch in [(2.5, fifth-12), (3, next_root-14), (3.5, next_root-13), (3.75, next_root-12)]:
-                note(pitch, at + offset, .22, .19, 'pluck', -.1)
-            # Shaker and dry rim accents suggest pandeiro without recordings.
-            for i in range(16):
-                t = np.arange(int(.045 * RATE)) / RATE
-                shake = RNG.normal(0, .035 if i % 4 == 2 else .018, len(t)) * np.exp(-t*95)
-                idx = (round((at+i*.25)*beat*RATE)+np.arange(len(t))) % samples
-                audio[idx] += shake[:, None]
+            # Original cold post-punk: driving bass, chiming picked guitar,
+            # minor harmony and a dry snare backbeat. No borrowed melodies.
+            for i in range(8):
+                pitch = [root,root,fifth,root,third,root,fifth,root][i]
+                note(pitch-12, at+i*.5, .42, .20, 'bass', -.12)
+                note(chord[[0,2,1,2][i%4]]+12, at+i*.5+.04, .42, .10, 'guitar', .45)
+            for b in [1,3]:
+                t = np.arange(int(.13*RATE))/RATE
+                snare = (RNG.normal(0,.065,len(t))+np.sin(2*np.pi*185*t)*.07)*np.exp(-t*32)
+                idx = (round((at+b)*beat*RATE)+np.arange(len(t))) % samples
+                audio[idx] += snare[:,None]
         else:
             # Double-time broken chords push Jupiter beyond Neptune's tempo.
             for i in range(12):
@@ -118,7 +121,7 @@ def compose(name, bpm, beats, chords, melody, kind):
     assert min(blocks) > .015, (name, 'silent passage')
     assert np.max(np.abs(audio[-1] - audio[0])) < .0001
     print(f'{name}: {samples/RATE:.2f}s, peak={np.max(np.abs(audio)):.3f}, quietest quarter-second={min(blocks):.3f}')
-    return audio, {'file': f'{name}.wav', 'bpm': bpm, 'meter': '4/4' if beats == 4 else ('3/4' if name == 'neptune' else '6/8'), 'bars': bars, 'seconds': samples / RATE, 'original': True, 'style': 'electronic Brazilian choro, original melody' if name == 'neptune' else 'urgent space electronic'}
+    return audio, {'file': f'{name}.wav', 'bpm': bpm, 'meter': '4/4' if beats == 4 else ('3/4' if name == 'neptune' else '6/8'), 'bars': bars, 'seconds': samples / RATE, 'original': True, 'style': 'cold minor-key post-punk, original melody' if name == 'neptune' else 'urgent space electronic'}
 
 
 def save(path, data):
@@ -139,7 +142,7 @@ if __name__ == '__main__':
             [(0,79,1),(1,77,.5),(1.5,74,.5),(2,70,1),(3,74,1)],
             [(0,76,.5),(.5,73,.5),(1,69,.5),(1.5,73,.5),(2,76,.5),(2.5,79,.5),(3,77,.5),(3.5,73,.5)],
             [(0,74,2),(2,69,1),(3,65,1)]], 'pluck'),
-        ('neptune', 176, 4, [(50,54,57),(55,59,62),(57,61,64),(50,54,57),(59,62,66),(55,59,62),(57,61,64),(50,54,57)], [
+        ('neptune', 160, 4, [(50,54,57),(55,59,62),(57,61,64),(50,54,57),(59,62,66),(55,59,62),(57,61,64),(50,54,57)], [
             [(0,78,.5),(.5,81,.5),(1,86,1),(2,85,.5),(2.5,83,.5),(3,81,1)],
             [(0,79,.5),(.5,83,.5),(1,86,.5),(1.5,83,.5),(2,81,.5),(2.5,79,.5),(3,78,.5),(3.5,76,.5)],
             [(0,76,.5),(.5,78,.5),(1,80,.5),(1.5,81,.5),(2,85,1),(3,83,.5),(3.5,81,.5)],
@@ -153,20 +156,19 @@ if __name__ == '__main__':
             [(0,84,1),(1,80,.5),(1.5,79,.5),(2,77,1)], [(0,79,1.5),(1.5,77,.25),(1.75,75,.25),(2,74,1)],
             [(0,79,1),(1,82,.5),(1.5,79,.5),(2,75,1)], [(0,80,1.5),(1.5,79,.5),(2,75,1)],
             [(0,74,.5),(.5,75,.5),(1,77,.5),(1.5,74,.5),(2,71,1)], [(0,72,3)]], 'lead')]
-    # Eight original phrases in D minor, with chromatic approaches and 16th-note turns.
-    choro_lines = [
-        [77,76,74,73,74,77,81,80,81,79,77,76,74,73,72,73],
-        [79,81,82,81,79,77,76,74,73,74,76,77,79,77,76,74],
-        [76,77,79,80,81,79,77,76,73,76,79,82,81,79,77,73],
-        [74,77,81,79,77,76,74,73,74,69,70,72,73,74,76,77],
-        [82,81,79,77,76,77,79,81,82,84,82,81,79,77,76,74],
-        [79,82,86,85,86,84,82,81,79,77,76,74,73,74,76,77],
-        [81,80,79,77,76,73,76,79,82,81,79,77,76,74,73,69],
-        [74,76,77,79,81,79,77,76,74,73,74,77,76,74,73,74]]
+    # Restrained original minor-key hook, two contrasting eight-bar periods.
     item = list(specifications[1])
-    item[3] = [(50,53,57),(55,58,62),(57,61,64),(50,53,57),(58,62,65),(55,58,62),(57,61,64),(50,53,57)]
-    item[4] = [[(i*.25, pitch, .21) for i,pitch in enumerate(line)] for line in choro_lines]
-    item[5] = 'pluck'
+    item[3] = [(50,53,57),(46,50,53),(53,57,60),(48,52,55)]
+    item[4] = [
+        [(0,74,.75),(1,77,.5),(1.5,76,.5),(2,74,1),(3.5,72,.5)],
+        [(0,70,1),(1.5,74,.5),(2,77,.75),(3,74,.5),(3.5,72,.5)],
+        [(0,77,.75),(1,81,.5),(1.5,79,.5),(2,77,1),(3.5,76,.5)],
+        [(0,76,1),(1.5,74,.5),(2,72,1),(3,76,.75)],
+        [(0,81,.5),(.5,77,.5),(1.5,76,.5),(2,74,1.5)],
+        [(0,77,1),(1.5,74,.5),(2,70,1),(3.5,72,.5)],
+        [(0,77,.5),(.5,79,.5),(1,81,1),(2.5,79,.5),(3,77,.75)],
+        [(0,76,1),(1.5,72,.5),(2,74,1.75)]]
+    item[5] = 'guitar'
     specifications[1] = tuple(item)
     tracks, metadata = [], []
     for args in specifications:

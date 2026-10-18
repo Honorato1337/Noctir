@@ -10,12 +10,12 @@
   },
   {
     "file": "neptune.wav",
-    "bpm": 176,
+    "bpm": 160,
     "meter": "4/4",
     "bars": 32,
-    "seconds": 43.636371882086166,
+    "seconds": 48.0,
     "original": true,
-    "style": "electronic Brazilian choro, original melody"
+    "style": "cold minor-key post-punk, original melody"
   },
   {
     "file": "jupiter.wav",

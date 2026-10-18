@@ -8,14 +8,14 @@
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1")
-layout_name = "NEXO / TRONO DO DEUS ALIENIGENA"
-sector_index = 3
+layout_name = "NEXO / PLANÍCIE DA CONVERGÊNCIA"
+sector_index = 4
 
 [node name="Floor" type="ColorRect" parent="."]
 offset_left = 64.0
 offset_top = 104.0
-offset_right = 1856.0
-offset_bottom = 1192.0
+offset_right = 2112.0
+offset_bottom = 1448.0
 mouse_filter = 2
 color = Color(0.12, 0.10, 0.15, 1)
 
@@ -23,75 +23,117 @@ color = Color(0.12, 0.10, 0.15, 1)
 script = ExtResource("2_decor")
 
 [node name="Border" type="Line2D" parent="."]
-points = PackedVector2Array(64,104,1856,104,1856,1192,64,1192,64,104)
+points = PackedVector2Array(64,104,1600,104,1600,1000,64,1000,64,104)
 width = 4.0
 default_color = Color(0.6, 0.8, 0.8, 1)
 
 [node name="Obstacles" type="Node2D" parent="."]
 
 
-[node name="PillarA" type="ColorRect" parent="Obstacles"]
-offset_left = 400.0
-offset_top = 244.0
-offset_right = 544.0
-offset_bottom = 348.0
-mouse_filter = 2
-color = Color(0.25, 0.28, 0.32, 1)
-script = ExtResource("3_cover")
 
-[node name="PillarB" type="ColorRect" parent="Obstacles"]
-offset_left = 1120.0
-offset_top = 244.0
-offset_right = 1264.0
-offset_bottom = 348.0
-mouse_filter = 2
-color = Color(0.25, 0.28, 0.32, 1)
-script = ExtResource("3_cover")
-
-[node name="Cover3" type="ColorRect" parent="Obstacles"]
-offset_left = 400.0
-offset_top = 756.0
-offset_right = 544.0
-offset_bottom = 860.0
-mouse_filter = 2
-color = Color(0.25, 0.28, 0.32, 1)
-script = ExtResource("3_cover")
-
-[node name="Cover4" type="ColorRect" parent="Obstacles"]
-offset_left = 1120.0
-offset_top = 756.0
-offset_right = 1264.0
-offset_bottom = 860.0
-mouse_filter = 2
-color = Color(0.25, 0.28, 0.32, 1)
-script = ExtResource("3_cover")
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
-position = Vector2(184, 648)
+position = Vector2(1088, 680)
 gizmo_extents = 24.0
 
 [node name="Portal" type="Marker2D" parent="."]
-position = Vector2(1784, 648)
+position = Vector2(2016, 776)
 gizmo_extents = 24.0
 
 [node name="BossSpawn" type="Marker2D" parent="."]
-position = Vector2(1568, 648)
+position = Vector2(1600, 680)
 gizmo_extents = 24.0
 
 [node name="SpawnGates" type="Node2D" parent="."]
 
 
 [node name="NorthWest" type="Marker2D" parent="SpawnGates"]
-position = Vector2(136, 180)
+position = Vector2(160, 218)
 
 [node name="NorthEast" type="Marker2D" parent="SpawnGates"]
-position = Vector2(1784, 180)
+position = Vector2(2016, 218)
 
 [node name="SouthWest" type="Marker2D" parent="SpawnGates"]
-position = Vector2(136, 1120)
+position = Vector2(160, 1334)
 
 [node name="SouthEast" type="Marker2D" parent="SpawnGates"]
-position = Vector2(1784, 1120)
+position = Vector2(2016, 1334)
 
 [node name="Hazards" type="Node2D" parent="."]
 
+
+[node name="Hazard1" type="Marker2D" parent="Hazards"]
+position = Vector2(997, 500)
+gizmo_extents = 54.0
+
+[node name="Hazard2" type="Marker2D" parent="Hazards"]
+position = Vector2(1195, 1052)
+gizmo_extents = 54.0
+
+
+
+
+
+[node name="FrozenRock0" type="ColorRect" parent="Obstacles"]
+offset_left = 480.0
+offset_top = 352.0
+offset_right = 640.0
+offset_bottom = 448.0
+mouse_filter = 2
+script = ExtResource("3_cover")
+
+[node name="FrozenRock1" type="ColorRect" parent="Obstacles"]
+offset_left = 896.0
+offset_top = 288.0
+offset_right = 1024.0
+offset_bottom = 384.0
+mouse_filter = 2
+script = ExtResource("3_cover")
+
+[node name="FrozenRock2" type="ColorRect" parent="Obstacles"]
+offset_left = 1504.0
+offset_top = 352.0
+offset_right = 1664.0
+offset_bottom = 448.0
+mouse_filter = 2
+script = ExtResource("3_cover")
+
+[node name="FrozenRock3" type="ColorRect" parent="Obstacles"]
+offset_left = 384.0
+offset_top = 768.0
+offset_right = 512.0
+offset_bottom = 896.0
+mouse_filter = 2
+script = ExtResource("3_cover")
+
+[node name="FrozenRock4" type="ColorRect" parent="Obstacles"]
+offset_left = 1664.0
+offset_top = 800.0
+offset_right = 1792.0
+offset_bottom = 928.0
+mouse_filter = 2
+script = ExtResource("3_cover")
+
+[node name="FrozenRock5" type="ColorRect" parent="Obstacles"]
+offset_left = 640.0
+offset_top = 1120.0
+offset_right = 800.0
+offset_bottom = 1248.0
+mouse_filter = 2
+script = ExtResource("3_cover")
+
+[node name="FrozenRock6" type="ColorRect" parent="Obstacles"]
+offset_left = 1312.0
+offset_top = 1120.0
+offset_right = 1504.0
+offset_bottom = 1216.0
+mouse_filter = 2
+script = ExtResource("3_cover")
+
+[node name="FrozenRock7" type="ColorRect" parent="Obstacles"]
+offset_left = 1056.0
+offset_top = 944.0
+offset_right = 1184.0
+offset_bottom = 1040.0
+mouse_filter = 2
+script = ExtResource("3_cover")

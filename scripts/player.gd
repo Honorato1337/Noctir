@@ -10,7 +10,7 @@ var health := 5
 @export var max_health := 5
 @export var speed := 210.0
 @export var damage := 1.0
-@export var interval := 0.18
+@export var interval := 0.48
 @export_group("Visual")
 @export var use_placeholder_graphics := false
 @onready var visual: AnimatedSprite2D = $Visual
@@ -19,6 +19,20 @@ var health := 5
 @onready var weapon_sprite: Sprite2D = $Weapon/Sprite
 @onready var echo_weapon: Node2D = $EchoWeapon
 @onready var echo_weapon_sprite: Sprite2D = $EchoWeapon/Sprite
+const SHOTGUN_FRAMES = [
+	preload("res://assets/gun2/pixil-frame-0.png"),
+	preload("res://assets/gun2/pixil-frame-1.png"),
+	preload("res://assets/gun2/pixil-frame-2.png"),
+	preload("res://assets/gun2/pixil-frame-3.png"),
+	preload("res://assets/gun2/pixil-frame-4.png"),
+	preload("res://assets/gun2/pixil-frame-5.png"),
+	preload("res://assets/gun2/pixil-frame-6.png"),
+	preload("res://assets/gun2/pixil-frame-7.png"),
+	preload("res://assets/gun2/pixil-frame-8.png"),
+	preload("res://assets/gun2/pixil-frame-9.png")
+]
+var weapon_animation := 0.0
+var echo_weapon_frame := 0
 var echo_aim := Vector2.RIGHT
 var echo_frame := 0
 var spread := 0
@@ -55,6 +69,8 @@ func set_skin(key: String) -> void:
 	update_animation()
 
 func _process(_delta: float) -> void:
+	if is_instance_valid(game) and game.state == "playing":
+		weapon_animation = maxf(0, weapon_animation - _delta)
 	update_animation()
 
 func update_animation() -> void:
@@ -71,6 +87,7 @@ func update_animation() -> void:
 	weapon.rotation = aim.angle()
 	weapon.z_index = -1 if aim.y < -0.25 else 1
 	weapon_sprite.flip_v = aim.x < 0
+	weapon_sprite.texture = SHOTGUN_FRAMES[weapon_frame()]
 	if active:
 		var moving: bool = game.controls.movement().length_squared() > 0.01 or dash_time > 0
 		var animation: StringName = &"walk" if moving else &"idle"
@@ -90,6 +107,7 @@ func update_animation() -> void:
 	echo_weapon.rotation = echo_aim.angle()
 	echo_weapon.z_index = -1 if echo_aim.y < -0.25 else 1
 	echo_weapon_sprite.flip_v = echo_aim.x < 0
+	echo_weapon_sprite.texture = SHOTGUN_FRAMES[echo_weapon_frame]
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(game) or game.state != "playing":
@@ -142,7 +160,7 @@ func _physics_process(delta: float) -> void:
 		cooldown = interval * (0.45 if overdrive_time > 0 else 1.0)
 		shots = fire(position, aim, false)
 	# Store every physics frame: exact fire events must survive into the echo.
-	history.append({"t": clock, "pos": position, "health": health, "shots": shots, "damage": shot_damage(), "visual_frame": visual.frame, "flip_h": visual.flip_h, "aim": aim})
+	history.append({"t": clock, "pos": position, "health": health, "shots": shots, "damage": shot_damage(), "visual_frame": visual.frame, "weapon_frame": weapon_frame(), "flip_h": visual.flip_h, "aim": aim})
 	while not history.is_empty() and clock - float(history[0].t) > 5.0:
 		history.pop_front()
 	if Input.is_action_just_pressed("rewind"):
@@ -153,17 +171,22 @@ func _physics_process(delta: float) -> void:
 			var frame: Dictionary = echo_frames.pop_front()
 			echo_pos = frame.pos
 			echo_frame = int(frame.get("visual_frame", 0))
+			echo_weapon_frame = int(frame.get("weapon_frame", 0))
 			echo_flip_h = bool(frame.get("flip_h",false))
 			echo_aim = frame.get("aim", aim)
 			for direction in frame.shots:
 				game.shoot(echo_pos, direction, float(frame.damage), false, true)
 	queue_redraw()
 
+func weapon_frame() -> int:
+	return clampi(int((0.5 - weapon_animation) * 20), 0, 9) if weapon_animation > 0 else 0
+
 func fire(origin: Vector2, direction: Vector2, is_echo: bool) -> Array[Vector2]:
 	if not is_echo:
 		game.play_sfx("shot", origin)
-	var directions: Array[Vector2] = [direction]
-	for i in range(1, spread + 1):
+		weapon_animation = 0.5
+	var directions: Array[Vector2] = [direction, direction.rotated(0.16), direction.rotated(-0.16)]
+	for i in range(2, spread + 2):
 		directions.append(direction.rotated(i * 0.16))
 		directions.append(direction.rotated(-i * 0.16))
 	for vector in directions:
@@ -194,6 +217,7 @@ func rewind() -> void:
 	echo_clock = float(first.t)
 	echo_pos = first.pos
 	echo_frame = int(first.get("visual_frame", 0))
+	echo_weapon_frame = int(first.get("weapon_frame", 0))
 	echo_flip_h = bool(first.get("flip_h",false))
 	echo_aim = first.get("aim", aim)
 	game.time_left += clock - float(first.t)

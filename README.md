@@ -231,3 +231,9 @@ Validação: `tests/rebalance.gd`, campanha completa (`smoke`), `planet_mechanic
 - Cada superchefe planetário da campanha concede +1 chance por run, podendo ultrapassar as três iniciais.
 - Vitória final agradece ao jogador.
 - Música original: Marte 128 BPM, Netuno 176 BPM com síncopes e baixarias de chorinho eletrônico, Júpiter 216 BPM. O ritmo cresce 2,5% por arena do planeta; fácil ×0,96, médio ×1 e difícil ×1,08. Sobrevivência acelera gradualmente até +20%.
+
+### Espingarda e arena final (0.2.6)
+
+- Espingarda animada de assets/gun2: três projéteis por tiro, intervalo base de 0,48s e Prisma adicionando dois projéteis por melhoria. O Eco reproduz os disparos e a animação.
+- Netuno: trilha original de post-punk eletrônico em tom menor, baixo pulsante, guitarra sintetizada e bateria seca; 160 BPM, entre Marte (128) e Júpiter (216). Substitui o chorinho da versão anterior.
+- Arena 13 usa o mesmo mapa de Plutão da sobrevivência: 2048×1344, oito rochas, mesmo terreno e pontos de entrada. A sobrevivência mantém seu mapa original; a campanha mantém o Deus Alienígena e o caos da arena final.
