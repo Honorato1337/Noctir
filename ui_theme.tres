@@ -1,0 +1,200 @@
+[gd_resource type="Theme" format=3 uid="uid://srhhp5dd0das"]
+
+[ext_resource type="FontFile" uid="uid://baf1qkkm7ac5q" path="res://fonts/w95fa/W95F.otf" id="1_font"]
+[ext_resource type="Texture2D" uid="uid://bxgol24bwwcy7" path="res://assets/icons/slider_handle.svg" id="2_slider"]
+
+[sub_resource type="StyleBoxFlat" id="Disabled"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.02, 0.03, 0.04, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.19, 0.22, 1)
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.45, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.06, 0.16, 0.18, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.44, 0.9, 0.82, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.025, 0.045, 0.065, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.32, 0.37, 1)
+
+[sub_resource type="StyleBoxFlat" id="SliderFill"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.22, 0.65, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="SliderTrack"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.04, 0.07, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.32, 0.37, 1)
+
+[sub_resource type="StyleBoxFlat" id="Card"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(0.015, 0.025, 0.04, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.16, 0.25, 0.3, 1)
+
+[sub_resource type="StyleBoxFlat" id="PrimaryHover"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.65, 1, 0.9, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 1, 0.9, 1)
+
+[sub_resource type="StyleBoxFlat" id="Primary"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.44, 0.9, 0.82, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.44, 0.9, 0.82, 1)
+
+[sub_resource type="StyleBoxFlat" id="BossBackground"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.07, 0.11, 0.18, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.07, 0.11, 0.18, 1)
+
+[sub_resource type="StyleBoxFlat" id="BossFill"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.95, 0.35, 0.46, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.35, 0.46, 1)
+
+[sub_resource type="StyleBoxFlat" id="TabSelected"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.06, 0.16, 0.18, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.44, 0.9, 0.82, 1)
+
+[sub_resource type="StyleBoxFlat" id="TabNormal"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.025, 0.045, 0.065, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.32, 0.37, 1)
+
+[sub_resource type="StyleBoxFlat" id="TabPanel"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.015, 0.025, 0.04, 1)
+
+[resource]
+default_font = ExtResource("1_font")
+default_font_size = 22
+Button/colors/font_color = Color(0.88, 0.94, 0.96, 1)
+Button/colors/font_disabled_color = Color(0.45, 0.55, 0.58, 1)
+Button/styles/disabled = SubResource("Disabled")
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Hover")
+HSlider/icons/grabber = ExtResource("2_slider")
+HSlider/icons/grabber_highlight = ExtResource("2_slider")
+HSlider/styles/focus = SubResource("Focus")
+HSlider/styles/grabber_area = SubResource("SliderFill")
+HSlider/styles/grabber_area_highlight = SubResource("SliderFill")
+HSlider/styles/slider = SubResource("SliderTrack")
+Label/colors/font_color = Color(0.88, 0.94, 0.96, 1)
+PanelContainer/styles/panel = SubResource("Card")
+PrimaryButton/base_type = &"Button"
+PrimaryButton/colors/font_color = Color(0.015, 0.05, 0.06, 1)
+PrimaryButton/colors/font_focus_color = Color(0.015, 0.05, 0.06, 1)
+PrimaryButton/colors/font_hover_color = Color(0.015, 0.05, 0.06, 1)
+PrimaryButton/colors/font_pressed_color = Color(0.015, 0.05, 0.06, 1)
+PrimaryButton/styles/hover = SubResource("PrimaryHover")
+PrimaryButton/styles/normal = SubResource("Primary")
+PrimaryButton/styles/pressed = SubResource("PrimaryHover")
+ProgressBar/styles/background = SubResource("BossBackground")
+ProgressBar/styles/fill = SubResource("BossFill")
+TabBar/colors/font_selected_color = Color(0.44, 0.9, 0.82, 1)
+TabBar/font_sizes/font_size = 22
+TabBar/styles/tab_focus = SubResource("Focus")
+TabBar/styles/tab_hovered = SubResource("Hover")
+TabBar/styles/tab_selected = SubResource("TabSelected")
+TabBar/styles/tab_unselected = SubResource("TabNormal")
+TabContainer/colors/font_selected_color = Color(0.44, 0.9, 0.82, 1)
+TabContainer/font_sizes/font_size = 22
+TabContainer/styles/panel = SubResource("TabPanel")
+TabContainer/styles/tab_focus = SubResource("Focus")
+TabContainer/styles/tab_hovered = SubResource("TabSelected")
+TabContainer/styles/tab_selected = SubResource("TabSelected")
+TabContainer/styles/tab_unselected = SubResource("TabNormal")

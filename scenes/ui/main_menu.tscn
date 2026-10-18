@@ -1,0 +1,219 @@
+[gd_scene format=3 uid="uid://cqxnt7urmeho8"]
+
+[ext_resource type="Theme" uid="uid://srhhp5dd0das" path="res://ui_theme.tres" id="1"]
+[ext_resource type="Script" uid="uid://bipat4w2fjoqw" path="res://scripts/pixel_backdrop.gd" id="2"]
+[ext_resource type="FontFile" uid="uid://bg0acbwc2gptg" path="res://fonts/after_burner_neue/After Burner Neue.ttf" id="3"]
+[ext_resource type="SpriteFrames" path="res://asssets/astronauta/astronaut_frames.tres" id="4"]
+
+[node name="MainMenu" type="Control" unique_id=1521797323]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=2604012]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.008, 0.016, 0.03, 1)
+script = ExtResource("2")
+accent = Color(0.48730242, 0.8947327, 0.8120168, 1)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1466852833]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="VBoxContainer" parent="Center" unique_id=303261082]
+custom_minimum_size = Vector2(1024, 0)
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Eyebrow" type="Label" parent="Center/Layout" unique_id=1151710289]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 22
+text = "17/10/2026   00:00:00    /    JOGADO 00:00:00"
+
+[node name="Content" type="HBoxContainer" parent="Center/Layout" unique_id=774601523]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Mission" type="PanelContainer" parent="Center/Layout/Content" unique_id=1314435265]
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Layout/Content/Mission" unique_id=1887670603]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Tag" type="Label" parent="Center/Layout/Content/Mission/Box" unique_id=247777782]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+theme_override_font_sizes/font_size = 22
+text = "01   /   EXPEDIÇÃO INTERPLANETÁRIA"
+
+[node name="Title" type="Label" parent="Center/Layout/Content/Mission/Box" unique_id=1848478851]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+theme_override_fonts/font = ExtResource("3")
+theme_override_font_sizes/font_size = 36
+text = "MAIS UMA ORBITA"
+
+[node name="Description" type="Label" parent="Center/Layout/Content/Mission/Box" unique_id=1123029331]
+custom_minimum_size = Vector2(560, 72)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Um traje. Treze arenas.
+Cinco segundos para mudar tudo."
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="Center/Layout/Content/Mission/Box" unique_id=1705483365]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+text = "INICIAR EXPEDIÇÃO   >"
+
+[node name="PermanentShopButton" type="Button" parent="Center/Layout/Content/Mission/Box" unique_id=532795168]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "LOJA    /   0 COINS"
+
+[node name="MenuActions" type="HBoxContainer" parent="Center/Layout/Content/Mission/Box" unique_id=1765372459]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SettingsButton" type="Button" parent="Center/Layout/Content/Mission/Box/MenuActions" unique_id=1033929017]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CONFIGURAÇÕES"
+
+[node name="ControlsButton" type="Button" parent="Center/Layout/Content/Mission/Box/MenuActions" unique_id=1743087958]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "COMO JOGAR"
+
+[node name="TestButton" type="Button" parent="Center/Layout/Content/Mission/Box/MenuActions" unique_id=1855754352]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "TESTE"
+
+[node name="Astronaut" type="PanelContainer" parent="Center/Layout/Content" unique_id=130174619]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Layout/Content/Astronaut" unique_id=1682039563]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Pilot" type="Label" parent="Center/Layout/Content/Astronaut/Box" unique_id=1376050815]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+theme_override_font_sizes/font_size = 22
+text = "PILOTO  /  PRONTO"
+
+[node name="Preview" type="Control" parent="Center/Layout/Content/Astronaut/Box" unique_id=581730138]
+custom_minimum_size = Vector2(0, 208)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Platform" type="ColorRect" parent="Center/Layout/Content/Astronaut/Box/Preview" unique_id=727962258]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 172.0
+offset_right = 256.0
+offset_bottom = 180.0
+mouse_filter = 2
+color = Color(0.16, 0.3, 0.34, 1)
+
+[node name="AstronautSprite" type="AnimatedSprite2D" parent="Center/Layout/Content/Astronaut/Box/Preview" unique_id=8214116]
+position = Vector2(156, 91)
+scale = Vector2(6, 6)
+sprite_frames = ExtResource("4")
+animation = &"walk"
+autoplay = "walk"
+
+[node name="Record" type="Label" parent="Center/Layout/Content/Astronaut/Box" unique_id=572784887]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+theme_override_font_sizes/font_size = 22
+text = "RECORDE   000000"
+
+[node name="CharacterDivider" type="ColorRect" parent="Center/Layout/Content/Astronaut/Box" unique_id=1679939960]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.16, 0.3, 0.34, 1)
+
+[node name="Protocol" type="Label" parent="Center/Layout/Content/Astronaut/Box" unique_id=2104612496]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+theme_override_font_sizes/font_size = 22
+text = "PROTOCOLO ECO"
+
+[node name="EchoInfo" type="Label" parent="Center/Layout/Content/Astronaut/Box" unique_id=200883660]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "[Q] Volte 5 segundos.
+Seu eco continua atirando."
+autowrap_mode = 2
+
+[node name="InventoryInfo" type="Label" parent="Center/Layout/Content/Astronaut/Box" unique_id=986270594]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 22
+text = "[1]  [2]  Dois itens.
+Escolha quando usar."
+
+[node name="Route" type="HBoxContainer" parent="Center/Layout" unique_id=1539488210]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Mars" type="PanelContainer" parent="Center/Layout/Route" unique_id=1249006568]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Name" type="Label" parent="Center/Layout/Route/Mars" unique_id=1112384981]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.6, 0.44, 1)
+theme_override_font_sizes/font_size = 22
+text = "01—04   MARTE"
+horizontal_alignment = 1
+
+[node name="Neptune" type="PanelContainer" parent="Center/Layout/Route" unique_id=925096421]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Name" type="Label" parent="Center/Layout/Route/Neptune" unique_id=458930690]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.47, 0.81, 0.96, 1)
+theme_override_font_sizes/font_size = 22
+text = "05—08   NETUNO"
+horizontal_alignment = 1
+
+[node name="Jupiter" type="PanelContainer" parent="Center/Layout/Route" unique_id=1146584333]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Name" type="Label" parent="Center/Layout/Route/Jupiter" unique_id=1573669296]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.64, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "09—12   JÚPITER"
+horizontal_alignment = 1

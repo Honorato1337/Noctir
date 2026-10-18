@@ -1,0 +1,8 @@
+NOCTIR: One More Orbit - 0.1.1
+
+Windows: windows/NOCTIR.exe (arquivo unico, Windows 64 bits).
+Android: android/NOCTIR.apk (ARM64 e ARM 32 bits, Android 7.0/API24 ou superior, suporte grafico compativel necessario).
+
+APK assinado e verificado; instalacao em celular fisico ainda precisa ser testada. Ao instalar, o Android pode solicitar permissao para aplicativos da origem escolhida.
+
+Backup da assinatura para futuras atualizacoes: pasta privada .export-signing do projeto. Nao distribua essa pasta junto com o jogo.

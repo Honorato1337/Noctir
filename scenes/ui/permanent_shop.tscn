@@ -1,0 +1,712 @@
+[gd_scene format=3]
+[ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
+
+[node name="PermanentShop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1")
+texture_filter = 1
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.008, 0.016, 0.03, 1)
+script = ExtResource("2")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+custom_minimum_size = Vector2(1024, 0)
+
+[node name="Box" type="VBoxContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Center/Card/Box/Header"]
+layout_mode = 2
+mouse_filter = 2
+text = "LOJA"
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+size_flags_horizontal = 3
+
+[node name="PermanentWallet" type="Label" parent="Center/Card/Box/Header"]
+layout_mode = 2
+mouse_filter = 2
+text = "SALDO   0 COINS"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="PermanentProgress" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "100 PONTOS = 1 COIN  /  Progresso acumulado: 0/100 pontos"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+
+
+[node name="Tabs" type="HBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AttributesTab" type="Button" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+size_flags_horizontal = 3
+text = "ATRIBUTOS"
+
+[node name="SkillsTab" type="Button" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+size_flags_horizontal = 3
+text = "HABILIDADES"
+
+[node name="EquipmentTab" type="Button" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+size_flags_horizontal = 3
+text = "EQUIP. / TESTE"
+
+[node name="PrestigeTab" type="Button" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+size_flags_horizontal = 3
+text = "PRESTÍGIO"
+
+[node name="SkinsTab" type="Button" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+size_flags_horizontal = 3
+text = "SKINS / BREVE"
+
+[node name="Content" type="VBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 368)
+
+
+[node name="Skills" type="VBoxContainer" parent="Center/Card/Box/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+[node name="Title" type="Label" parent="Center/Card/Box/Content/Skills"]
+layout_mode = 2
+text = "HABILIDADES / SPACECOIN"
+theme_override_font_sizes/font_size = 28
+[node name="Description" type="Label" parent="Center/Card/Box/Content/Skills"]
+layout_mode = 2
+text = "Complete contratos para ganhar SpaceCoin. Habilidades sobrevivem ao Prestígio."
+theme_override_font_sizes/font_size = 22
+[node name="Cards" type="HBoxContainer" parent="Center/Card/Box/Content/Skills"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="AbilityBuy1" type="Button" parent="Center/Card/Box/Content/Skills/Cards"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 260)
+size_flags_horizontal = 3
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+mouse_filter = 2
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy1/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "CAMPO MAGNÉTICO"
+theme_override_font_sizes/font_size = 26
+autowrap_mode = 2
+size_flags_vertical = 3
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "+40 px de atração por nível.\nRecolhe moedas e itens próximos."
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 2
+size_flags_vertical = 3
+[node name="AbilityLevel1" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0"
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 2
+size_flags_vertical = 3
+[node name="AbilityCost1" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR"
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="AbilityBuy2" type="Button" parent="Center/Card/Box/Content/Skills/Cards"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 260)
+size_flags_horizontal = 3
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+mouse_filter = 2
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy2/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "BERSERK"
+theme_override_font_sizes/font_size = 26
+autowrap_mode = 2
+size_flags_vertical = 3
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "[F] Dispare em todas as direções por 6 s.\nUma ativação por run inteira."
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 2
+size_flags_vertical = 3
+[node name="AbilityLevel2" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0"
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 2
+size_flags_vertical = 3
+[node name="AbilityCost2" type="Label" parent="Center/Card/Box/Content/Skills/Cards/AbilityBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR"
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="Attributes" type="VBoxContainer" parent="Center/Card/Box/Content"]
+layout_mode = 2
+
+[node name="Upgrades" type="GridContainer" parent="Center/Card/Box/Content/Attributes"]
+layout_mode = 2
+columns = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="PermanentBuy1" type="Button" parent="Center/Card/Box/Content/Attributes/Upgrades"]
+layout_mode = 2
+custom_minimum_size = Vector2(312, 178)
+size_flags_horizontal = 3
+text = ""
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy1/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "BLINDAGEM"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "+1 de vida máxima por nível"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.88, 0.94, 0.96, 1)
+autowrap_mode = 2
+custom_minimum_size = Vector2(0, 44)
+
+[node name="PermanentLevel1" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0/3"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="PermanentCost1" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR / 0 COINS"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="PermanentBuy2" type="Button" parent="Center/Card/Box/Content/Attributes/Upgrades"]
+layout_mode = 2
+custom_minimum_size = Vector2(312, 178)
+size_flags_horizontal = 3
+text = ""
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy2/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÚCLEO DE PLASMA"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "+5% de dano inicial por nível"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.88, 0.94, 0.96, 1)
+autowrap_mode = 2
+custom_minimum_size = Vector2(0, 44)
+
+[node name="PermanentLevel2" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0/3"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="PermanentCost2" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR / 0 COINS"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="PermanentBuy3" type="Button" parent="Center/Card/Box/Content/Attributes/Upgrades"]
+layout_mode = 2
+custom_minimum_size = Vector2(312, 178)
+size_flags_horizontal = 3
+text = ""
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy3/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy3/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "GATILHO REFINADO"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy3/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "+4% de cadência inicial por nível"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.88, 0.94, 0.96, 1)
+autowrap_mode = 2
+custom_minimum_size = Vector2(0, 44)
+
+[node name="PermanentLevel3" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy3/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0/3"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="PermanentCost3" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy3/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR / 0 COINS"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="PermanentBuy4" type="Button" parent="Center/Card/Box/Content/Attributes/Upgrades"]
+layout_mode = 2
+custom_minimum_size = Vector2(312, 178)
+size_flags_horizontal = 3
+text = ""
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy4/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy4/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "BOTAS ORBITAIS"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy4/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "+4% de movimento por nível"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.88, 0.94, 0.96, 1)
+autowrap_mode = 2
+custom_minimum_size = Vector2(0, 44)
+
+[node name="PermanentLevel4" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy4/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0/3"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="PermanentCost4" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy4/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR / 0 COINS"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="PermanentBuy5" type="Button" parent="Center/Card/Box/Content/Attributes/Upgrades"]
+layout_mode = 2
+custom_minimum_size = Vector2(312, 178)
+size_flags_horizontal = 3
+text = ""
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy5/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy5/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "PROPULSOR AUXILIAR"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy5/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "-6% de recarga do dash por nível"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.88, 0.94, 0.96, 1)
+autowrap_mode = 2
+custom_minimum_size = Vector2(0, 44)
+
+[node name="PermanentLevel5" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy5/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0/3"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="PermanentCost5" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy5/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR / 0 COINS"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="PermanentBuy6" type="Button" parent="Center/Card/Box/Content/Attributes/Upgrades"]
+layout_mode = 2
+custom_minimum_size = Vector2(312, 178)
+size_flags_horizontal = 3
+text = ""
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy6/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy6/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "RESERVA TEMPORAL"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Effect" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy6/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "+2 segundos por arena por nível"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.88, 0.94, 0.96, 1)
+autowrap_mode = 2
+custom_minimum_size = Vector2(0, 44)
+
+[node name="PermanentLevel6" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy6/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "NÍVEL 0/3"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+autowrap_mode = 2
+size_flags_vertical = 3
+
+[node name="PermanentCost6" type="Label" parent="Center/Card/Box/Content/Attributes/Upgrades/PermanentBuy6/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "COMPRAR / 0 COINS"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="Equipment" type="VBoxContainer" parent="Center/Card/Box/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Heading" type="Label" parent="Center/Card/Box/Content/Equipment"]
+layout_mode = 2
+text = "EQUIPAMENTOS / AMBIENTE DE TESTE"
+theme_override_font_sizes/font_size = 28
+
+[node name="Description" type="Label" parent="Center/Card/Box/Content/Equipment"]
+layout_mode = 2
+text = "SpaceCoin será usada para equipamentos com habilidades. Catálogo em desenvolvimento."
+autowrap_mode = 2
+
+[node name="Catalog" type="HBoxContainer" parent="Center/Card/Box/Content/Equipment"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Preview0" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 180)
+size_flags_horizontal = 3
+disabled = true
+text = "TRAJES\n\nEM BREVE"
+tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+
+[node name="Preview1" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 180)
+size_flags_horizontal = 3
+disabled = true
+text = "ARMAS\n\nEM BREVE"
+tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+
+[node name="Preview2" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 180)
+size_flags_horizontal = 3
+disabled = true
+text = "MÓDULOS\n\nEM BREVE"
+tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+
+[node name="Skins" type="VBoxContainer" parent="Center/Card/Box/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Heading" type="Label" parent="Center/Card/Box/Content/Skins"]
+layout_mode = 2
+text = "SKINS / BREVE"
+theme_override_font_sizes/font_size = 28
+
+[node name="Description" type="Label" parent="Center/Card/Box/Content/Skins"]
+layout_mode = 2
+text = "Prestígio será usado para aparências. Catálogo em desenvolvimento."
+autowrap_mode = 2
+
+[node name="Catalog" type="HBoxContainer" parent="Center/Card/Box/Content/Skins"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Preview0" type="Button" parent="Center/Card/Box/Content/Skins/Catalog"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 180)
+size_flags_horizontal = 3
+disabled = true
+text = "ASTRONAUTAS\n\nEM BREVE"
+tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+
+[node name="Preview1" type="Button" parent="Center/Card/Box/Content/Skins/Catalog"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 180)
+size_flags_horizontal = 3
+disabled = true
+text = "ARMAS\n\nEM BREVE"
+tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+
+[node name="Preview2" type="Button" parent="Center/Card/Box/Content/Skins/Catalog"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 180)
+size_flags_horizontal = 3
+disabled = true
+text = "EFEITOS\n\nEM BREVE"
+tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+
+[node name="Prestige" type="VBoxContainer" parent="Center/Card/Box/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Heading" type="Label" parent="Center/Card/Box/Content/Prestige"]
+layout_mode = 2
+text = "UM NOVO CICLO"
+theme_override_font_sizes/font_size = 28
+
+[node name="Description" type="Label" parent="Center/Card/Box/Content/Prestige"]
+layout_mode = 2
+text = "Todos os atributos no máximo + 1.000 Coins.\nReset: +1 Prestígio, +1 nível máximo por atributo e inimigos mais fortes."
+autowrap_mode = 2
+
+[node name="PrestigeRequirements" type="Label" parent="Center/Card/Box/Content/Prestige"]
+layout_mode = 2
+text = "ATRIBUTOS NO MÁXIMO 0/6  /  COINS 0/1000"
+autowrap_mode = 2
+
+[node name="Keep" type="Label" parent="Center/Card/Box/Content/Prestige"]
+layout_mode = 2
+text = "SpaceCoin, Prestígio anterior e Coins excedentes são mantidos."
+autowrap_mode = 2
+
+[node name="PrestigeButton" type="Button" parent="Center/Card/Box/Content/Prestige"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 64)
+text = "RESETAR ATRIBUTOS / +1 PRESTÍGIO"
+theme_type_variation = &"PrimaryButton"
+disabled = true
+
+[node name="PermanentNotice" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+text = "Bônus permanentes para todas as próximas runs. Moedas da arena são separadas."
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+autowrap_mode = 2
+custom_minimum_size = Vector2(0, 28)
+
+[node name="BackButton" type="Button" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+theme_type_variation = &"PrimaryButton"
+text = "<   VOLTAR AO MENU"
+
+[node name="PrestigeConfirmation" type="ConfirmationDialog" parent="."]
+title = "CONFIRMAR PRESTÍGIO"
+size = Vector2i(680, 240)
+exclusive = true
+dialog_text = "Gastar 1.000 Coins e zerar todos os atributos permanentes?\nVocê receberá 1 Prestígio. Os limites e a dificuldade aumentarão.\nSpaceCoin e Coins excedentes serão mantidos."
+ok_button_text = "CONFIRMAR RESET"
+cancel_button_text = "CANCELAR"

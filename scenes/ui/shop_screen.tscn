@@ -1,0 +1,394 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
+
+
+[ext_resource type="Texture2D" path="res://assets/icons/medkit.svg" id="medkit"]
+
+[ext_resource type="Texture2D" path="res://assets/icons/bomb.svg" id="bomb"]
+
+[ext_resource type="Texture2D" path="res://assets/icons/shield.svg" id="shield"]
+
+[ext_resource type="Texture2D" path="res://assets/icons/overdrive.svg" id="overdrive"]
+
+[ext_resource type="Script" path="res://scripts/shop_details.gd" id="details"]
+
+[node name="ShopScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1")
+texture_filter = 1
+script = ExtResource("details")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.008, 0.016, 0.03, 1)
+script = ExtResource("2")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+custom_minimum_size = Vector2(1024, 0)
+
+[node name="Box" type="VBoxContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/separation = 14
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+
+[node name="Title" type="Label" parent="Center/Card/Box/Header"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 32
+text = "LOJA ORBITAL"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+size_flags_horizontal = 3
+
+[node name="Wallet" type="Label" parent="Center/Card/Box/Header"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "MOEDAS   000"
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="RerollButton" type="Button" parent="Center/Card/Box/Header"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 48)
+text = "TROCAR / 12"
+
+[node name="ShopPhase" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "ARENA CONCLUÍDA  /  Prepare o traje para a próxima horda."
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+
+
+[node name="Modules" type="HBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_constants/separation = 14
+theme_override_constants/separation = 12
+
+[node name="Choice1" type="Button" parent="Center/Card/Box/Modules"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = ""
+custom_minimum_size = Vector2(0, 116)
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Modules/Choice1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 16.0
+offset_right = -18.0
+offset_bottom = -16.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Modules/Choice1/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="ModuleTitle1" type="Label" parent="Center/Card/Box/Modules/Choice1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 26
+text = "MÓDULO"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="ModuleDesc1" type="Label" parent="Center/Card/Box/Modules/Choice1/Margin/Box"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Melhoria permanente\npara esta expedição."
+size_flags_vertical = 3
+autowrap_mode = 2
+
+[node name="ModuleCost1" type="Label" parent="Center/Card/Box/Modules/Choice1/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "22 MOEDAS"
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="Choice2" type="Button" parent="Center/Card/Box/Modules"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = ""
+custom_minimum_size = Vector2(0, 116)
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Modules/Choice2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 16.0
+offset_right = -18.0
+offset_bottom = -16.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Modules/Choice2/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="ModuleTitle2" type="Label" parent="Center/Card/Box/Modules/Choice2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 26
+text = "MÓDULO"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="ModuleDesc2" type="Label" parent="Center/Card/Box/Modules/Choice2/Margin/Box"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Melhoria permanente\npara esta expedição."
+size_flags_vertical = 3
+autowrap_mode = 2
+
+[node name="ModuleCost2" type="Label" parent="Center/Card/Box/Modules/Choice2/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "22 MOEDAS"
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="Choice3" type="Button" parent="Center/Card/Box/Modules"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = ""
+custom_minimum_size = Vector2(0, 116)
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/Box/Modules/Choice3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 16.0
+offset_right = -18.0
+offset_bottom = -16.0
+mouse_filter = 2
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Box/Modules/Choice3/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="ModuleTitle3" type="Label" parent="Center/Card/Box/Modules/Choice3/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 26
+text = "MÓDULO"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="ModuleDesc3" type="Label" parent="Center/Card/Box/Modules/Choice3/Margin/Box"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Melhoria permanente\npara esta expedição."
+size_flags_vertical = 3
+autowrap_mode = 2
+
+[node name="ModuleCost3" type="Label" parent="Center/Card/Box/Modules/Choice3/Margin/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "22 MOEDAS"
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="SupplyTitle" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "SUPRIMENTOS"
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+
+
+[node name="Supplies" type="HBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_constants/separation = 14
+theme_override_constants/separation = 8
+
+[node name="RepairButton" type="Button" parent="Center/Card/Box/Supplies"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "Reparo +2  /  16"
+size_flags_horizontal = 3
+icon = ExtResource("medkit")
+icon_max_width = 24
+theme_override_constants/h_separation = 10
+
+[node name="BombButton" type="Button" parent="Center/Card/Box/Supplies"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "Bomba  /  20"
+size_flags_horizontal = 3
+icon = ExtResource("bomb")
+icon_max_width = 24
+theme_override_constants/h_separation = 10
+
+[node name="ShieldButton" type="Button" parent="Center/Card/Box/Supplies"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "Escudo  /  20"
+size_flags_horizontal = 3
+icon = ExtResource("shield")
+icon_max_width = 24
+theme_override_constants/h_separation = 10
+
+[node name="OverdriveButton" type="Button" parent="Center/Card/Box/Supplies"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "Sobrecarga  /  20"
+size_flags_horizontal = 3
+icon = ExtResource("overdrive")
+icon_max_width = 24
+theme_override_constants/h_separation = 10
+
+[node name="GroundEquipment" type="HBoxContainer" parent="Center/Card/Box"]
+theme_override_constants/separation = 8
+
+[node name="MineButton" type="Button" parent="Center/Card/Box/GroundEquipment"]
+custom_minimum_size = Vector2(0,46)
+size_flags_horizontal = 3
+text = "Mina orbital"
+
+[node name="TurretButton" type="Button" parent="Center/Card/Box/GroundEquipment"]
+custom_minimum_size = Vector2(0,46)
+size_flags_horizontal = 3
+text = "Torreta"
+
+[node name="BeaconButton" type="Button" parent="Center/Card/Box/GroundEquipment"]
+custom_minimum_size = Vector2(0,46)
+size_flags_horizontal = 3
+text = "Baliza de contenção"
+
+[node name="Inventory" type="HBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_constants/separation = 14
+theme_override_constants/separation = 12
+
+[node name="InventoryTitle" type="Label" parent="Center/Card/Box/Inventory"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "CARGA / [1] [2] [3]"
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+custom_minimum_size = Vector2(220, 64)
+vertical_alignment = 1
+
+[node name="StoreSlot1" type="ColorRect" parent="Center/Card/Box/Inventory"]
+layout_mode = 2
+custom_minimum_size = Vector2(64, 64)
+color = Color(0, 0, 0, 1)
+mouse_filter = 2
+
+[node name="StoreIcon1" type="TextureRect" parent="Center/Card/Box/Inventory/StoreSlot1"]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 52.0
+offset_bottom = 52.0
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
+
+[node name="StoreSlot2" type="ColorRect" parent="Center/Card/Box/Inventory"]
+layout_mode = 2
+custom_minimum_size = Vector2(64, 64)
+color = Color(0, 0, 0, 1)
+mouse_filter = 2
+
+[node name="StoreIcon2" type="TextureRect" parent="Center/Card/Box/Inventory/StoreSlot2"]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 52.0
+offset_bottom = 52.0
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
+
+[node name="StoreSlot3" type="ColorRect" parent="Center/Card/Box/Inventory"]
+custom_minimum_size = Vector2(64,64)
+color = Color(0,0,0,1)
+mouse_filter = 2
+[node name="StoreIcon3" type="TextureRect" parent="Center/Card/Box/Inventory/StoreSlot3"]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 52.0
+offset_bottom = 52.0
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
+
+[node name="InventoryHint" type="Label" parent="Center/Card/Box/Inventory"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Dois slots disponíveis.\nItens são usados durante o combate."
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="Notice" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Passe o mouse para ver os detalhes."
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+custom_minimum_size = Vector2(0, 28)
+autowrap_mode = 2
+
+[node name="LeaveButton" type="Button" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "CONTINUAR PARA A EXTRAÇÃO   >"
+theme_type_variation = &"PrimaryButton"
+

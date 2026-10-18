@@ -1,0 +1,10 @@
+{
+  "windows\\NOCTIR.exe": {
+    "bytes": 139541608,
+    "sha256": "c907c8ee03c8ff5d97d05f1da7eced09f2c3ce36ccf219fcd6aa184f12967ca9"
+  },
+  "android\\NOCTIR.apk": {
+    "bytes": 78483848,
+    "sha256": "4eb2724cc01bd9a72a28988b57f903685a12bbdc7c442756a2962dd0919df104"
+  }
+}

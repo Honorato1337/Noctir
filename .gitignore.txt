@@ -1,0 +1,9 @@
+# Godot
+.godot/
+
+# Downloads incompletos
+*.crdownload
+
+# Arquivos temporários
+*.tmp
+*.bak

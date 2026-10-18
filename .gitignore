@@ -1,0 +1,22 @@
+# Godot generated cache
+.godot/
+
+# Incomplete downloads and temporary files
+*.crdownload
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+*.log
+/tmp/
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+
+# Local signing credentials and generated exports
+/.export-signing/
+/builds/android/
+/builds/windows/

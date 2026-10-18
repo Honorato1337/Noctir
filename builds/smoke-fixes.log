@@ -1,0 +1,224 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: main menu loads authored scene nodes
+PASS: how-to-play button opens controls scene
+PASS: controls returns to main menu
+PASS: only main title retains After Burner
+PASS: run starts with first wave
+PASS: campaign includes thirteen authored arenas
+PASS: HUD inherits requested font
+PASS: HUD uses compact 72px header
+PASS: pillars block actors and shots
+PASS: moving scene pillar also moves collision
+PASS: movement cannot cross pillar
+PASS: contact damage
+PASS: damage immunity prevents stacked hits
+PASS: rewind restores life and consumes charge
+PASS: rewind restores clock and creates replay
+PASS: echo replays recorded shots
+PASS: allied projectile collides and damages enemy
+PASS: hostile projectile damages astronaut
+PASS: dash grants immunity and starts cooldown
+PASS: all upgrade types apply
+PASS: enemy navigates around pillar to reach player
+PASS: ranged enemy repositions until cover no longer blocks its shot
+PASS: inventory enforces exactly two slots
+PASS: full health does not waste medkit
+PASS: medkit heals three and consumes one slot
+PASS: shield grants five seconds immunity
+PASS: overdrive activates temporary firepower
+PASS: bomb damages all enemies and consumes slot
+PASS: seeded sample gives improved coin drops and rare consumables
+PASS: phase cleanup banks base coin value and fills only available slots
+PASS: full slots leave extra consumables on ground
+PASS: insufficient coins reject purchase
+PASS: full inventory rejects paid item without charging
+PASS: store consumable fills slot and charges twenty
+PASS: full health rejects repair without charging
+PASS: particles obey density budget
+PASS: planet mapping arena 1
+PASS: spawn and extraction are clear 1
+PASS: extraction route is connected 1
+PASS: enemy spawn routes are connected 1
+PASS: every phase ends with boss and minions 1
+PASS: boss second-phase radial and aimed attack 1
+PASS: phase clear offers safe collection 1
+PASS: opening shop salvages remaining coins 1
+PASS: shop charges exact upgrade price 1
+PASS: shop cannot buy same stock twice 1
+PASS: onboard shop starts extraction 1
+PASS: boarding starts correct vehicle travel 1
+PASS: vehicle reaches next arena 1
+PASS: planet mapping arena 2
+PASS: spawn and extraction are clear 2
+PASS: extraction route is connected 2
+PASS: enemy spawn routes are connected 2
+PASS: every phase ends with boss and minions 2
+PASS: boss second-phase radial and aimed attack 2
+PASS: phase clear offers safe collection 2
+PASS: opening shop salvages remaining coins 2
+PASS: shop charges exact upgrade price 2
+PASS: shop cannot buy same stock twice 2
+PASS: onboard shop starts extraction 2
+PASS: boarding starts correct vehicle travel 2
+PASS: vehicle reaches next arena 2
+PASS: planet mapping arena 3
+PASS: spawn and extraction are clear 3
+PASS: extraction route is connected 3
+PASS: enemy spawn routes are connected 3
+PASS: every phase ends with boss and minions 3
+PASS: boss second-phase radial and aimed attack 3
+PASS: phase clear offers safe collection 3
+PASS: opening shop salvages remaining coins 3
+PASS: shop charges exact upgrade price 3
+PASS: shop cannot buy same stock twice 3
+PASS: onboard shop starts extraction 3
+PASS: boarding starts correct vehicle travel 3
+PASS: vehicle reaches next arena 3
+PASS: planet mapping arena 4
+PASS: spawn and extraction are clear 4
+PASS: extraction route is connected 4
+PASS: enemy spawn routes are connected 4
+PASS: every phase ends with boss and minions 4
+PASS: superboss second phase starts with a breathing interval 4
+PASS: superboss warns before firing 4
+PASS: superboss second-phase radial pattern 4
+PASS: phase clear offers safe collection 4
+PASS: opening shop salvages remaining coins 4
+PASS: shop charges exact upgrade price 4
+PASS: shop cannot buy same stock twice 4
+PASS: onboard shop starts extraction 4
+PASS: boarding starts correct vehicle travel 4
+PASS: vehicle reaches next arena 4
+PASS: planet mapping arena 5
+PASS: spawn and extraction are clear 5
+PASS: extraction route is connected 5
+PASS: enemy spawn routes are connected 5
+PASS: every phase ends with boss and minions 5
+PASS: boss second-phase radial and aimed attack 5
+PASS: phase clear offers safe collection 5
+PASS: opening shop salvages remaining coins 5
+PASS: shop charges exact upgrade price 5
+PASS: shop cannot buy same stock twice 5
+PASS: onboard shop starts extraction 5
+PASS: boarding starts correct vehicle travel 5
+PASS: vehicle reaches next arena 5
+PASS: planet mapping arena 6
+PASS: spawn and extraction are clear 6
+PASS: extraction route is connected 6
+PASS: enemy spawn routes are connected 6
+PASS: every phase ends with boss and minions 6
+PASS: boss second-phase radial and aimed attack 6
+PASS: phase clear offers safe collection 6
+PASS: opening shop salvages remaining coins 6
+PASS: shop charges exact upgrade price 6
+PASS: shop cannot buy same stock twice 6
+PASS: onboard shop starts extraction 6
+PASS: boarding starts correct vehicle travel 6
+PASS: vehicle reaches next arena 6
+PASS: planet mapping arena 7
+PASS: spawn and extraction are clear 7
+PASS: extraction route is connected 7
+PASS: enemy spawn routes are connected 7
+PASS: every phase ends with boss and minions 7
+PASS: boss second-phase radial and aimed attack 7
+PASS: phase clear offers safe collection 7
+PASS: opening shop salvages remaining coins 7
+PASS: shop charges exact upgrade price 7
+PASS: shop cannot buy same stock twice 7
+PASS: onboard shop starts extraction 7
+PASS: boarding starts correct vehicle travel 7
+PASS: vehicle reaches next arena 7
+PASS: planet mapping arena 8
+PASS: spawn and extraction are clear 8
+PASS: extraction route is connected 8
+PASS: enemy spawn routes are connected 8
+PASS: every phase ends with boss and minions 8
+PASS: superboss second phase starts with a breathing interval 8
+PASS: superboss warns before firing 8
+PASS: superboss second-phase radial pattern 8
+PASS: phase clear offers safe collection 8
+PASS: opening shop salvages remaining coins 8
+PASS: shop charges exact upgrade price 8
+PASS: shop cannot buy same stock twice 8
+PASS: onboard shop starts extraction 8
+PASS: boarding starts correct vehicle travel 8
+PASS: vehicle reaches next arena 8
+PASS: planet mapping arena 9
+PASS: spawn and extraction are clear 9
+PASS: extraction route is connected 9
+PASS: enemy spawn routes are connected 9
+PASS: every phase ends with boss and minions 9
+PASS: boss second-phase radial and aimed attack 9
+PASS: phase clear offers safe collection 9
+PASS: opening shop salvages remaining coins 9
+PASS: shop charges exact upgrade price 9
+PASS: shop cannot buy same stock twice 9
+PASS: onboard shop starts extraction 9
+PASS: boarding starts correct vehicle travel 9
+PASS: vehicle reaches next arena 9
+PASS: planet mapping arena 10
+PASS: spawn and extraction are clear 10
+PASS: extraction route is connected 10
+PASS: enemy spawn routes are connected 10
+PASS: every phase ends with boss and minions 10
+PASS: boss second-phase radial and aimed attack 10
+PASS: phase clear offers safe collection 10
+PASS: opening shop salvages remaining coins 10
+PASS: shop charges exact upgrade price 10
+PASS: shop cannot buy same stock twice 10
+PASS: onboard shop starts extraction 10
+PASS: boarding starts correct vehicle travel 10
+PASS: vehicle reaches next arena 10
+PASS: planet mapping arena 11
+PASS: spawn and extraction are clear 11
+PASS: extraction route is connected 11
+PASS: enemy spawn routes are connected 11
+PASS: every phase ends with boss and minions 11
+PASS: boss second-phase radial and aimed attack 11
+PASS: phase clear offers safe collection 11
+PASS: opening shop salvages remaining coins 11
+PASS: shop charges exact upgrade price 11
+PASS: shop cannot buy same stock twice 11
+PASS: onboard shop starts extraction 11
+PASS: boarding starts correct vehicle travel 11
+PASS: vehicle reaches next arena 11
+PASS: planet mapping arena 12
+PASS: spawn and extraction are clear 12
+PASS: extraction route is connected 12
+PASS: enemy spawn routes are connected 12
+PASS: every phase ends with boss and minions 12
+PASS: superboss second phase starts with a breathing interval 12
+PASS: superboss warns before firing 12
+PASS: superboss second-phase radial pattern 12
+PASS: phase clear offers safe collection 12
+PASS: opening shop salvages remaining coins 12
+PASS: shop charges exact upgrade price 12
+PASS: shop cannot buy same stock twice 12
+PASS: onboard shop starts extraction 12
+PASS: boarding starts correct vehicle travel 12
+PASS: vehicle reaches next arena 12
+PASS: planet mapping arena 13
+PASS: spawn and extraction are clear 13
+PASS: extraction route is connected 13
+PASS: enemy spawn routes are connected 13
+PASS: every phase ends with boss and minions 13
+PASS: superboss second phase starts with a breathing interval 13
+PASS: superboss warns before firing 13
+PASS: superboss second-phase radial pattern 13
+PASS: phase clear offers safe collection 13
+PASS: opening shop salvages remaining coins 13
+PASS: shop charges exact upgrade price 13
+PASS: shop cannot buy same stock twice 13
+PASS: onboard shop starts extraction 13
+PASS: boarding starts correct vehicle travel 13
+PASS: final rover evacuation produces victory
+PASS: all thirteen rooms use different scene files
+PASS: timeout produces defeat
+PASS: three run chances: death 1
+PASS: three run chances: death 2
+PASS: three run chances: death 3
+PASS: new attempt resets upgrades and progress
+SMOKE RESULT: 0 failures
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

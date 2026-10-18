@@ -1,0 +1,26 @@
+[
+  {
+    "file": "mars.wav",
+    "bpm": 112,
+    "meter": "4/4",
+    "bars": 16,
+    "seconds": 34.285714285714285,
+    "original": true
+  },
+  {
+    "file": "neptune.wav",
+    "bpm": 160,
+    "meter": "4/4",
+    "bars": 32,
+    "seconds": 48.0,
+    "original": true
+  },
+  {
+    "file": "jupiter.wav",
+    "bpm": 192,
+    "meter": "6/8",
+    "bars": 32,
+    "seconds": 30.0,
+    "original": true
+  }
+]

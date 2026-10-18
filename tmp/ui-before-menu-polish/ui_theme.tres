@@ -1,0 +1,72 @@
+[gd_resource type="Theme" format=3 uid="uid://dyoenrimfa4u6"]
+
+[ext_resource type="FontFile" uid="uid://baf1qkkm7ac5q" path="res://fonts/w95fa/W95F.otf" id="1_font"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.86, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.16, 0.32, 0.41, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.44, 0.9, 0.82, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.08, 0.17, 0.25, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.34, 0.55, 0.58, 1)
+
+[sub_resource type="StyleBoxFlat" id="Card"]
+content_margin_left = 28.0
+content_margin_top = 28.0
+content_margin_right = 28.0
+content_margin_bottom = 28.0
+bg_color = Color(0.035, 0.065, 0.12, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.16, 0.28, 0.38, 1)
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 6
+shadow_offset = Vector2(6, 6)
+
+[sub_resource type="StyleBoxFlat" id="BossBackground"]
+bg_color = Color(0.07, 0.11, 0.18, 1)
+
+[sub_resource type="StyleBoxFlat" id="BossFill"]
+bg_color = Color(0.95, 0.35, 0.46, 1)
+
+[resource]
+default_font = ExtResource("1_font")
+default_font_size = 18
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Hover")
+Label/colors/font_color = Color(0.88, 0.92, 0.97, 1)
+PanelContainer/styles/panel = SubResource("Card")
+ProgressBar/styles/background = SubResource("BossBackground")
+ProgressBar/styles/fill = SubResource("BossFill")

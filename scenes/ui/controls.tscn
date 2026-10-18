@@ -1,0 +1,120 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
+
+
+[node name="Controls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1")
+texture_filter = 1
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.008, 0.016, 0.03, 1)
+script = ExtResource("2")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+custom_minimum_size = Vector2(960, 0)
+
+[node name="Box" type="VBoxContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/separation = 14
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 36
+text = "MANUAL DO PILOTO"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Description" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Elimine a horda e o guardião. Compre melhorias. Siga para a extração."
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+
+
+[node name="Instructions" type="HBoxContainer" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_constants/separation = 14
+theme_override_constants/separation = 24
+
+[node name="Movement" type="VBoxContainer" parent="Center/Card/Box/Instructions"]
+layout_mode = 2
+theme_override_constants/separation = 14
+size_flags_horizontal = 3
+
+[node name="Heading" type="Label" parent="Center/Card/Box/Instructions/Movement"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "MOVIMENTO E COMBATE"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Keys" type="Label" parent="Center/Card/Box/Instructions/Movement"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "[W A S D]   Mover\n[Mouse]   Mirar e atirar\n[Setas]   Atirar em quatro direções\n[Espaço]   Dash com invulnerabilidade\n[F]   Berserk: uma vez por run\n[Esc]   Pausar"
+theme_override_constants/line_spacing = 10
+
+[node name="Equipment" type="VBoxContainer" parent="Center/Card/Box/Instructions"]
+layout_mode = 2
+theme_override_constants/separation = 14
+size_flags_horizontal = 3
+
+[node name="Heading" type="Label" parent="Center/Card/Box/Instructions/Equipment"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "EQUIPAMENTO E ECO"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Keys" type="Label" parent="Center/Card/Box/Instructions/Equipment"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "[Q]   Voltar 5s e criar um eco\n[1] [2]   Usar consumíveis\n[3]   Colocar equipamento no chão\n[E]   Extrair perto do portal\n\nO eco repete seus tiros.\nUma carga de eco por arena.\n3 chances por run. A terceira morte encerra."
+theme_override_constants/line_spacing = 10
+
+[node name="Tip" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Moedas somem em 14s. Colete em até 2,5s para ganhar +1.\nNa loja, compare ofertas ou guarde moedas para a próxima arena."
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+
+[node name="BackButton" type="Button" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "<   VOLTAR AO MENU"
+theme_type_variation = &"PrimaryButton"
+

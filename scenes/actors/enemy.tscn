@@ -1,0 +1,39 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
+[ext_resource type="SpriteFrames" path="res://assets/mobs_marte/mob_marte1/mars_frames.tres" id="2_mars"]
+
+[ext_resource type="SpriteFrames" path="res://assets/mobs_marte/mob_marte2/boss_frames.tres" id="boss_mars"]
+
+[ext_resource type="SpriteFrames" path="res://assets/mobs_marte/mob_marte3/super_frames.tres" id="super_mars"]
+
+[ext_resource type="SpriteFrames" path="res://assets/mobs_netuno/mob_netuno1/neptune_frames.tres" id="neptune"]
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource("1")
+
+[node name="MarsVisual" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("2_mars")
+animation = &"walk"
+
+[node name="MarsBossVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(3, 3)
+sprite_frames = ExtResource("boss_mars")
+animation = &"walk"
+
+[node name="MarsSuperVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("super_mars")
+animation = &"walk"
+
+[node name="NeptuneVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("neptune")
+animation = &"walk"

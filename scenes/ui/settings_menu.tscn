@@ -1,0 +1,200 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
+
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1")
+texture_filter = 1
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.008, 0.016, 0.03, 1)
+script = ExtResource("2")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+custom_minimum_size = Vector2(1000, 0)
+
+[node name="Box" type="VBoxContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+text = "CONFIGURAÇÕES"
+
+[node name="Description" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+text = "Áudio, tela e controles. Os ajustes são salvos automaticamente."
+
+[node name="Tabs" type="TabContainer" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(952, 440)
+[node name="Áudio" type="VBoxContainer" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 6
+[node name="VolumeHeader" type="HBoxContainer" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+[node name="Label" type="Label" parent="Center/Card/Box/Tabs/Áudio/VolumeHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "GERAL"
+theme_override_font_sizes/font_size = 22
+[node name="VolumeValue" type="Label" parent="Center/Card/Box/Tabs/Áudio/VolumeHeader"]
+layout_mode = 2
+text = "100%"
+[node name="VolumeSlider" type="HSlider" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+max_value = 100.0
+step = 1.0
+value = 100.0
+[node name="MusicHeader" type="HBoxContainer" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+[node name="Label" type="Label" parent="Center/Card/Box/Tabs/Áudio/MusicHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MÚSICAS"
+theme_override_font_sizes/font_size = 22
+[node name="MusicValue" type="Label" parent="Center/Card/Box/Tabs/Áudio/MusicHeader"]
+layout_mode = 2
+text = "100%"
+[node name="MusicSlider" type="HSlider" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+max_value = 100.0
+step = 1.0
+value = 100.0
+[node name="SfxHeader" type="HBoxContainer" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+[node name="Label" type="Label" parent="Center/Card/Box/Tabs/Áudio/SfxHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "EFEITOS"
+theme_override_font_sizes/font_size = 22
+[node name="SfxValue" type="Label" parent="Center/Card/Box/Tabs/Áudio/SfxHeader"]
+layout_mode = 2
+text = "100%"
+[node name="SfxSlider" type="HSlider" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+max_value = 100.0
+step = 1.0
+value = 100.0
+[node name="UiHeader" type="HBoxContainer" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+[node name="Label" type="Label" parent="Center/Card/Box/Tabs/Áudio/UiHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "INTERFACE"
+theme_override_font_sizes/font_size = 22
+[node name="UiValue" type="Label" parent="Center/Card/Box/Tabs/Áudio/UiHeader"]
+layout_mode = 2
+text = "100%"
+[node name="UiSlider" type="HSlider" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+max_value = 100.0
+step = 1.0
+value = 100.0
+[node name="AudioButtons" type="HBoxContainer" parent="Center/Card/Box/Tabs/Áudio"]
+layout_mode = 2
+[node name="MuteButton" type="Button" parent="Center/Card/Box/Tabs/Áudio/AudioButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 48)
+toggle_mode = true
+text = "MUDO: DESATIVADO"
+[node name="TestSoundButton" type="Button" parent="Center/Card/Box/Tabs/Áudio/AudioButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "TESTAR EFEITOS"
+[node name="Vídeo" type="VBoxContainer" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 18
+[node name="Info" type="Label" parent="Center/Card/Box/Tabs/Vídeo"]
+layout_mode = 2
+text = "TELA / COMPUTADOR"
+theme_override_font_sizes/font_size = 28
+[node name="ResolutionLabel" type="Label" parent="Center/Card/Box/Tabs/Vídeo"]
+layout_mode = 2
+text = "Resolução da janela (mantém a proporção do jogo)"
+[node name="Resolution" type="OptionButton" parent="Center/Card/Box/Tabs/Vídeo"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+[node name="Fullscreen" type="CheckButton" parent="Center/Card/Box/Tabs/Vídeo"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = "TELA CHEIA"
+[node name="VideoNotice" type="Label" parent="Center/Card/Box/Tabs/Vídeo"]
+layout_mode = 2
+text = "No celular, a tela é ajustada automaticamente em paisagem."
+autowrap_mode = 2
+[node name="Controles" type="VBoxContainer" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 8
+[node name="Options" type="HBoxContainer" parent="Center/Card/Box/Tabs/Controles"]
+layout_mode = 2
+theme_override_constants/separation = 12
+[node name="KeyboardPreset" type="OptionButton" parent="Center/Card/Box/Tabs/Controles/Options"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 44)
+[node name="TouchMode" type="OptionButton" parent="Center/Card/Box/Tabs/Controles/Options"]
+layout_mode = 2
+size_flags_horizontal = 3
+[node name="ControllerInfo" type="Label" parent="Center/Card/Box/Tabs/Controles"]
+layout_mode = 2
+text = "JOYSTICK: analógico esquerdo move / direito mira e atira.\nA: Dash / LB: Eco / LT: Berserk / Y,B: itens / RB: equipamento / X: extrair / Start: pausa"
+autowrap_mode = 2
+theme_override_font_sizes/font_size = 22
+[node name="Scroll" type="ScrollContainer" parent="Center/Card/Box/Tabs/Controles"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 250)
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+follow_focus = true
+[node name="Bindings" type="GridContainer" parent="Center/Card/Box/Tabs/Controles/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 8
+[node name="SettingsNotice" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+text = "Os ajustes são salvos automaticamente."
+autowrap_mode = 2
+theme_override_font_sizes/font_size = 22
+[node name="BackButton" type="Button" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+theme_type_variation = &"PrimaryButton"
+text = "< VOLTAR AO MENU"
+[node name="PreviewSound" type="AudioStreamPlayer" parent="."]
+volume_db = -8.0
+bus = &"SFX"

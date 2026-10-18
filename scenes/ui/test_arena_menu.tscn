@@ -1,0 +1,221 @@
+[gd_scene format=3]
+[ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
+[node name="TestArenaMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("1")
+[node name="Backdrop" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.008,0.016,0.03,1)
+script = ExtResource("2")
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+[node name="Card" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(1024,0)
+[node name="Box" type="VBoxContainer" parent="Center/Card"]
+theme_override_constants/separation = 12
+[node name="Title" type="Label" parent="Center/Card/Box"]
+text = "TESTE / ARENAS E CHEFES"
+theme_override_font_sizes/font_size = 30
+[node name="Info" type="Label" parent="Center/Card/Box"]
+text = "Prévia jogável. Sem Coins, SpaceCoin ou recorde. Equipamento de chão: tecla [3]."
+[node name="Options" type="HBoxContainer" parent="Center/Card/Box"]
+theme_override_constants/separation = 24
+[node name="TestEquipment" type="OptionButton" parent="Center/Card/Box/Options"]
+custom_minimum_size = Vector2(400,44)
+item_count = 3
+popup/item_0/text = "MINA ORBITAL"
+popup/item_0/id = 0
+popup/item_1/text = "TORRETA"
+popup/item_1/id = 1
+popup/item_2/text = "BALIZA DE CONTENÇÃO"
+popup/item_2/id = 2
+selected = 0
+[node name="TestInvincible" type="CheckButton" parent="Center/Card/Box/Options"]
+text = "INVULNERÁVEL"
+button_pressed = true
+[node name="Arenas" type="GridContainer" parent="Center/Card/Box"]
+columns = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+[node name="Room1" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room1"]
+text = "01 MARTE / COLÔNIA"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room1"]
+[node name="TestArena1" type="Button" parent="Center/Card/Box/Arenas/Room1/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss1" type="Button" parent="Center/Card/Box/Arenas/Room1/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room2" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room2"]
+text = "02 MARTE / PEDREIRA"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room2"]
+[node name="TestArena2" type="Button" parent="Center/Card/Box/Arenas/Room2/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss2" type="Button" parent="Center/Card/Box/Arenas/Room2/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room3" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room3"]
+text = "03 MARTE / HANGARES"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room3"]
+[node name="TestArena3" type="Button" parent="Center/Card/Box/Arenas/Room3/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss3" type="Button" parent="Center/Card/Box/Arenas/Room3/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room4" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room4"]
+text = "04 MARTE / REATOR"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room4"]
+[node name="TestArena4" type="Button" parent="Center/Card/Box/Arenas/Room4/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss4" type="Button" parent="Center/Card/Box/Arenas/Room4/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room5" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room5"]
+text = "05 NETUNO / POSTO"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room5"]
+[node name="TestArena5" type="Button" parent="Center/Card/Box/Arenas/Room5/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss5" type="Button" parent="Center/Card/Box/Arenas/Room5/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room6" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room6"]
+text = "06 NETUNO / GEADA"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room6"]
+[node name="TestArena6" type="Button" parent="Center/Card/Box/Arenas/Room6/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss6" type="Button" parent="Center/Card/Box/Arenas/Room6/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room7" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room7"]
+text = "07 NETUNO / VENTOS"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room7"]
+[node name="TestArena7" type="Button" parent="Center/Card/Box/Arenas/Room7/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss7" type="Button" parent="Center/Card/Box/Arenas/Room7/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room8" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room8"]
+text = "08 NETUNO / NÚCLEO"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room8"]
+[node name="TestArena8" type="Button" parent="Center/Card/Box/Arenas/Room8/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss8" type="Button" parent="Center/Card/Box/Arenas/Room8/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room9" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room9"]
+text = "09 JÚPITER / DOCAS"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room9"]
+[node name="TestArena9" type="Button" parent="Center/Card/Box/Arenas/Room9/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss9" type="Button" parent="Center/Card/Box/Arenas/Room9/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room10" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room10"]
+text = "10 JÚPITER / RELÉS"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room10"]
+[node name="TestArena10" type="Button" parent="Center/Card/Box/Arenas/Room10/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss10" type="Button" parent="Center/Card/Box/Arenas/Room10/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room11" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room11"]
+text = "11 JÚPITER / OLHO"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room11"]
+[node name="TestArena11" type="Button" parent="Center/Card/Box/Arenas/Room11/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss11" type="Button" parent="Center/Card/Box/Arenas/Room11/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room12" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room12"]
+text = "12 JÚPITER / CORAÇÃO"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room12"]
+[node name="TestArena12" type="Button" parent="Center/Card/Box/Arenas/Room12/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss12" type="Button" parent="Center/Card/Box/Arenas/Room12/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="Room13" type="VBoxContainer" parent="Center/Card/Box/Arenas"]
+custom_minimum_size = Vector2(236,88)
+size_flags_horizontal = 3
+[node name="Name" type="Label" parent="Center/Card/Box/Arenas/Room13"]
+text = "13 NEXO / DEUS ALIENÍGENA"
+theme_override_font_sizes/font_size = 20
+[node name="Actions" type="HBoxContainer" parent="Center/Card/Box/Arenas/Room13"]
+[node name="TestArena13" type="Button" parent="Center/Card/Box/Arenas/Room13/Actions"]
+text = "ARENA"
+size_flags_horizontal = 3
+[node name="TestBoss13" type="Button" parent="Center/Card/Box/Arenas/Room13/Actions"]
+text = "CHEFE"
+size_flags_horizontal = 3
+[node name="BackButton" type="Button" parent="Center/Card/Box"]
+custom_minimum_size = Vector2(0,52)
+text = "VOLTAR AO MENU"
+theme_type_variation = &"PrimaryButton"

@@ -1,0 +1,95 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
+
+
+[node name="DeathMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1")
+texture_filter = 1
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.008, 0.016, 0.03, 1)
+script = ExtResource("2")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+custom_minimum_size = Vector2(640, 0)
+
+[node name="Box" type="VBoxContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/separation = 14
+theme_override_constants/separation = 18
+
+[node name="Tag" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "SINAL INTERROMPIDO"
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+
+
+[node name="Title" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 36
+text = "VOCÊ CAIU"
+theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
+
+
+[node name="Description" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Continue nesta arena com vida cheia e 3s de proteção.\nAs chances valem pela run inteira e não voltam entre mapas."
+autowrap_mode = 2
+custom_minimum_size = Vector2(590, 64)
+
+[node name="ContinueButton" type="Button" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "CONTINUAR EXPEDIÇÃO   >"
+theme_type_variation = &"PrimaryButton"
+
+
+[node name="Chances" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+text = "2 DE 3 CHANCES RESTANTES NA RUN"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 0.82, 0.45, 1)
+
+[node name="MenuButton" type="Button" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 58)
+text = "VOLTAR AO MENU"
+
+
+[node name="Hint" type="Label" parent="Center/Card/Box"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Voltar ao menu encerra a run e guarda os Coins ganhos."
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+
