@@ -211,8 +211,10 @@ func setup_inputs() -> void:
 	controls.configure()
 
 
+const SURVIVAL_PLANET := {"name":"PLUTÃO","subtitle":"Planície do Exílio","floor":Color("1c2936"),"accent":Color("b3e6ed"),"enemy":Color("bad4e5"),"kind":0,"speed":76.0,"hazard":"ANOMALIAS / sobreviva ao frio e às fendas"}
+
 func planet() -> Dictionary:
-	return Planets.DATA[planet_index]
+	return SURVIVAL_PLANET if run_mode == "endless" else Planets.DATA[planet_index]
 
 func start_run(as_practice: bool = false, initial_room: int = 0, mode: String = "medium", game_mode: String = "campaign") -> void:
 	settle_run()
@@ -276,7 +278,7 @@ func start_room() -> void:
 	planet_index = room / ARENAS_PER_PLANET
 	play_planet_music()
 	contracts.start_room()
-	var next_scene: PackedScene = preload("res://scenes/world/endless_arena.tscn") if run_mode == "endless" else arena_scenes[room]
+	var next_scene: PackedScene = preload("res://scenes/world/pluto_survival.tscn") if run_mode == "endless" else arena_scenes[room]
 	if $Arena.scene_file_path != next_scene.resource_path:
 		var old_arena := $Arena
 		remove_child(old_arena)
@@ -536,7 +538,7 @@ func open_shop() -> void:
 	clear_combat_effects()
 	room_cleared = true
 	state = "shop"
-	shop_left = SHOP_DURATION
+	shop_left = 10.0 if run_mode == "endless" else SHOP_DURATION
 	$GameAudio.stop_alarm()
 	play_sfx("stage_clear")
 	clear_container(bullets)
@@ -823,7 +825,7 @@ func select_game_mode(index: int) -> void:
 	panel.find_child("ModeSelector", true, false).select(index)
 	selected_run_mode = "endless" if index == 1 else "campaign"
 	var infinite := index == 1
-	panel.find_child("Description", true, false).text = "Área 2× maior / hordas sem fim / 3 chances por run." if infinite else "Escolha a dificuldade desta run. Você terá 3 chances por run."
+	panel.find_child("Description", true, false).text = "PLUTÃO / área 2× maior / hordas e anomalias sem fim." if infinite else "Escolha a dificuldade desta run. Você terá 3 chances por run."
 	panel.find_child("Note", true, false).text = "Hordas crescentes sem fim. Chefes a cada 3 hordas. Loja por 10s." if infinite else "Multiplicador aplicado aos Coins da loja permanente."
 	for key: String in DIFFICULTIES:
 		var button: Button = panel.find_child(key.capitalize() + "Button", true, false)
@@ -1091,6 +1093,7 @@ func frost_active() -> bool:
 	return planet_index == 1 and (state == "playing" or (state == "paused" and paused_from == "playing")) and fmod(environment_clock, 7.0) >= 5.0
 
 func frost_slowdown(at: Vector2) -> float:
+	if run_mode == "endless": return weather.player_slowdown(at)
 	if planet_index == 1 and frost_active():
 		for hazard in hazards:
 			if at.distance_to(hazard) < 54:

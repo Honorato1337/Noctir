@@ -1,6 +1,6 @@
 # Galeria e fundo de Júpiter
 
-Nove capturas em PNG, 1920×1080: menu, Marte, Netuno, Júpiter, sobrevivência, loja e controles por toque, além de caos no combate e extração urgente. Imagens capturadas no próprio Godot com a arte e a HUD atuais, sem montagem posterior. As cenas são preparadas para demonstração, com semente fixa e proteção do personagem durante a captura. O progresso salvo não é alterado.
+Dez capturas em PNG, 1920×1080: menu, Marte, Netuno, Júpiter, sobrevivência, loja e controles por toque, além de caos no combate e extração urgente. Imagens capturadas no próprio Godot com a arte e a HUD atuais, sem montagem posterior. As cenas são preparadas para demonstração, com semente fixa e proteção do personagem durante a captura. O progresso salvo não é alterado.
 
 ## Fundo
 
@@ -34,3 +34,7 @@ Godot --path . --script tools/capture_chaos.gd
 ```
 
 São cenas de demonstração preparadas dentro do jogo, com proteção temporária do personagem, sem montagem posterior e sem alterar o save ou o balanceamento do jogo.
+
+## Plutão (0.2.0)
+
+`10-plutao.png`: Planície do Exílio, cenário exclusivo da Sobrevivência, com rochas congeladas e gêiseres de nitrogênio. É a imagem atual do modo na galeria; `05-sobrevivencia.png` registra o cenário anterior.

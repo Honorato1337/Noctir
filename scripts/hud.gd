@@ -19,7 +19,7 @@ func update_game(game: Node2D) -> void:
 	%Timer.text = "TESTE" if game.practice_mode else "%02d:%02d" % [int(game.time_left) / 60, int(game.time_left) % 60]
 	%Timer.modulate = Color("ff9d87") if game.time_left < 10 else Color.WHITE
 	if game.run_mode == "endless":
-		%Planet.text = "INFINITO · HORDA %d · %s" % [game.survival.wave, game.difficulty().name]
+		%Planet.text = "PLUTÃO · HORDA %d · %s" % [game.survival.wave, game.difficulty().name]
 		%Timer.text = "%02d:%02d" % [int(game.elapsed)/60, int(game.elapsed)%60]
 		%Timer.modulate = Color.WHITE
 	%Score.text = "PONTOS %05d" % game.score

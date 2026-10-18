@@ -5,6 +5,8 @@ const MAX_STRIKES := 48
 const AMBIENT_PARTICLES := 180
 var game: Node2D
 var rng := RandomNumberGenerator.new()
+const PLUTO_EVENTS := ["nitrogen","comets","rift","whiteout"]
+var previous_event := ""
 var event := ""
 var active := false
 var age := 0.0
@@ -18,6 +20,7 @@ var strikes: Array[Dictionary] = []
 var motes: Array[Vector2] = []
 
 func reset_room() -> void:
+	previous_event = ""
 	rng.seed = game.rng.randi()
 	clear_active(rng.randf_range(8, 13))
 	motes.clear()
@@ -36,20 +39,25 @@ func clear_active(delay: float = 8.0) -> void:
 func random_point() -> Vector2:
 	return Vector2(rng.randf_range(game.arena.position.x + 75, game.arena.end.x - 75), rng.randf_range(game.arena.position.y + 75, game.arena.end.y - 75))
 
-func start_event() -> void:
+func start_event(forced_event: String = "") -> void:
 	clear_active()
-	event = ["sand", "ice", "jupiter", "chaos"][game.planet_index]
+	if game.run_mode == "endless":
+		var choices: Array = PLUTO_EVENTS.filter(func(kind): return kind != previous_event)
+		event = forced_event if forced_event in PLUTO_EVENTS else choices[rng.randi_range(0,choices.size()-1)]
+		previous_event = event
+	else:
+		event = ["sand", "ice", "jupiter", "chaos"][game.planet_index]
 	active = true
 	warning = 2.0
 	duration = 19.0 if event == "chaos" else rng.randf_range(12, 16)
 	pulse = warning
 	sound_cd = 0
-	var names := {"sand": "TEMPESTADE DE AREIA / evite o núcleo e use o dash!", "ice": "CHUVA DE GELO / saia das marcas azuis!", "jupiter": "TEMPESTADE DE JÚPITER / vórtice vermelho e raios!", "chaos": "CAOS TOTAL / areia, gelo, raios e meteoros!"}
+	var names := {"sand": "TEMPESTADE DE AREIA / evite o núcleo e use o dash!", "ice": "CHUVA DE GELO / saia das marcas azuis!", "jupiter": "TEMPESTADE DE JÚPITER / vórtice vermelho e raios!", "chaos": "CAOS TOTAL / areia, gelo, raios e meteoros!", "nitrogen":"ERUPÇÕES DE NITROGÊNIO / saia dos gêiseres marcados!", "comets":"CHUVA DE COMETAS / observe as áreas de impacto!", "rift":"FENDAS GRAVITACIONAIS / afaste-se dos núcleos!", "whiteout":"NEVASCA CÓSMICA / vento, gelo e pouco tempo para reagir!"}
 	game.message = names[event]
 	game.message_time = 3
 	game.play_sfx("frost_warning" if event == "ice" else "boss_alert")
-	if event in ["sand", "jupiter", "chaos"]:
-		for i in (2 if event == "chaos" else 1):
+	if event in ["sand", "jupiter", "chaos", "rift"]:
+		for i in (2 if event in ["chaos","rift"] else 1):
 			var point := random_point()
 			for attempt in 12:
 				if point.distance_to(game.player.position) >= 300 and not game.blocked(point, 70): break
@@ -59,11 +67,21 @@ func start_event() -> void:
 
 func add_strike(kind: String, at: Vector2) -> void:
 	if strikes.size() >= MAX_STRIKES: return
-	strikes.append({"kind": kind, "pos": at.clamp(game.arena.position + Vector2.ONE * 50, game.arena.end - Vector2.ONE * 50), "age": 0.0, "warning": 1.35 if kind == "meteor" else 1.1, "duration": 0.32, "radius": 68.0 if kind == "meteor" else (48.0 if kind == "lightning" else 35.0), "hit": false})
+	var lead := 1.7 if kind == "nitrogen" else (1.4 if kind in ["comet","void"] else (1.35 if kind == "meteor" else 1.1))
+	var radius := 80.0 if kind == "nitrogen" else (68.0 if kind in ["meteor","comet"] else (55.0 if kind == "void" else (48.0 if kind == "lightning" else 35.0)))
+	strikes.append({"kind": kind, "pos": at.clamp(game.arena.position + Vector2.ONE * 50, game.arena.end - Vector2.ONE * 50), "age": 0.0, "warning": lead, "duration": 3.0 if kind == "nitrogen" else 0.32, "radius": radius, "hit": false})
+
+func player_slowdown(at: Vector2) -> float:
+	if not active or age < warning or game.state != "playing": return 1.0
+	for strike in strikes:
+		if strike.kind == "nitrogen" and strike.age >= strike.warning and at.distance_to(strike.pos) < strike.radius:
+			return 0.6
+	return 0.85 if event == "whiteout" else 1.0
+
 
 func player_force(at: Vector2) -> Vector2:
 	if not active or age < warning: return Vector2.ZERO
-	var result := Vector2.ZERO
+	var result := Vector2(80,-28) if event == "whiteout" else Vector2.ZERO
 	for vortex in vortices:
 		var offset: Vector2 = vortex.pos - at
 		var distance := offset.length()
@@ -82,7 +100,7 @@ func _physics_process(delta: float) -> void:
 	age += delta
 	sound_cd -= delta
 	if age >= warning + duration:
-		clear_active(rng.randf_range(9, 15) if game.planet_index == 3 else rng.randf_range(13, 21))
+		clear_active(rng.randf_range(9, 15) if game.planet_index == 3 or game.run_mode == "endless" else rng.randf_range(13, 21))
 		return
 	if age >= warning:
 		var bounds: Rect2 = game.arena.grow(-80)
@@ -97,6 +115,12 @@ func _physics_process(delta: float) -> void:
 		pulse -= delta
 		if pulse <= 0:
 			pulse = (1.15 if event == "jupiter" else 0.85) / float(game.difficulty().waves)
+			if event in PLUTO_EVENTS:
+				pulse = (2.4 if event == "nitrogen" else (1.5 if event == "comets" else 1.2)) / float(game.difficulty().waves)
+				var kind: String = {"nitrogen":"nitrogen","comets":"comet","rift":"void","whiteout":"ice"}[event]
+				var count := ceili((3 if event == "rift" else 5)*float(game.difficulty().waves))
+				for i in count:
+					add_strike(kind,game.player.position if i == 0 else random_point())
 			if event in ["ice", "jupiter", "chaos"]:
 				var kind := "lightning" if event == "jupiter" else "ice"
 				var count := (9 if event == "chaos" else 6)
@@ -124,6 +148,9 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func strike_color(kind: String) -> Color:
+	if kind == "nitrogen": return Color("94f1d6")
+	if kind == "comet": return Color("c3e9ff")
+	if kind == "void": return Color("c9aaff")
 	return Color("ffab70") if kind == "meteor" else (Color("f3c4ff") if kind == "lightning" else Color("91eaff"))
 
 func _draw() -> void:
@@ -136,7 +163,7 @@ func _draw() -> void:
 		var color := Color(0.95, 0.63, 0.32, 0.5) if sand else Color(0.65, 0.86, 1, 0.35)
 		Vfx.draw_particle(self, at, Vector2.ONE*12, 1 if sand else 2, (i+int(age*5))%4, Color(1,1,1,0.55))
 	for vortex in vortices:
-		var color := Color("e9aa63") if event != "jupiter" else Color("ef997e")
+		var color := Color("b9c5ff") if event == "rift" else (Color("e9aa63") if event != "jupiter" else Color("ef997e"))
 		draw_arc(vortex.pos, vortex.radius, 0, TAU, 48, Color(color, 0.25), 2)
 		draw_circle(vortex.pos, vortex.core, Color(color, 0.23 if armed else 0.06))
 		draw_arc(vortex.pos, vortex.core, 0, TAU, 28, Color(color, 0.95 if armed else 0.55), 3)
@@ -144,7 +171,7 @@ func _draw() -> void:
 			var angle: float = i * 2.39996 + age * (1.6 + (i % 3) * 0.3)
 			var radius: float = vortex.core * (0.2 + float(i % 11) / 11 * 1.25)
 			var at: Vector2 = vortex.pos + Vector2.RIGHT.rotated(angle) * radius
-			Vfx.draw_particle(self, at, Vector2.ONE*13, 1, (i+int(age*8))%4, Color(1,1,1,0.8 if armed else 0.3))
+			Vfx.draw_particle(self, at, Vector2.ONE*13, 2 if event == "rift" else 1, (i+int(age*8))%4, Color(1,1,1,0.8 if armed else 0.3))
 		draw_string(game.font, vortex.pos + Vector2(-32, -vortex.core - 12), "PERIGO" if armed else "ALERTA", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, color)
 	for strike in strikes:
 		var color := strike_color(strike.kind)
@@ -158,6 +185,11 @@ func _draw() -> void:
 			draw_line(at - Vector2(0, 7), at + Vector2(0, 7), color, 2)
 			var falling: Vector2 = at + Vector2(30, -150) * (1 - strike.age / strike.warning)
 			Vfx.draw_particle(self, falling, Vector2(26,30), 3 if strike.kind == "meteor" else 2, 0)
+		elif strike.kind == "nitrogen":
+			for i in 6:
+				var height := fposmod(age*80+i*19,100)
+				draw_rect(Rect2(at+Vector2((i%3-1)*18,-height),Vector2(6,12)),Color(color,0.7))
+			draw_arc(at,strike.radius*0.75,0,TAU,24,Color(color,0.6),3)
 		elif strike.kind == "lightning":
 			var points := PackedVector2Array([at + Vector2(0, -100), at + Vector2(-14, -65), at + Vector2(10, -58), at + Vector2(-10, -24), at])
 			draw_polyline(points, color, 5)

@@ -24,13 +24,13 @@ Só três segundos para alcançar o foguete. O loot no chão fica para trás.
 | --- | --- |
 | ![Combate em Marte](docs/media/02-marte.png) | ![Combate em Netuno](docs/media/03-netuno.png) |
 | **Sobrevivência infinita** | **Loja entre hordas** |
-| ![Berserk no modo infinito](docs/media/05-sobrevivencia.png) | ![Loja da sobrevivência](docs/media/06-loja.png) |
+| ![Sobrevivência na Planície do Exílio, em Plutão](docs/media/10-plutao.png) | ![Loja da sobrevivência](docs/media/06-loja.png) |
 | **Menu principal** | **Controles por toque** |
 | ![Menu de One More Orbit](docs/media/01-menu.png) | ![Interface para celular](docs/media/07-controles-mobile.png) |
 
 Capturas em **1920×1080**. [Arquivos e instruções de captura](docs/media/README.md). [Fundo de Júpiter em PNG](docs/media/jupiter-fundo.png).
 
-## Versão atual: 0.1.9
+## Versão atual: 0.2.0
 
 - Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
 - Tela expandida para preencher 1920×1080 e outras proporções sem bordas, com escala uniforme e HUD centralizada.
@@ -158,7 +158,7 @@ O menu **Teste** abre qualquer uma das 13 arenas ou seu chefe, com escolha de eq
 
 Detalhes de implementação e testes: [expansão](docs/EXPANSAO_INFINITA.md).
 
-## Sobrevivência infinita (0.1.9)
+## Sobrevivência infinita (0.2.0)
 
 Em Iniciar Expedição, selecione Sobrevivência no seletor de modo e escolha Fácil, Médio ou Difícil. A arena mede 2048×1344: exatamente o dobro da área da arena inicial (1536×896), sem esticar os pixels.
 
@@ -172,4 +172,19 @@ Verificação: `Godot --headless --path . --script tests/survival.gd`.
 
 No modo Sobrevivência, Berserk recarrega em 90 segundos e Eco em 45 segundos desde o uso, contados somente durante o combate. Os temporizadores persistem entre hordas e mortes e congelam na loja e nos menus. Berserk continua exigindo a habilidade desbloqueada. Na campanha, Berserk continua limitado a uma vez por run e Eco a uma vez por arena. Os indicadores usam ícones de rajada radial e retorno temporal com texto compacto; nos controles por toque, os próprios botões mostram os segundos restantes.
 
-Visual 0.1.9: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
+Visual 0.2.0: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
+
+## Plutão: Planície do Exílio
+
+Arena exclusiva da Sobrevivência: 2048×1344, início no centro, oito formações de rocha congelada e caminhos largos para fugir das hordas. A arte reaproveita os recortes de pixel art do jogo em uma paleta própria, com gelo claro, chão escuro, placas de nitrogênio e fissuras avermelhadas.
+
+Eventos aleatórios alternam sem repetir imediatamente o anterior:
+
+- **Erupções de nitrogênio:** gêiseres marcados explodem e deixam gás que causa dano e reduz a velocidade dentro da área.
+- **Chuva de cometas:** impactos de gelo com indicação prévia no chão.
+- **Fendas gravitacionais:** dois núcleos móveis atraem o astronauta, acompanhados de colapsos espaciais marcados.
+- **Nevasca cósmica:** vento lateral, frio que reduz levemente a velocidade e chuva de gelo.
+
+Eventos começam após uma folga inicial de 8–13 segundos. Há aviso de 2 segundos, marcas de impacto de pelo menos 1,1 segundo e intervalos de descanso. O modo difícil cria ameaças com mais frequência. Loja, pausa e tela de morte interrompem os eventos; ao abrir a loja ou retornar de uma morte, as ameaças são limpas.
+
+Validação: `Godot --headless --path . --script tests/pluto_survival.gd`. Para atualizar a captura da arena: `Godot --path . --script tests/pluto_survival.gd -- --preview`.

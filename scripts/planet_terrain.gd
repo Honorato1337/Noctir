@@ -1,6 +1,7 @@
 @tool
 extends RefCounted
 
+const Pluto = preload("res://scripts/pluto_terrain.gd")
 const PixelArt = preload("res://scripts/pixel_art_import.gd")
 const ATLAS_PATH := "res://assets/environment/planet_terrain_atlas-v2.png"
 const FLOOR_SIZE := 64.0
@@ -18,7 +19,7 @@ static func texture() -> Texture2D:
 static func cell(sector: int, column: int) -> Rect2:
 	var source := texture()
 	var size: float = source.get_width() / 4.0 if source != null else 256.0
-	return Rect2(column * size, clampi(sector, 0, 3) * size, size, size)
+	return Rect2(column * size, (2 if sector == 4 else clampi(sector, 0, 3)) * size, size, size)
 
 static func floor_texture() -> Texture2D:
 	if floor_atlas == null:
@@ -26,6 +27,9 @@ static func floor_texture() -> Texture2D:
 	return floor_atlas
 
 static func draw_floor(canvas: CanvasItem, bounds: Rect2, sector: int) -> void:
+	if sector == 4:
+		Pluto.draw_floor(canvas,bounds,floor_texture())
+		return
 	canvas.draw_rect(bounds,PixelArt.FLOOR_PALETTES[sector][0])
 	var source := floor_texture()
 	if source == null: return
@@ -50,8 +54,11 @@ static func art_region(sector: int, column: int) -> Rect2:
 		crops[key] = Rect2(area.position+Vector2(used.position),Vector2(used.size)) if used.has_area() else area
 	return crops[key]
 
+static func sector_texture(sector: int) -> Texture2D:
+	return Pluto.rock_texture(texture()) if sector == 4 else texture()
+
 static func draw_rock(canvas: CanvasItem, bounds: Rect2, sector: int, variant: int = 0) -> void:
-	var source := texture()
+	var source := sector_texture(sector)
 	if source == null: return
 	# Long cover rectangles become interlocking stones instead of stretching
 	# a square boulder into an obelisk. Each piece keeps a near-square ratio.
@@ -64,7 +71,7 @@ static func draw_rock(canvas: CanvasItem, bounds: Rect2, sector: int, variant: i
 			canvas.draw_texture_rect_region(source, piece, art_region(sector, 1 + posmod(variant + x + y, 2)))
 
 static func draw_walls(canvas: CanvasItem, bounds: Rect2, sector: int) -> void:
-	var source := texture()
+	var source := sector_texture(sector)
 	if source == null: return
 	var region := art_region(sector, 3)
 	# The atlas wall occupies the central 3/4 of its cell; all walls sit outside

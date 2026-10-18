@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="One More Orbit"
-config/version="0.1.9"
+config/version="0.2.0"
 config/use_custom_user_dir.windows=true
 config/custom_user_dir_name.windows="Godot/app_userdata/NOCTIR- One More Orbit"
 run/main_scene="res://scenes/main.tscn"

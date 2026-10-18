@@ -2,7 +2,7 @@
 extends Node2D
 
 @export var layout_name := "MARTE / COLONIA FERRUGEM"
-@export_range(0, 3) var sector_index := 0
+@export_range(0, 4) var sector_index := 0
 var navigation := AStarGrid2D.new()
 var boss_navigation := AStarGrid2D.new()
 
