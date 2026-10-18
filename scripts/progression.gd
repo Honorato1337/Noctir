@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Skins = preload("res://scripts/skin_catalog.gd")
 const POINTS_PER_COIN := 100
 const PRESTIGE_COST := 1000
 const MAX_WALLET := 0x7FFFFFFFFFFFFFFF
@@ -16,6 +17,8 @@ const UPGRADES = [
 	{"key": "time", "name": "RESERVA TEMPORAL", "effect": "+2 segundos por arena por nível", "prices": [25, 55, 100]}
 ]
 
+var owned_skins: Array[String] = ["astronaut"]
+var selected_skin := "astronaut"
 var coins := 0
 var space_coins := 0
 var prestige := 0
@@ -44,6 +47,13 @@ func load_profile() -> Error:
 		levels[upgrade.key] = valid_int(file.get_value("upgrades", upgrade.key, 0), 0, max_level(upgrade.key))
 	for ability: Dictionary in ABILITIES:
 		abilities[ability.key] = valid_int(file.get_value("abilities", ability.key, 0), 0, ability.prices.size())
+	owned_skins = ["astronaut"]
+	var stored: Variant = file.get_value("cosmetics","owned",PackedStringArray())
+	if stored is Array or stored is PackedStringArray:
+		for key in stored:
+			if key is String and Skins.DATA.has(key) and key not in owned_skins: owned_skins.append(key)
+	var chosen: Variant = file.get_value("cosmetics","selected","astronaut")
+	selected_skin = chosen if chosen is String and chosen in owned_skins else "astronaut"
 	return OK
 
 func valid_int(value: Variant, minimum: int, maximum: int) -> int:
@@ -51,6 +61,8 @@ func valid_int(value: Variant, minimum: int, maximum: int) -> int:
 
 func save_profile() -> Error:
 	var file := ConfigFile.new()
+	file.set_value("cosmetics","owned",PackedStringArray(owned_skins))
+	file.set_value("cosmetics","selected",selected_skin)
 	file.set_value("wallet", "coins", coins)
 	file.set_value("wallet", "space_coins", space_coins)
 	file.set_value("wallet", "prestige", prestige)
@@ -65,6 +77,22 @@ func save_profile() -> Error:
 	if last_save_error == OK:
 		last_save_error = DirAccess.rename_absolute(ProjectSettings.globalize_path(save_path + ".tmp"), ProjectSettings.globalize_path(save_path))
 	return last_save_error
+
+func equip_skin(key: String, persist: bool = true) -> bool:
+	if not Skins.DATA.has(key): return false
+	var cost: int = 0 if key in owned_skins else int(Skins.DATA[key].cost)
+	if prestige < cost: return false
+	var previous_owned := owned_skins.duplicate()
+	var previous_selected := selected_skin
+	prestige -= cost
+	if key not in owned_skins: owned_skins.append(key)
+	selected_skin = key
+	if persist and save_profile() != OK:
+		prestige += cost
+		owned_skins = previous_owned
+		selected_skin = previous_selected
+		return false
+	return true
 
 func award_score(points: int, persist: bool = true) -> int:
 	var total := maxi(0, points) + remainder
@@ -132,6 +160,7 @@ func buy(index: int, persist: bool = true) -> bool:
 	return true
 
 func apply_to(player: Node2D) -> void:
+	player.set_skin(selected_skin)
 	# Called only on a fresh player instance; temporary run modules stay separate.
 	player.max_health += int(levels.health) + prestige_cycles
 	player.health = player.max_health

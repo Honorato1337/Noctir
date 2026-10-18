@@ -32,7 +32,7 @@ Só três segundos para alcançar o foguete. O loot no chão fica para trás.
 
 Capturas em **1920×1080**. [Arquivos e instruções de captura](docs/media/README.md). [Fundo de Júpiter em PNG](docs/media/jupiter-fundo.png).
 
-## Versão atual: 0.2.2
+## Versão atual: 0.2.3
 
 - Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
 - Tela expandida para preencher 1920×1080 e outras proporções sem bordas, com escala uniforme e HUD centralizada.
@@ -160,7 +160,7 @@ Após desbloquear **Configurações → Desenvolvedor** com a senha do desenvolv
 
 Detalhes de implementação e testes: [expansão](docs/EXPANSAO_INFINITA.md).
 
-## Sobrevivência infinita (0.2.2)
+## Sobrevivência infinita (0.2.3)
 
 Em Iniciar Expedição, selecione Sobrevivência no seletor de modo e escolha Fácil, Médio ou Difícil. A arena mede 2048×1344: exatamente o dobro da área da arena inicial (1536×896), sem esticar os pixels.
 
@@ -174,7 +174,7 @@ Verificação: `Godot --headless --path . --script tests/survival.gd`.
 
 No modo Sobrevivência, Berserk recarrega em 90 segundos e Eco em 45 segundos desde o uso, contados somente durante o combate. Os temporizadores persistem entre hordas e mortes e congelam na loja e nos menus. Berserk continua exigindo a habilidade desbloqueada. Na campanha, Berserk continua limitado a uma vez por run e Eco a uma vez por arena. Os indicadores usam ícones de rajada radial e retorno temporal com texto compacto; nos controles por toque, os próprios botões mostram os segundos restantes.
 
-Visual 0.2.2: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
+Visual 0.2.3: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
 
 ## Plutão: Planície do Exílio
 
@@ -202,3 +202,13 @@ Teste automatizado: defina a variável de ambiente `OMO_DEV_TEST_PASSWORD` com a
 O superchefe de Netuno utiliza os três frames originais de `assets/mobs_netuno/mob_netuno3`, em loop de 8 FPS e escala inteira 2×, com filtro nearest. A animação acompanha a direção do astronauta, reage aos acertos e congela na pausa. O chefe comum continua usando `mob_neturno2`; o pequeno usa `mob_netuno1`. Ataques, escudo e dificuldade permanecem os mesmos.
 
 ![Leviatã Boreal com a arte do time](docs/media/11-leviata-boreal.png)
+
+## Skin Guanapo
+
+**isso é uma lhama ou um alpaca?** está disponível em Loja → Skins por **1 Prestígio**. A compra é permanente; reequipar a skin não custa nada. Astronauta continua disponível gratuitamente. A skin muda apenas a aparência.
+
+Os quatro frames originais de `assets/guanapo` animam o personagem, a prévia do menu e o Eco. Ao andar para a esquerda, o Guanapo é espelhado automaticamente; parado, acompanha a direção da mira. O Eco mantém a orientação gravada. A aparência equipada e as skins adquiridas são salvas junto do progresso e preservadas após Prestígio.
+
+![Skin Guanapo na loja](docs/media/12-guanapo-loja.png)
+
+Teste: `Godot --headless --path . --script tests/skins.gd`. Com `-- --preview`, captura a loja e a skin com seu Eco em `docs/media`.

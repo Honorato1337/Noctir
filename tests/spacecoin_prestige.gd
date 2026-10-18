@@ -73,7 +73,7 @@ func run() -> void:
 	check(previews.size() == 3 and previews[0].disabled and previews[1].disabled and previews[2].disabled, "future suit, weapon and module previews cannot charge currency")
 	await shot("equipment-test")
 	game.panel.find_child("SkinsTab").pressed.emit()
-	check(game.panel.find_child("Skins").visible, "skins page is available as an explicitly future catalog")
+	check(game.panel.find_child("Skins").visible, "skins catalog is available from the Prestige shop")
 	await shot("skins-future")
 	game.panel.find_child("PrestigeTab").pressed.emit()
 	var dialog: ConfirmationDialog = game.panel.find_child("PrestigeConfirmation")

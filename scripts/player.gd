@@ -1,5 +1,9 @@
 extends Node2D
 
+const Skins = preload("res://scripts/skin_catalog.gd")
+var skin_id := "astronaut"
+var facing_left := false
+var echo_flip_h := false
 var game: Node2D
 var health := 5
 @export_group("Balanceamento")
@@ -43,12 +47,23 @@ func _ready() -> void:
 	health = max_health
 	update_animation()
 
+func set_skin(key: String) -> void:
+	skin_id = key if Skins.DATA.has(key) else "astronaut"
+	visual.sprite_frames = Skins.DATA[skin_id].frames
+	visual.play(&"idle")
+	visual.flip_h = false
+	update_animation()
+
 func _process(_delta: float) -> void:
 	update_animation()
 
 func update_animation() -> void:
 	if not is_instance_valid(visual) or not is_instance_valid(game):
 		return
+	var horizontal: float = game.controls.movement().x
+	if absf(horizontal) < 0.1: horizontal = aim.x
+	if absf(horizontal) >= 0.1: facing_left = horizontal < 0
+	visual.flip_h = skin_id == "guanapo" and facing_left
 	var active: bool = game.state in ["playing", "cleared", "exit"]
 	var blink: bool = game.state == "playing" and immunity > 0 and immunity <= 1.2 and int(clock * 16) % 2 == 0
 	visual.visible = not use_placeholder_graphics and not blink
@@ -68,7 +83,8 @@ func update_animation() -> void:
 		visual.pause()
 	echo_visual.visible = not use_placeholder_graphics and not echo_frames.is_empty()
 	echo_visual.position = echo_pos - position + Vector2(0, -8)
-	echo_visual.texture = visual.sprite_frames.get_frame_texture(&"walk", clampi(echo_frame, 0, 4))
+	echo_visual.texture = visual.sprite_frames.get_frame_texture(&"walk", clampi(echo_frame, 0, visual.sprite_frames.get_frame_count(&"walk")-1))
+	echo_visual.flip_h = echo_flip_h
 	echo_weapon.visible = echo_visual.visible
 	echo_weapon.position = echo_pos - position + Vector2(0, 4)
 	echo_weapon.rotation = echo_aim.angle()
@@ -126,7 +142,7 @@ func _physics_process(delta: float) -> void:
 		cooldown = interval * (0.45 if overdrive_time > 0 else 1.0)
 		shots = fire(position, aim, false)
 	# Store every physics frame: exact fire events must survive into the echo.
-	history.append({"t": clock, "pos": position, "health": health, "shots": shots, "damage": shot_damage(), "visual_frame": visual.frame, "aim": aim})
+	history.append({"t": clock, "pos": position, "health": health, "shots": shots, "damage": shot_damage(), "visual_frame": visual.frame, "flip_h": visual.flip_h, "aim": aim})
 	while not history.is_empty() and clock - float(history[0].t) > 5.0:
 		history.pop_front()
 	if Input.is_action_just_pressed("rewind"):
@@ -137,6 +153,7 @@ func _physics_process(delta: float) -> void:
 			var frame: Dictionary = echo_frames.pop_front()
 			echo_pos = frame.pos
 			echo_frame = int(frame.get("visual_frame", 0))
+			echo_flip_h = bool(frame.get("flip_h",false))
 			echo_aim = frame.get("aim", aim)
 			for direction in frame.shots:
 				game.shoot(echo_pos, direction, float(frame.damage), false, true)
@@ -177,6 +194,7 @@ func rewind() -> void:
 	echo_clock = float(first.t)
 	echo_pos = first.pos
 	echo_frame = int(first.get("visual_frame", 0))
+	echo_flip_h = bool(first.get("flip_h",false))
 	echo_aim = first.get("aim", aim)
 	game.time_left += clock - float(first.t)
 	history.clear()

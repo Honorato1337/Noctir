@@ -803,6 +803,10 @@ func show_menu() -> void:
 		save_preferences()
 	state = "menu"
 	show_screen("menu")
+	var portrait: AnimatedSprite2D = panel.find_child("AstronautSprite",true,false)
+	portrait.sprite_frames = Progression.Skins.DATA[progression.selected_skin].frames
+	portrait.scale = Vector2.ONE*float(Progression.Skins.DATA[progression.selected_skin].menu_scale)
+	portrait.play(&"walk")
 	panel.find_child("Record", true, false).text = "RECORDE   %06d" % best
 	panel.find_child("PermanentShopButton", true, false).text = "LOJA   /   %d COINS" % progression.coins
 	bind_button("StartButton", show_difficulty_menu)
@@ -981,6 +985,8 @@ func show_permanent_shop() -> void:
 		bind_button(tab.capitalize() + "Tab", set_permanent_tab.bind(tab))
 	for index in Progression.ABILITIES.size():
 		bind_button("AbilityBuy%d" % (index + 1), buy_ability.bind(index))
+	bind_button("AstronautSkinButton", equip_player_skin.bind("astronaut"))
+	bind_button("GuanapoSkinButton", equip_player_skin.bind("guanapo"))
 	bind_button("PrestigeButton", request_prestige)
 	panel.find_child("PrestigeConfirmation", true, false).confirmed.connect(perform_prestige)
 	refresh_permanent_shop()
@@ -1008,6 +1014,11 @@ func refresh_permanent_shop() -> void:
 		panel.find_child("AbilityLevel%d" % (index + 1), true, false).text = ("NÍVEL %d/5 / MOEDAS %d px / ITENS %d px" % [level, 80 + level * 40, 24 + level * 40]) if index == 0 else ("DESBLOQUEADO / UMA VEZ POR RUN" if level > 0 else "BLOQUEADO")
 		panel.find_child("AbilityCost%d" % (index + 1), true, false).text = ("NÍVEL MÁXIMO" if index == 0 else "ADQUIRIDO") if price < 0 else "COMPRAR / %d SPACECOIN" % price
 		panel.find_child("AbilityBuy%d" % (index + 1), true, false).disabled = price < 0 or progression.space_coins < price
+	for key: String in Progression.Skins.DATA:
+		var prefix := "Astronaut" if key == "astronaut" else "Guanapo"
+		var button: Button = panel.find_child(prefix+"SkinButton",true,false)
+		button.text = "EQUIPADA" if progression.selected_skin == key else ("EQUIPAR" if key in progression.owned_skins else "COMPRAR / 1 PRESTÍGIO")
+		button.disabled = progression.selected_skin == key or (key not in progression.owned_skins and progression.prestige < 1)
 	set_permanent_tab(permanent_tab)
 
 func set_permanent_tab(tab: String) -> void:
@@ -1023,8 +1034,19 @@ func set_permanent_tab(tab: String) -> void:
 		"skills": "SpaceCoin compra habilidades permanentes. Elas permanecem após o Prestígio.",
 		"equipment": "TESTE • Um contrato por run rende 1 SpaceCoin. Compras em breve.",
 		"prestige": "CICLO %d • +1 nível máximo por reset. Inimigos +18%% de vida/ciclo." % progression.prestige_cycles,
-		"skins": "EM BREVE • Seu Prestígio já fica salvo para o futuro catálogo."
+		"skins": "Aparências cosméticas. Sua escolha fica salva para as próximas runs."
 	}[tab]
+
+func equip_player_skin(key: String) -> bool:
+	if state != "permanent": return false
+	if not progression.equip_skin(key,not smoke_mode):
+		panel.find_child("PermanentNotice",true,false).text = "Prestígio insuficiente ou falha ao salvar."
+		play_sfx("error")
+		return false
+	refresh_permanent_shop()
+	panel.find_child("PermanentNotice",true,false).text = "Skin equipada: "+str(Progression.Skins.DATA[key].title)
+	play_sfx("purchase")
+	return true
 
 func request_prestige() -> void:
 	if state != "permanent" or not progression.can_prestige():

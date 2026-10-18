@@ -2,6 +2,9 @@
 [ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
 [ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
 
+[ext_resource type="SpriteFrames" path="res://asssets/astronauta/astronaut_frames.tres" id="skin_astro"]
+[ext_resource type="SpriteFrames" path="res://assets/guanapo/guanapo_frames.tres" id="skin_guanapo"]
+
 [node name="PermanentShop" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -100,7 +103,7 @@ text = "PRESTÍGIO"
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 size_flags_horizontal = 3
-text = "SKINS / BREVE"
+text = "SKINS"
 
 [node name="Content" type="VBoxContainer" parent="Center/Card/Box"]
 layout_mode = 2
@@ -616,45 +619,74 @@ tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
 [node name="Skins" type="VBoxContainer" parent="Center/Card/Box/Content"]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 24
-
+theme_override_constants/separation = 12
 [node name="Heading" type="Label" parent="Center/Card/Box/Content/Skins"]
 layout_mode = 2
-text = "SKINS / BREVE"
+text = "SKINS"
 theme_override_font_sizes/font_size = 28
-
 [node name="Description" type="Label" parent="Center/Card/Box/Content/Skins"]
 layout_mode = 2
-text = "Prestígio será usado para aparências. Catálogo em desenvolvimento."
+text = "Aparências para o personagem. Sem alteração de atributos."
 autowrap_mode = 2
-
 [node name="Catalog" type="HBoxContainer" parent="Center/Card/Box/Content/Skins"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
-[node name="Preview0" type="Button" parent="Center/Card/Box/Content/Skins/Catalog"]
+[node name="Astronaut" type="VBoxContainer" parent="Center/Card/Box/Content/Skins/Catalog"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 180)
 size_flags_horizontal = 3
-disabled = true
-text = "ASTRONAUTAS\n\nEM BREVE"
-tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+custom_minimum_size = Vector2(440,0)
+theme_override_constants/separation = 8
+[node name="Preview" type="Control" parent="Center/Card/Box/Content/Skins/Catalog/Astronaut"]
+layout_mode = 2
+custom_minimum_size = Vector2(0,132)
+mouse_filter = 2
+[node name="Sprite" type="AnimatedSprite2D" parent="Center/Card/Box/Content/Skins/Catalog/Astronaut/Preview"]
+position = Vector2(220,66)
+scale = Vector2(3,3)
+texture_filter = 1
+sprite_frames = ExtResource("skin_astro")
+animation = &"walk"
+autoplay = "walk"
+[node name="Title" type="Label" parent="Center/Card/Box/Content/Skins/Catalog/Astronaut"]
+layout_mode = 2
+custom_minimum_size = Vector2(0,52)
+text = "Astronauta"
+horizontal_alignment = 1
+autowrap_mode = 2
+theme_override_font_sizes/font_size = 22
+[node name="AstronautSkinButton" type="Button" parent="Center/Card/Box/Content/Skins/Catalog/Astronaut"]
+layout_mode = 2
+custom_minimum_size = Vector2(0,52)
+text = "EQUIPAR"
 
-[node name="Preview1" type="Button" parent="Center/Card/Box/Content/Skins/Catalog"]
+[node name="Guanapo" type="VBoxContainer" parent="Center/Card/Box/Content/Skins/Catalog"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 180)
 size_flags_horizontal = 3
-disabled = true
-text = "ARMAS\n\nEM BREVE"
-tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
-
-[node name="Preview2" type="Button" parent="Center/Card/Box/Content/Skins/Catalog"]
+custom_minimum_size = Vector2(440,0)
+theme_override_constants/separation = 8
+[node name="Preview" type="Control" parent="Center/Card/Box/Content/Skins/Catalog/Guanapo"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 180)
-size_flags_horizontal = 3
-disabled = true
-text = "EFEITOS\n\nEM BREVE"
-tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+custom_minimum_size = Vector2(0,132)
+mouse_filter = 2
+[node name="Sprite" type="AnimatedSprite2D" parent="Center/Card/Box/Content/Skins/Catalog/Guanapo/Preview"]
+position = Vector2(220,66)
+scale = Vector2(3,3)
+texture_filter = 1
+sprite_frames = ExtResource("skin_guanapo")
+animation = &"walk"
+autoplay = "walk"
+[node name="Title" type="Label" parent="Center/Card/Box/Content/Skins/Catalog/Guanapo"]
+layout_mode = 2
+custom_minimum_size = Vector2(0,52)
+text = "isso é uma lhama ou um alpaca?"
+horizontal_alignment = 1
+autowrap_mode = 2
+theme_override_font_sizes/font_size = 22
+[node name="GuanapoSkinButton" type="Button" parent="Center/Card/Box/Content/Skins/Catalog/Guanapo"]
+layout_mode = 2
+custom_minimum_size = Vector2(0,52)
+text = "EQUIPAR"
 
 [node name="Prestige" type="VBoxContainer" parent="Center/Card/Box/Content"]
 visible = false
