@@ -4,7 +4,7 @@ Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pa
 
 **Para editar o visual no editor:** veja [Editar no Godot](docs/EDITAR_NO_GODOT.md). Menu, controles, HUD, pausa, upgrades, resultado, arena e atores agora possuem cenas `.tscn` próprias em `scenes/`. O tema compartilhado está em `ui_theme.tres`. Importe o `project.godot` da raiz, não o arquivo existente dentro de `docs`.
 
-## Versão atual: 0.1.6
+## Versão atual: 0.1.7
 
 - Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
 - Tela expandida para preencher 1920×1080 e outras proporções sem bordas, com escala uniforme e HUD centralizada.
@@ -132,12 +132,14 @@ O menu **Teste** abre qualquer uma das 13 arenas ou seu chefe, com escolha de eq
 
 Detalhes de implementação e testes: [expansão](docs/EXPANSAO_INFINITA.md).
 
-## Sobrevivência infinita (0.1.6)
+## Sobrevivência infinita (0.1.7)
 
 Em Iniciar Expedição, selecione Sobrevivência no seletor de modo e escolha Fácil, Médio ou Difícil. A arena mede 2048×1344: exatamente o dobro da área da arena inicial (1536×896), sem esticar os pixels.
 
-Hordas contínuas; pressão aumenta a cada minuto de combate (mais depressa no Difícil). Chefes a cada 80/60/45 segundos conforme a dificuldade, com até três chefes simultâneos; cada terceiro é um superchefe e cada sexto é o Deus Alienígena. Novas espécies entram com a pressão. Vida cresce sem teto; velocidade e inimigos simultâneos têm limites para manter o jogo controlável e o desempenho previsível.
+Hordas numeradas com quantidade finita de inimigos em cada uma. Ao eliminar todos os inimigos, o loot restante é recolhido e a loja abre por **10 segundos**. Ao acabar o prazo (ou continuar), começa a próxima horda, com mais inimigos e mais vida. A dificuldade determina tamanho e ritmo dos lotes de entrada. Chefes a cada terceira horda; cada terceiro chefe é um superchefe e cada sexto é o Deus Alienígena. As espécies entram progressivamente. Não há horda final; apenas a quantidade simultânea e a velocidade são limitadas para preservar desempenho e controle.
 
-A cada dois minutos de combate, a loja abre por 20 segundos. O combate fica suspenso e depois retorna na mesma arena, preservando inimigos, loot e chances. São três chances para toda a run. Coins mantêm os multiplicadores de 25%/100%/150%, e contratos continuam indisponíveis no Fácil. Não existe extração ou vitória automática neste modo.
+As três chances valem para toda a run. Coins mantêm os multiplicadores de 25%/100%/150%, e contratos continuam indisponíveis no Fácil. Não há extração neste modo.
+
+Baliza de contenção: raio de 320 px, duração de 20 segundos, redução de velocidade de 80% nos mobs e 50% nos chefes. Limpa projéteis hostis no raio a cada 0,35 segundo.
 
 Verificação: `Godot --headless --path . --script tests/survival.gd`.

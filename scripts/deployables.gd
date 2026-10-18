@@ -3,8 +3,9 @@ extends Node2D
 const DATA := {
 	"mine": {"name": "Mina orbital", "life": 24.0, "color": Color("ffbd70")},
 	"turret": {"name": "Torreta", "life": 18.0, "color": Color("91eaff")},
-	"beacon": {"name": "Baliza de contenção", "life": 12.0, "color": Color("91ffc4")}
+	"beacon": {"name": "Baliza de contenção", "life": 20.0, "color": Color("91ffc4")}
 }
+const BEACON_RADIUS := 320.0
 const MAX_ACTIVE := 4
 var game: Node2D
 var inventory := "mine"
@@ -43,8 +44,8 @@ func place() -> bool:
 
 func enemy_slowdown(at: Vector2, boss: bool) -> float:
 	for device in placed:
-		if device.kind == "beacon" and at.distance_to(device.pos) < 185:
-			return .8 if boss else .55
+		if device.kind == "beacon" and at.distance_to(device.pos) < BEACON_RADIUS:
+			return .5 if boss else .2
 	return 1.0
 
 func visible_target(at: Vector2, reach: float) -> Node2D:
@@ -104,11 +105,11 @@ func _physics_process(delta: float) -> void:
 				game.shoot(device.pos, device.aim, device.damage * .8 + 1, false)
 				game.fx.sparks(device.pos, Color("91eaff"), 3, 50)
 		else:
-			device.cooldown = 1.2
+			device.cooldown = .35
 			for bullet in game.bullets.get_children():
-				if bullet.hostile and bullet.position.distance_to(device.pos) < 185:
+				if bullet.hostile and bullet.position.distance_to(device.pos) < BEACON_RADIUS:
 					bullet.queue_free()
-			rings.append({"pos": device.pos, "radius": 185.0, "life": .65, "color": Color("91ffc4")})
+			rings.append({"pos": device.pos, "radius": BEACON_RADIUS, "life": .65, "color": Color("91ffc4")})
 	for index in range(rings.size() - 1, -1, -1):
 		rings[index].life -= delta
 		if rings[index].life <= 0:
@@ -129,7 +130,7 @@ func _draw() -> void:
 			draw_arc(at, 105, 0, TAU, 36, Color(color, .15), 2)
 		else:
 			draw_line(at + Vector2(0, -6), at + Vector2(0, -27), color, 5)
-			draw_arc(at, 185, device.age, device.age + TAU * .9, 40, Color(color, .35), 2)
+			draw_arc(at, BEACON_RADIUS, device.age, device.age + TAU * .9, 40, Color(color, .35), 2)
 		draw_rect(Rect2(at + Vector2(-15, 20), Vector2(30 * device.life / DATA[device.kind].life, 3)), color)
 	for ring in rings:
 		draw_arc(ring.pos, ring.radius * (1 - ring.life / .7), 0, TAU, 56, Color(ring.color, ring.life), 5)

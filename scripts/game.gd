@@ -301,8 +301,7 @@ func start_room() -> void:
 	message_time = 3
 	state = "playing"
 	if run_mode == "endless":
-		pending = 0
-		message = "SOBREVIVÊNCIA INFINITA / NÃO HÁ EXTRAÇÃO"
+		survival.start_wave()
 
 func _physics_process(delta: float) -> void:
 	if state == "shop":
@@ -600,7 +599,7 @@ func refresh_shop() -> void:
 	panel.find_child("Wallet", true, false).text = "MOEDAS   %03d" % loot.coins
 	panel.find_child("ShopPhase", true, false).text = "%s  /  ARENA %02d CONCLUÍDA" % [planet().name, room + 1]
 	if run_mode == "endless":
-		panel.find_child("ShopPhase", true, false).text = "SOBREVIVÊNCIA / PRESSÃO %d / COMBATE SUSPENSO" % (survival.tier+1)
+		panel.find_child("ShopPhase", true, false).text = "SOBREVIVÊNCIA / HORDA %d CONCLUÍDA" % survival.wave
 	if int(lost_loot.coins)+int(lost_loot.items) > 0:
 		panel.find_child("ShopPhase", true, false).text += "  /  PERDIDO: %d MOEDAS, %d %s" % [lost_loot.coins,lost_loot.items,"ITEM" if lost_loot.items == 1 else "ITENS"]
 	for index in 2:
@@ -617,7 +616,7 @@ func refresh_shop() -> void:
 		var cost := Economy.supply_price(kind, room)
 		button.text = "%s / %d" % [deployables.DATA[kind].name, cost]
 		button.disabled = not deployables.inventory.is_empty() or shop_supplies.has(kind) or loot.coins < cost
-		button.tooltip_text = {"mine": "Mina: explosão de raio 240 px. Arma após 0,65 s; dura 24 s.", "turret": "Torreta: atira automaticamente por 18 s, alcance 460 px.", "beacon": "Baliza: desacelera inimigos e limpa tiros próximos por 12 s."}[kind] + "\nOcupa só o slot [3]. Coloque no chão durante o combate."
+		button.tooltip_text = {"mine": "Mina: explosão de raio 240 px. Arma após 0,65 s; dura 24 s.", "turret": "Torreta: atira automaticamente por 18 s, alcance 460 px.", "beacon": "Baliza: raio de 320 px, lentidão de 80% (50% nos chefes), limpa tiros a cada 0,35 s. Dura 20 s."}[kind] + "\nOcupa só o slot [3]. Coloque no chão durante o combate."
 	var full: bool = not loot.slots.has("")
 	panel.find_child("InventoryHint", true, false).text = "Carga cheia. Use [1] e [2] na próxima arena." if full else "Colete itens e use [1] e [2] durante o combate."
 	panel.find_child("InventoryHint", true, false).autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -704,8 +703,7 @@ func leave_shop() -> void:
 	if run_mode == "endless":
 		room_cleared = false
 		state = "playing"
-		message = "REFORÇOS CHEGANDO / SOBREVIVA"
-		message_time = 3
+		survival.start_wave()
 		return
 	state = "exit"
 	if extraction_boarded:
@@ -752,7 +750,7 @@ func finish(won: bool, reason: String, result_sound: bool = true) -> void:
 	panel.find_child("ScoreValue", true, false).text = "%05d" % score
 	panel.find_child("BestValue", true, false).text = "%05d" % best
 	panel.find_child("KillsValue", true, false).text = str(kills)
-	panel.find_child("ArenaValue", true, false).text = "INFINITO / PRESSÃO %d" % (survival.tier + 1) if run_mode == "endless" else "%02d/%02d" % [room + 1, total_rooms()]
+	panel.find_child("ArenaValue", true, false).text = "INFINITO / HORDA %d" % survival.wave if run_mode == "endless" else "%02d/%02d" % [room + 1, total_rooms()]
 	panel.find_child("TimeValue", true, false).text = "%s / TEMPO %02d:%02d" % [difficulty().name, int(elapsed) / 60, int(elapsed) % 60]
 	panel.find_child("RewardValue", true, false).text = "+%d COINS PERMANENTES  /  SALDO %d\nProgresso para o próximo coin: %d/%d pontos" % [run_reward, progression.coins, progression.remainder, Progression.POINTS_PER_COIN]
 	panel.find_child("RewardValue", true, false).text += " / COINS %s×" % str(difficulty().reward)
@@ -816,14 +814,14 @@ func select_game_mode(index: int) -> void:
 	selected_run_mode = "endless" if index == 1 else "campaign"
 	var infinite := index == 1
 	panel.find_child("Description", true, false).text = "Área 2× maior / hordas sem fim / 3 chances por run." if infinite else "Escolha a dificuldade desta run. Você terá 3 chances por run."
-	panel.find_child("Note", true, false).text = "Pressão aumenta a cada minuto. Chefes periódicos. Loja a cada 2 minutos." if infinite else "Multiplicador aplicado aos Coins da loja permanente."
+	panel.find_child("Note", true, false).text = "Hordas crescentes sem fim. Chefes a cada 3 hordas. Loja por 10s." if infinite else "Multiplicador aplicado aos Coins da loja permanente."
 	for key: String in DIFFICULTIES:
 		var button: Button = panel.find_child(key.capitalize() + "Button", true, false)
 		for connection: Dictionary in button.pressed.get_connections():
 			button.pressed.disconnect(connection.callable)
 		button.pressed.connect(start_run.bind(false, 0, key, selected_run_mode))
 		if infinite:
-			button.text = {"easy":"FÁCIL / 25% DOS COINS\nEscalada mais lenta, mas sem limite. Sem contratos.", "medium":"MÉDIO / 100% DOS COINS\nHordas densas, chefes a cada 60s e ameaças de todos os planetas.", "hard":"DIFÍCIL / 150% DOS COINS\nMais inimigos desde o início. Chefes a cada 45s. Escalada acelerada."}[key]
+			button.text = {"easy":"FÁCIL / 25% DOS COINS\nEscalada mais lenta, mas sem limite. Sem contratos.", "medium":"MÉDIO / 100% DOS COINS\nHordas crescentes, chefes a cada 3 hordas. Todas as espécies.", "hard":"DIFÍCIL / 150% DOS COINS\nMais inimigos desde o início. Hordas maiores e inimigos mais fortes."}[key]
 		else:
 			button.text = {"easy":"FÁCIL / 25% DOS COINS\nHordas menores e inimigos mais fracos. Sem contratos.", "medium":"MÉDIO / 100% DOS COINS\nCombate padrão. Contratos disponíveis.", "hard":"DIFÍCIL / 150% DOS COINS\nHordas maiores e inimigos mais rápidos. Contratos disponíveis."}[key]
 

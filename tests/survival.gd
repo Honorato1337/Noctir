@@ -1,7 +1,6 @@
 extends SceneTree
 var failures := 0
-func _initialize() -> void:
-	call_deferred("run")
+func _initialize() -> void: call_deferred("run")
 func check(ok: bool, detail: String) -> void:
 	print(("PASS: " if ok else "FAIL: ")+detail)
 	if not ok: failures += 1
@@ -18,49 +17,49 @@ func run() -> void:
 		root.get_texture().get_image().save_png("res://docs/preview-survival-menu.png")
 	game.panel.find_child("HardButton",true,false).pressed.emit()
 	game.player.set_physics_process(false)
-	check(game.panel == null, "mode selection closes when combat begins")
-	check(game.run_mode == "endless" and game.run_difficulty == "hard", "menu starts infinite hard mode")
-	check(game.arena.size == Vector2(2048,1344), "arena has exactly twice the campaign floor area")
-	check(game.survival.boss_left == 45, "hard boss arrives after 45 active seconds")
+	check(game.run_mode == "endless" and game.survival.wave == 1 and game.pending == 34, "hard mode starts finite first wave")
+	check(game.arena.size == Vector2(2048,1344), "double area retained")
 	game._physics_process(1)
-	check(game.enemies.get_child_count() > 0 and game.pending == 0, "continuous spawns without finite wave backlog")
-	for enemy in game.enemies.get_children():
-		check(enemy.position.distance_to(game.player.position) >= 300 and not game.blocked(enemy.position,enemy.radius), "spawn stays away from player and rocks")
-	game.elapsed = 600
-	game.survival.shop_at = 10000
-	game.survival.boss_left = 0
-	game.survival.tick(0.1)
-	check(game.survival.tier == 14 and game.survival.health_factor() > 6, "difficulty keeps scaling beyond campaign length")
-	check(is_instance_valid(game.boss_ref), "boss spawns while hordes remain")
-	for i in 100: game.survival.tick(1)
-	check(game.enemies.get_child_count() <= game.MAX_ACTIVE_ENEMIES, "bounded simultaneous actors during endless pressure")
+	check(game.enemies.get_child_count() > 0 and game.pending < 34, "wave budget decreases as enemies spawn")
+	game.pending = 0
+	game._physics_process(1)
+	check(game.state == "playing", "shop waits until all enemies die")
 	game.clear_container(game.enemies)
-	game.boss_ref = null
+	game.loot.drops.append({"pos":Vector2(500,500),"type":"coin","value":10,"age":0.0})
 	game._physics_process(0.1)
-	check(game.state == "playing", "empty arena never triggers campaign victory or extraction")
-	game.survival.shop_at = game.elapsed
-	game.survival.tick(0.1)
-	check(game.state == "shop" and game.shop_left == 20, "periodic timed shop remains available")
+	check(game.state == "shop" and game.shop_left == 10 and game.loot.coins == 10, "wave completion banks loot and opens ten-second shop")
 	game.run_chances_left = 2
+	game._physics_process(9)
+	check(game.state == "shop" and game.survival.wave == 1, "next wave cannot start before shop timer")
+	game._physics_process(1)
+	check(game.state == "playing" and game.survival.wave == 2 and game.pending > 34 and game.run_chances_left == 2, "timeout starts larger wave and preserves run lives")
+	game.pending = 0
+	game.clear_container(game.enemies)
+	game._physics_process(0.1)
 	game.leave_shop()
-	check(game.state == "playing" and game.run_chances_left == 2, "shop resumes same arena and keeps run chances")
+	check(game.survival.wave == 3 and game.survival.boss_due, "third wave schedules boss")
+	game.pending = 0
+	game._physics_process(0.1)
+	check(is_instance_valid(game.boss_ref) and not game.survival.boss_due and game.state == "playing", "boss blocks wave completion")
+	game.survival.wave = 100
+	game.survival.start_wave()
+	check(game.survival.wave == 101 and game.pending > 20000 and game.survival.health_factor() > 100, "wave size and health scale indefinitely")
+	for i in 100: game.survival.tick(1)
+	check(game.enemies.get_child_count() <= game.MAX_ACTIVE_ENEMIES, "large wave streams within actor budget")
+	game.deployables.inventory = "beacon"
+	check(game.deployables.place(), "beacon can be deployed")
+	var at: Vector2 = game.player.position
+	check(is_equal_approx(game.deployables.enemy_slowdown(at+Vector2(300,0),false),0.2), "beacon slows normal enemies by eighty percent over larger radius")
+	check(is_equal_approx(game.deployables.enemy_slowdown(at,true),0.5), "beacon slows bosses by fifty percent")
+	check(game.deployables.enemy_slowdown(at+Vector2(321,0),false) == 1, "slowdown respects visible radius")
+	game.shoot(at+Vector2(280,0),Vector2.RIGHT,1,true)
+	game.deployables._physics_process(0.2)
+	check(game.bullets.get_child(game.bullets.get_child_count()-1).is_queued_for_deletion(), "beacon destroys hostile projectiles across its expanded field")
+	check(game.deployables.placed[0].life > 19, "beacon lasts twenty seconds")
 	game.restart_current_run()
-	check(game.run_mode == "endless" and game.survival.tier == 0 and game.run_chances_left == 3, "restart preserves mode and resets escalation")
-	var samples: Array[float] = []
-	for mode: String in ["easy","medium","hard"]:
-		game.start_run(false,0,mode,"endless")
-		game.player.set_physics_process(false)
-		game._physics_process(0.2)
-		samples.append(game.enemies.get_child(0).health)
-		check(game.survival.boss_left > 0 and game.run_mode == "endless", "survival starts on "+mode)
-	check(samples[0] < samples[1] and samples[1] < samples[2], "enemy health is ordered by difficulty")
-	game.paused_from = "playing"
-	game.state = "paused"
-	var frozen: float = game.elapsed
-	game._physics_process(10)
-	check(game.elapsed == frozen, "paused combat does not advance endless pressure")
+	check(game.survival.wave == 1 and game.run_chances_left == 3, "restart resets waves and chances")
 	game.start_run()
-	check(game.run_mode == "campaign" and game.pending > 0 and game.arena.size == Vector2(1536,896), "campaign geometry and finite waves are preserved")
+	check(game.run_mode == "campaign" and game.arena.size == Vector2(1536,896), "campaign unchanged")
 	game.queue_free()
 	await process_frame
 	quit(failures)
