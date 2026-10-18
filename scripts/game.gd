@@ -149,7 +149,18 @@ var berserk_cd := 0.0
 var echo_cd := 0.0
 var berserk_used := false
 
+@export var mobile_profile_override := false
+func mobile_optimized() -> bool:
+	return mobile_profile_override or OS.has_feature("mobile")
+func mob_limit() -> int: return 32 if mobile_optimized() else MAX_ACTIVE_ENEMIES
+func wave_factor() -> float: return 0.65 if mobile_optimized() else 1.0
+func projectile_limit(hostile: bool = true) -> int:
+	return (180 if hostile else 240) if mobile_optimized() else (480 if hostile else 900)
+
 func _ready() -> void:
+	if mobile_optimized():
+		get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
+		get_viewport().msaa_2d = Viewport.MSAA_DISABLED
 	menu_loop_stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	menu_loop_stream.loop_begin = 0
 	menu_loop_stream.loop_end = int(round(menu_loop_stream.get_length() * menu_loop_stream.mix_rate))
@@ -301,12 +312,12 @@ func start_room() -> void:
 	player.rewind_ready = true
 	player.immunity = 1.5
 	player.dash_cd = 0
-	wave_total = ceili((132 if room == 12 else 36 + room * 6) * float(difficulty().waves))
+	wave_total = ceili((132 if room == 12 else 36 + room * 6) * float(difficulty().waves) * wave_factor())
 	pending = wave_total
 	phase_kills = 0
 	boss_spawned = false
 	boss_ref = null
-	boss_summon_budget = ceili((12 + room) * float(difficulty().waves))
+	boss_summon_budget = ceili((12 + room) * float(difficulty().waves) * wave_factor())
 	boss_summon_cd = 7.0
 	spawn_cd = 0.15
 	clear_wait = 0
@@ -365,7 +376,7 @@ func _physics_process(delta: float) -> void:
 			spawn_cd -= delta
 			if pending > 0 and spawn_cd <= 0:
 				var batch := mini(pending, 6 + room / 3)
-				batch = mini(batch, MAX_ACTIVE_ENEMIES - enemies.get_child_count())
+				batch = mini(batch, mob_limit() - enemies.get_child_count())
 				for i in maxi(0, batch):
 					spawn_enemy()
 					pending -= 1
@@ -434,9 +445,10 @@ func spawn_enemy(is_boss: bool = false) -> void:
 		enemy.speed = 90 + room * 3
 		if enemy.god:
 			enemy.health = 520
-			enemy.radius = 44
+			enemy.radius = 88
 			enemy.speed = 165
 	if enemy.kind == 2 and not is_boss:
+		enemy.radius = 21
 		enemy.jupiter_role = rng.randi_range(0, 2)
 		enemy.health *= 1.35 if enemy.jupiter_role == 2 else 1.15
 	# Later arenas must remain threatening after repeated damage purchases.
@@ -479,9 +491,9 @@ func spawn_enemy(is_boss: bool = false) -> void:
 	enemies.add_child(enemy)
 	burst(enemy.position, planet().accent)
 
-func shoot(origin: Vector2, direction: Vector2, amount: float, hostile: bool, is_echo: bool = false) -> void:
-	if not hostile and bullets.get_child_count() >= 900:
-		return
+func shoot(origin: Vector2, direction: Vector2, amount: float, hostile: bool, is_echo: bool = false) -> Node2D:
+	if bullets.get_child_count() >= projectile_limit(hostile):
+		return null
 	var bullet := Projectile.instantiate()
 	bullet.game = self
 	bullet.position = origin + direction * (35 if hostile else 25)
@@ -495,6 +507,7 @@ func shoot(origin: Vector2, direction: Vector2, amount: float, hostile: bool, is
 	bullet.radius = 6 if hostile else clampf(3.5 + amount, 4, 8)
 	bullets.add_child(bullet)
 	fx.sparks(bullet.position, Color("78dfff") if bullet.frost else (Color("ff7e8d") if hostile else Color("ffe5a0")), 2, 55)
+	return bullet
 
 func blocked(point: Vector2, radius: float) -> bool:
 	for obstacle in obstacles:
@@ -522,7 +535,7 @@ func burst(at: Vector2, color: Color) -> void:
 func begin_boss() -> void:
 	boss_spawned = true
 	spawn_enemy(true)
-	pending += 14 + room * 2
+	pending += ceili((14 + room * 2)*wave_factor())
 	time_left += 20
 	message = boss_ref.display_name() + " • elimine o chefe e os reforços!"
 	message_time = 4
@@ -530,7 +543,7 @@ func begin_boss() -> void:
 		environment_clock = 3.5
 		message = boss_ref.display_name() + " • cuidado com a geada e os reforços!"
 	if boss_ref.superboss:
-		pending += 10
+		pending += ceili(10*wave_factor())
 		boss_summon_budget += 8
 		boss_summon_cd = 5.5
 		time_left += 100 if boss_ref.god else 50

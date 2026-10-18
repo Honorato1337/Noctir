@@ -2,6 +2,11 @@ extends Node2D
 
 const Names = preload("res://scripts/enemy_names.gd")
 
+var visual_tick := 0.0
+var obstruction_tick := 0.0
+var cached_obstructed := false
+var separation_tick := 0.0
+var cached_separation := Vector2.ZERO
 var attack_visual_time := 0.0
 var final_spin_time := 0.0
 var final_rotation := 0.0
@@ -54,9 +59,28 @@ func _ready() -> void:
 	update_visual()
 
 func _process(_delta: float) -> void:
+	if is_instance_valid(game) and game.mobile_optimized():
+		visual_tick += _delta
+		if visual_tick < 1.0/30: return
+		visual_tick = 0
 	update_visual()
 
 func update_visual() -> void:
+	# Transform only artwork; movement, warnings and collision keep world axes.
+	var pulse := sin(age*7)
+	mars_visual.scale = Vector2(2*(1+.07*pulse),2*(1-.07*pulse))
+	mars_visual.position.y = -absf(pulse)*3
+	mars_boss_visual.rotation = sin(age*3)*.04
+	mars_boss_visual.scale = Vector2(3,3*(1+.035*sin(age*4)))
+	mars_super_visual.scale = Vector2(2*(1+.05*sin(age*5)),2*(1-.07*sin(age*5)))
+	neptune_visual.position.y = -4-sin(age*4)*5
+	neptune_visual.rotation = sin(age*3)*.08
+	neptune_boss_visual.position.y = -absf(sin(age*4))*7
+	neptune_boss_visual.rotation = sin(age*3)*.05
+	neptune_super_visual.position.y = -absf(sin(age*6))*9
+	neptune_super_visual.rotation = sin(age*6)*.035
+	jupiter_visual.rotation = age*9 if jupiter_role == 0 and charge_phase >= 1.95 else sin(age*3)*.06
+	jupiter_visual.position.y = -absf(sin(age*4))*3
 	jupiter_visual.visible = kind == 2 and not boss and not god
 	if jupiter_visual.visible:
 		jupiter_visual.modulate = Color(2,2,2) if hit_flash > 0 else Color.WHITE
@@ -141,11 +165,15 @@ func _physics_process(delta: float) -> void:
 	var distance: float = position.distance_to(game.player.position)
 	var chase := direction
 	route_clock -= delta
-	var obstructed := false
-	for step in range(1, int(distance / 16) + 1):
-		if game.blocked(position + direction * step * 16, radius + 4):
-			obstructed = true
-			break
+	obstruction_tick -= delta
+	if not game.mobile_optimized() or obstruction_tick <= 0:
+		obstruction_tick = .2
+		cached_obstructed = false
+		for step in range(1, int(distance / 16) + 1):
+			if game.blocked(position + direction * step * 16, radius + 4):
+				cached_obstructed = true
+				break
+	var obstructed := cached_obstructed
 	if obstructed:
 		if route_clock <= 0:
 			route_points = game.get_node("Arena").route(position, game.player.position, radius)
@@ -186,13 +214,17 @@ func _physics_process(delta: float) -> void:
 		else:
 			final_rotation = rotate_toward(final_rotation, 0, delta * TAU * 2)
 	motion *= game.deployables.enemy_slowdown(position, boss)
-	# Soft separation avoids a single unreadable stack of enemies.
-	for other in game.enemies.get_children():
-		if other == self:
-			continue
-		var gap: Vector2 = position - other.position
-		if gap.length_squared() < pow(radius + other.radius + 5, 2):
-			motion += gap.normalized() * 75
+	# Cache the local separation force on mobile instead of scanning every tick.
+	separation_tick -= delta
+	if not game.mobile_optimized() or separation_tick <= 0:
+		separation_tick = .12
+		cached_separation = Vector2.ZERO
+		for other in game.enemies.get_children():
+			if other == self or other.is_queued_for_deletion(): continue
+			var gap: Vector2 = position-other.position
+			if gap.length_squared() < pow(radius+other.radius+5,2):
+				cached_separation += gap.normalized()*75
+	motion += cached_separation
 	game.move_actor(self, motion * delta, radius)
 	if distance < radius + 13:
 		game.player.hurt(game.enemy_damage())
@@ -259,7 +291,7 @@ func tick_jupiter_mob(delta: float, direction: Vector2) -> void:
 			if jupiter_role == 2:
 				game.encounters.add_field("gravity", position, 210, .8, 2.4, self, 130)
 			for i in (3 if jupiter_role == 2 else 5):
-				if game.bullets.get_child_count() >= 480:
+				if game.bullets.get_child_count() >= game.projectile_limit():
 					break
 				var count := 3 if jupiter_role == 2 else 5
 				game.shoot(position, storm_aim.rotated((i - (count - 1) * .5) * .13), 1, true)
@@ -308,7 +340,7 @@ func tick_superboss(delta: float) -> void:
 		super_phase = phase
 		game.message = "%s • FASE %d" % [superboss_name(), phase]
 		game.message_time = 2.5
-		game.pending += 8
+		game.pending += ceili(8*game.wave_factor())
 		game.encounters.clear_owner(self)
 		super_followups.clear()
 		super_telegraph = 0
@@ -325,8 +357,9 @@ func tick_superboss(delta: float) -> void:
 	super_aura_timer -= delta
 	if super_aura_timer <= 0:
 		super_aura_timer = 0.12
-		for i in 8:
-			var at := position + Vector2.RIGHT.rotated(age + i * TAU / 8) * (radius + 24)
+		var satellites := 3 if game.mobile_optimized() else 8
+		for i in satellites:
+			var at := position + Vector2.RIGHT.rotated(age + i * TAU / satellites) * (radius + 24)
 			game.fx.sparks(at, game.planet().accent, 3, 85)
 	for index in range(super_followups.size() - 1, -1, -1):
 		super_followups[index].delay -= delta
@@ -378,10 +411,10 @@ func fire_super_layer(pattern: int, layer: int) -> void:
 	game.fx.sparks(position, game.planet().accent, 40, 150)
 
 func super_shard(direction: Vector2, velocity: float, offset: Vector2 = Vector2.ZERO) -> void:
-	if game.bullets.get_child_count() >= 480:
+	if game.bullets.get_child_count() >= game.projectile_limit():
 		return
-	game.shoot(position + offset + direction * (radius - 20), direction, 1, true)
-	var bullet = game.bullets.get_child(game.bullets.get_child_count() - 1)
+	var bullet = game.shoot(position + offset + direction * (radius - 20), direction, 1, true)
+	if bullet == null: return
 	bullet.velocity = direction * velocity*1.18
 	bullet.radius = 5
 	bullet.life = 3.5

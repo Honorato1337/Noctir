@@ -22,12 +22,12 @@ func start_wave() -> void:
 	wave += 1
 	tier = wave - 1
 	pressure = {"easy":0.75,"medium":1.0,"hard":1.4}[game.run_difficulty]
-	wave_total = ceili((24 + tier*12 + tier*tier*2)*pressure)
+	wave_total = ceili((24 + tier*12 + tier*tier*2)*pressure*game.wave_factor())
 	game.pending = wave_total
 	game.phase_kills = 0
 	boss_due = wave % 3 == 0
 	game.boss_ref = null
-	game.boss_summon_budget = 12 + mini(48,tier*2)
+	game.boss_summon_budget = ceili((12 + mini(48,tier*2))*game.wave_factor())
 	spawn_left = 0.2
 	game.message = "HORDA %d / %d INIMIGOS%s" % [wave,wave_total," + CHEFE" if boss_due else ""]
 	game.message_time = 4
@@ -58,12 +58,12 @@ func tick(delta: float) -> void:
 		game.loot.drops.pop_front()
 	spawn_left -= delta
 	if game.pending > 0 and spawn_left <= 0:
-		var batch := mini(ceili((4+tier*0.7)*pressure), mini(game.pending,game.MAX_ACTIVE_ENEMIES-1-game.enemies.get_child_count()))
+		var batch := mini(ceili((4+tier*0.7)*pressure*game.wave_factor()), mini(game.pending,game.mob_limit()-1-game.enemies.get_child_count()))
 		for i in maxi(0,batch):
 			game.spawn_enemy()
 			game.pending -= 1
 		spawn_left = maxf(0.25,0.8/(pressure+tier*0.08))
-	if boss_due and game.pending == 0 and game.enemies.get_child_count() < game.MAX_ACTIVE_ENEMIES:
+	if boss_due and game.pending == 0 and game.enemies.get_child_count() < game.mob_limit():
 		boss_due = false
 		boss_number += 1
 		game.spawn_enemy(true)

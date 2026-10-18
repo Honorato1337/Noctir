@@ -27,7 +27,7 @@ func apply_to(game: Node2D) -> void:
 	var rect: Rect2 = $Floor.get_rect()
 	$Border.points = PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y), rect.position])
 	build_navigation(game, navigation, 16)
-	build_navigation(game, boss_navigation, 46)
+	build_navigation(game, boss_navigation, 90 if sector_index == 4 else 46)
 
 func spawn_gates() -> Array[Vector2]:
 	var result: Array[Vector2] = []

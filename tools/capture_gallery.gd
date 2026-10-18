@@ -10,7 +10,8 @@ func shot(file: String, caption: String) -> void:
 	assert(root.get_texture().get_image().save_png(DEST+file+".png") == OK)
 	records.append({"file":file+".png","caption":caption,"width":1920,"height":1080})
 	print("CAPTURED "+file)
-func prepare(room: int, endless: bool = false) -> void:
+func prepare(room: int, endless: bool = false, mobile: bool = false) -> void:
+	game.mobile_profile_override = mobile
 	game.preferences.touch_mode = 2
 	game.start_run(false,room,"hard","endless" if endless else "campaign")
 	game.set_physics_process(false)
@@ -119,8 +120,8 @@ func run() -> void:
 	game.loot.coins = 93
 	game.board_after_clear(true)
 	await shot("08-loja","Loja com prazo de 20 segundos e penalidade por atraso")
-	prepare(8)
-	populate(28)
+	prepare(8,false,true)
+	populate(18)
 	game.preferences.touch_mode = 1
 	shoot_scene()
 	await shot("09-mobile","Interface com controles por toque")

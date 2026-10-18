@@ -62,12 +62,13 @@ animation = &"walk"
 [node name="JupiterVisual" type="AnimatedSprite2D" parent="."]
 visible = false
 texture_filter = 1
+scale = Vector2(1.5,1.5)
 sprite_frames = ExtResource("jupiter")
 animation = &"idle"
 
 [node name="FinalVisual" type="AnimatedSprite2D" parent="."]
 visible = false
 texture_filter = 1
-scale = Vector2(2,2)
+scale = Vector2(4,4)
 sprite_frames = ExtResource("final")
 animation = &"walk"

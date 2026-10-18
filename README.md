@@ -20,6 +20,7 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 - **Bomba com alcance limitado:** no máximo 12 alvos próximos, com dano de 100%/50%/25% nas faixas de 120/240/360 px.
 - **Extração urgente:** quinze segundos para coletar e embarcar. Atrasar custa os três slots e um terço das moedas da run.
 - **Escolhas entre partidas:** melhorias permanentes, contratos por SpaceCoin, habilidades, Prestígio e skins.
+- **Celular mais leve:** menos inimigos por horda, até 32 ativos, partículas reduzidas e renderização interna com limites próprios de efeitos.
 - **Três dificuldades:** Fácil, Médio e Difícil; teclado, joystick e controles por toque.
 
 [Ver a espingarda em Loja → Equipamentos](docs/media/equipamentos-espingarda.png). Compra permanente de **3 SpaceCoins**, seleção salva e arma original gratuita.
@@ -119,3 +120,7 @@ Testes de referência: `tests/smoke.gd`, `tests/enemy_art.gd`, `tests/shotgun.gd
 Os sprites do astronauta, Guanapo, espingarda e inimigos foram criados pelo autor do projeto. As artes originais ficam preservadas em `assets/` e `asssets/astronauta/`. Há cenários e efeitos gerados durante o desenvolvimento; os chefes de Júpiter ainda utilizam visuais procedurais. O menu usa o áudio fornecido pelo autor, e as trilhas planetárias originais combinam eletrônica espacial com identidades próprias: Marte a 128 BPM, Netuno com post-punk a 160 BPM e Júpiter a 216 BPM.
 
 Projeto em desenvolvimento. As capturas mostram o estado atual da branch principal; os instaladores seguem a versão indicada na release.
+
+## Atualização 0.3.0
+
+Argos ficou duas vezes maior, e os Cubos da Tormenta, 50% maiores, com colisões e navegação ajustadas. As artes existentes ganharam pulsação, flutuação e pequenos saltos por transformação dos sprites. O Android possui perfil automático de desempenho; veja os [limites e detalhes](docs/CONFIGURACOES_E_CONTROLES.md#perfil-de-desempenho-do-celular-030).

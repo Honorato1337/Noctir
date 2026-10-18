@@ -16,13 +16,13 @@ func clear_owner(owner: Node) -> void:
 			fields.remove_at(index)
 
 func add_field(kind: String, at: Vector2, radius: float, warning: float, duration: float, owner: Node, power: float = 0) -> bool:
-	if fields.size() >= MAX_FIELDS:
+	if fields.size() >= (32 if game.mobile_optimized() else MAX_FIELDS):
 		return false
 	var mob_fields := 0
 	for field in fields:
 		if field.mob:
 			mob_fields += 1
-	if not owner.boss and mob_fields >= MAX_MOB_FIELDS:
+	if not owner.boss and mob_fields >= (8 if game.mobile_optimized() else MAX_MOB_FIELDS):
 		return false
 	if kind == "blast": radius *= 1.4
 	elif kind == "storm": radius *= 1.2
@@ -75,7 +75,7 @@ func super_attack(boss: Node2D, pattern: int) -> void:
 			# Rust bombardment and a finite reinforcement budget.
 			if pattern == 1 and game.boss_summon_budget > 0:
 				var count := mini(6 + boss.super_phase * 2, game.boss_summon_budget)
-				game.pending += count
+				game.pending += ceili(count*game.wave_factor())
 				game.boss_summon_budget -= count
 				game.fx.floating(boss.position, "ENXAME +%d" % count, Color("ffb676"))
 			for i in 4 + boss.super_phase:

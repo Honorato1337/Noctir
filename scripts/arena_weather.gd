@@ -24,7 +24,7 @@ func reset_room() -> void:
 	rng.seed = game.rng.randi()
 	clear_active(rng.randf_range(8, 13))
 	motes.clear()
-	for i in AMBIENT_PARTICLES:
+	for i in (40 if game.mobile_optimized() else AMBIENT_PARTICLES):
 		motes.append(Vector2(rng.randf_range(0, game.arena.size.x), rng.randf_range(0, game.arena.size.y)))
 
 func clear_active(delay: float = 8.0) -> void:
@@ -66,7 +66,7 @@ func start_event(forced_event: String = "") -> void:
 	queue_redraw()
 
 func add_strike(kind: String, at: Vector2) -> void:
-	if strikes.size() >= MAX_STRIKES: return
+	if strikes.size() >= (18 if game.mobile_optimized() else MAX_STRIKES): return
 	var lead := 1.7 if kind == "nitrogen" else (1.4 if kind in ["comet","void"] else (1.35 if kind == "meteor" else 1.1))
 	var radius := 100.0 if kind == "nitrogen" else (104.0 if kind == "meteor" else (96.0 if kind == "comet" else (72.0 if kind == "void" else (60.0 if kind == "lightning" else 44.0))))
 	strikes.append({"kind": kind, "pos": at.clamp(game.arena.position + Vector2.ONE * 50, game.arena.end - Vector2.ONE * 50), "age": 0.0, "warning": lead, "duration": 3.0 if kind == "nitrogen" else 0.32, "radius": radius, "hit": false})
@@ -167,7 +167,7 @@ func _draw() -> void:
 		draw_arc(vortex.pos, vortex.radius, 0, TAU, 48, Color(color, 0.25), 2)
 		draw_circle(vortex.pos, vortex.core, Color(color, 0.23 if armed else 0.06))
 		draw_arc(vortex.pos, vortex.core, 0, TAU, 28, Color(color, 0.95 if armed else 0.55), 3)
-		for i in 72:
+		for i in (24 if game.mobile_optimized() else 72):
 			var angle: float = i * 2.39996 + age * (1.6 + (i % 3) * 0.3)
 			var radius: float = vortex.core * (0.2 + float(i % 11) / 11 * 1.25)
 			var at: Vector2 = vortex.pos + Vector2.RIGHT.rotated(angle) * radius
