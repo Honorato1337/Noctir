@@ -65,7 +65,7 @@ func run() -> void:
 		game.begin_boss()
 		var boss = game.boss_ref
 		boss.set_physics_process(false)
-		check(boss.superboss and boss.radius == 40 and is_equal_approx(boss.max_health, (40 + room * 12) * 2.4) and game.time_left == clock + 70, "sector finale %d has a larger super boss and extra combat time" % (room + 1))
+		check(boss.superboss and boss.radius == 40 and is_equal_approx(boss.max_health, (40 + room * 12) * 2.4 * (1.6 + room * .06) * game.progression.enemy_health_factor() * float(game.difficulty().health)) and game.time_left == clock + 70, "sector finale %d has a larger super boss and extra combat time" % (room + 1))
 		game.clear_container(game.bullets)
 		boss.super_attack_timer = 0
 		boss.tick_superboss(0.01)

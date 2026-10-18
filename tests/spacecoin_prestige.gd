@@ -70,7 +70,7 @@ func run() -> void:
 	game.panel.find_child("EquipmentTab").pressed.emit()
 	check(game.panel.find_child("Equipment").visible and not game.panel.find_child("Attributes").visible and game.panel.find_child("PermanentWallet").text.contains("SPACECOIN 8"), "shop opens the marked equipment test page with its special wallet")
 	var previews: Array[Node] = game.panel.find_child("Equipment").get_node("Catalog").get_children()
-	check(previews.size() == 3 and previews[0].disabled and previews[1].disabled and previews[2].disabled, "future suit, weapon and module previews cannot charge currency")
+	check(previews.size() == 3 and previews[2].disabled and game.panel.find_child("OriginalWeaponButton") != null and game.panel.find_child("ShotgunWeaponButton") != null and game.progression.space_coins == 8, "equipment exposes both weapons, keeps the future module disabled and does not spend on opening")
 	await shot("equipment-test")
 	game.panel.find_child("SkinsTab").pressed.emit()
 	check(game.panel.find_child("Skins").visible, "skins catalog is available from the Prestige shop")

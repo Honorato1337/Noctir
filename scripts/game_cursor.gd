@@ -1,14 +1,33 @@
-extends Node
+extends CanvasLayer
+
 const ART = preload("res://assets/ui/Mira.png")
-var cursor_texture: ImageTexture
+const INVERT = preload("res://scripts/cursor_invert.gdshader")
+var pointer: Sprite2D
+var previous_mouse_mode: Input.MouseMode
+
 func _ready() -> void:
-	if OS.has_feature("mobile") or DisplayServer.get_name() == "headless": return
-	var pixels := ART.get_image()
-	pixels.resize(32,32,Image.INTERPOLATE_NEAREST)
-	cursor_texture = ImageTexture.create_from_image(pixels)
-	Input.set_custom_mouse_cursor(cursor_texture,Input.CURSOR_ARROW,Vector2(16,16))
-	Input.set_custom_mouse_cursor(cursor_texture,Input.CURSOR_CROSS,Vector2(16,16))
-	Input.set_custom_mouse_cursor(cursor_texture,Input.CURSOR_POINTING_HAND,Vector2(16,16))
+ if OS.has_feature("mobile") or DisplayServer.get_name() == "headless": return
+ layer = 128
+ previous_mouse_mode = Input.mouse_mode
+ Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+ pointer = Sprite2D.new()
+ pointer.texture = ART
+ pointer.scale = Vector2(2, 2)
+ pointer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+ var invert_material := ShaderMaterial.new()
+ invert_material.shader = INVERT
+ pointer.material = invert_material
+ add_child(pointer)
+ _update_pointer()
+
+func _process(_delta: float) -> void:
+ _update_pointer()
+
+func _update_pointer() -> void:
+ if not is_instance_valid(pointer): return
+ var mouse := get_viewport().get_mouse_position()
+ pointer.position = mouse
+ pointer.visible = DisplayServer.window_is_focused() and get_viewport().get_visible_rect().has_point(mouse)
+
 func _exit_tree() -> void:
-	if OS.has_feature("mobile") or DisplayServer.get_name() == "headless": return
-	for shape in [Input.CURSOR_ARROW,Input.CURSOR_CROSS,Input.CURSOR_POINTING_HAND]: Input.set_custom_mouse_cursor(null,shape)
+ if is_instance_valid(pointer): Input.mouse_mode = previous_mouse_mode

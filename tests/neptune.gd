@@ -54,7 +54,7 @@ func run() -> void:
 		shards = shards and bullet.frost and bullet.hostile
 	check(shards, "enemy shots use the cold shard visual")
 	game.begin_boss()
-	check(game.environment_clock == 3.5 and game.message.contains("BOREAL"), "guardian entry starts a telegraphed frost cycle")
+	check(game.environment_clock == 3.5 and game.message.contains(game.boss_ref.superboss_name()), "guardian entry starts a telegraphed frost cycle")
 	game.room = 0
 	game.start_room()
 	game.environment_clock = 5.5

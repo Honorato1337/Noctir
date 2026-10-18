@@ -213,9 +213,11 @@ func fire(origin: Vector2, direction: Vector2, is_echo: bool) -> Array[Vector2]:
 	for i in range(1, pellet_pairs + 1):
 		directions.append(direction.rotated(i * 0.16))
 		directions.append(direction.rotated(-i * 0.16))
+	var fired: Array[Vector2] = []
 	for vector in directions:
-		game.shoot(origin, vector, shot_damage(), false, is_echo)
-	return directions
+		if game.shoot(origin, vector, shot_damage(), false, is_echo) != null:
+			fired.append(vector)
+	return fired
 
 func shot_damage() -> float:
 	return damage * (1.5 if overdrive_time > 0 else 1.0) * (1.25 if berserk_time > 0 else 1.0)
@@ -224,8 +226,8 @@ func fire_berserk() -> Array[Vector2]:
 	var directions: Array[Vector2] = []
 	for index in 18:
 		var direction := Vector2.RIGHT.rotated(index * TAU / 18 + clock * .8)
-		directions.append(direction)
-		game.shoot(position, direction, shot_damage(), false)
+		if game.shoot(position, direction, shot_damage(), false) != null:
+			directions.append(direction)
 	game.play_sfx("shot", position)
 	game.fx.sparks(position, Color("ffad70"), 5, 100)
 	return directions

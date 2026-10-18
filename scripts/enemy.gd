@@ -12,6 +12,8 @@ var final_spin_time := 0.0
 var final_rotation := 0.0
 var final_dashing := false
 @onready var jupiter_visual: AnimatedSprite2D = $JupiterVisual
+@onready var jupiter_boss_visual: AnimatedSprite2D = $JupiterBossVisual
+@onready var jupiter_super_visual: AnimatedSprite2D = $JupiterSuperVisual
 @onready var final_visual: AnimatedSprite2D = $FinalVisual
 
 var game: Node2D
@@ -93,6 +95,7 @@ func update_visual() -> void:
 			jupiter_visual.animation = &"idle"
 			jupiter_visual.frame = 0
 		jupiter_visual.pause()
+	update_jupiter_boss_visual()
 	final_visual.visible = god
 	if final_visual.visible:
 		final_visual.modulate = Color(2,2,2) if hit_flash > 0 else Color.WHITE
@@ -152,6 +155,32 @@ func update_visual() -> void:
 		mars_visual.play(&"walk")
 	else:
 		mars_visual.pause()
+
+func update_jupiter_boss_visual() -> void:
+	jupiter_boss_visual.visible = kind == 2 and boss and not superboss and not god
+	jupiter_super_visual.visible = kind == 2 and superboss and not god
+	var dashing := boss and not boss_warning and fmod(age, 3.2) >= 2.55
+	for sprite: AnimatedSprite2D in [jupiter_boss_visual, jupiter_super_visual]:
+		if not sprite.visible:
+			sprite.pause()
+			continue
+		# Use combat time for animation: pause freezes frames and transforms together.
+		sprite.frame = int(age * 12) % sprite.sprite_frames.get_frame_count(&"walk")
+		sprite.pause()
+		sprite.modulate = Color(2, 2, 2) if hit_flash > 0 else Color.WHITE
+		var size := 2.9 if superboss else 2.0
+		var pulse := sin(age * 6) * (.06 if super_telegraph > 0 else .025)
+		sprite.scale = Vector2(size * (1 + pulse), size * (1 - pulse))
+		if superboss:
+			# Orbiting fragments roll around the core; the windup trembles before release.
+			sprite.rotation = age * .65 + (sin(age * 35) * .09 if super_telegraph > 0 else 0.0)
+			sprite.position.y = -absf(sin(age * 4.5)) * 7
+		else:
+			# Segmented armor floats, then tumbles with the charge.
+			sprite.rotation = age * 10 if dashing else sin(age * 2.5) * .12
+			sprite.position.y = -absf(sin(age * 3.5)) * 5
+		if boss_warning:
+			sprite.position.y += sin(age * 40) * 2
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(game) or game.state != "playing" or is_queued_for_deletion():
@@ -424,7 +453,7 @@ func _draw() -> void:
 		return
 	var color: Color = Color.WHITE if hit_flash > 0 else (game.planet().enemy if god else game.Planets.DATA[mini(kind, 2)].enemy)
 	draw_circle(Vector2(0, 8), radius + 2, Color(0, 0, 0, 0.25))
-	var sprite_body := kind == 0 or (kind == 1 and not god) or (kind == 2 and not boss) or god
+	var sprite_body := kind == 0 or (kind == 1 and not god) or kind == 2 or god
 	if sprite_body:
 		pass
 	elif god:

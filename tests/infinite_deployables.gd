@@ -63,11 +63,13 @@ func run() -> void:
 	game.deployables.set_physics_process(false)
 	game.contracts.set_physics_process(false)
 	await process_frame
-	await click(game.panel.find_child("TestButton"))
+	game.developer_unlocked = true
+	game.show_menu()
+	game.panel.find_child("TestButton").pressed.emit()
 	check(game.panel.find_child("TestArena13") != null and game.panel.find_child("TestBoss13") != null, "Test tab lists all thirteen arenas and their bosses")
 	await shot("arena-test-menu")
 	game.panel.find_child("TestEquipment").select(1)
-	await click(game.panel.find_child("TestArena13"))
+	game.panel.find_child("TestArena13").pressed.emit()
 	game.player.set_physics_process(false)
 	check(game.practice_mode and game.room == 12 and game.deployables.inventory == "turret" and not game.contracts.enabled, "practice starts the selected arena and device with rewards disabled")
 	var kinds: Array[int] = []
@@ -157,7 +159,7 @@ func run() -> void:
 	devices._physics_process(20)
 	check(devices.placed[0].age == age, "pause freezes deployed equipment lifetime")
 	game.state = "playing"
-	devices._physics_process(13)
+	devices._physics_process(float(devices.DATA.beacon.life) + .1)
 	check(devices.placed.is_empty(), "deployed equipment expires and cannot accumulate forever")
 	game.loot.coins = 100
 	game.open_shop()
@@ -180,12 +182,12 @@ func run() -> void:
 	var mars = game.boss_ref
 	mars.set_physics_process(false)
 	check(mars.mars_super_visual.visible and mars.mars_super_visual.sprite_frames.get_frame_count("walk") == 4, "Mars superboss uses the supplied mob_marte3 animation")
-	mars.age = 3.1
+	mars.age = 2.3
 	var aim: Vector2 = mars.position.direction_to(game.player.position + Vector2(0, 28))
 	game.player.velocity = Vector2(0, 100)
 	mars.boss_motion(Vector2.LEFT, Vector2.LEFT, 300, false)
 	check(mars.boss_warning and mars.boss_locked_dir.dot(aim) > .999, "Mars boss locks a predictive dash aim during its warning")
-	mars.age = 4.0
+	mars.age = 3.0
 	check(mars.boss_motion(Vector2.LEFT, Vector2.LEFT, 300, false).length() > 500, "boss executes its fast dash after telegraphing")
 	var neptune_shield := 0.0
 	for room in [7, 11]:

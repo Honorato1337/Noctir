@@ -15,6 +15,9 @@
 [ext_resource type="SpriteFrames" path="res://assets/mobs_jupiter/mob-jupiter1/jupiter_frames.tres" id="jupiter"]
 [ext_resource type="SpriteFrames" path="res://assets/mob_final/final_frames.tres" id="final"]
 
+[ext_resource type="SpriteFrames" path="res://assets/mobs_jupiter/mob_jupiter2/boss_frames.tres" id="jupiter_boss"]
+[ext_resource type="SpriteFrames" path="res://assets/mobs_jupiter/mob_jupiter3/super_frames.tres" id="jupiter_super"]
+
 [node name="Enemy" type="Node2D"]
 script = ExtResource("1")
 
@@ -71,4 +74,18 @@ visible = false
 texture_filter = 1
 scale = Vector2(4,4)
 sprite_frames = ExtResource("final")
+animation = &"walk"
+
+[node name="JupiterBossVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(2,2)
+sprite_frames = ExtResource("jupiter_boss")
+animation = &"walk"
+
+[node name="JupiterSuperVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(2.9,2.9)
+sprite_frames = ExtResource("jupiter_super")
 animation = &"walk"

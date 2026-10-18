@@ -1,0 +1,53 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-0.png" id="f0"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-1.png" id="f1"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-2.png" id="f2"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-3.png" id="f3"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-4.png" id="f4"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-5.png" id="f5"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-6.png" id="f6"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-7.png" id="f7"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-8.png" id="f8"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-9.png" id="f9"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-10.png" id="f10"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-11.png" id="f11"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-12.png" id="f12"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-13.png" id="f13"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-14.png" id="f14"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-15.png" id="f15"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-16.png" id="f16"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-17.png" id="f17"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-18.png" id="f18"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-19.png" id="f19"]
+[ext_resource type="Texture2D" path="res://assets/mobs_jupiter/mob_jupiter3/pixil-frame-20.png" id="f20"]
+
+[resource]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": ExtResource("f0")},
+{"duration": 1.0, "texture": ExtResource("f1")},
+{"duration": 1.0, "texture": ExtResource("f2")},
+{"duration": 1.0, "texture": ExtResource("f3")},
+{"duration": 1.0, "texture": ExtResource("f4")},
+{"duration": 1.0, "texture": ExtResource("f5")},
+{"duration": 1.0, "texture": ExtResource("f6")},
+{"duration": 1.0, "texture": ExtResource("f7")},
+{"duration": 1.0, "texture": ExtResource("f8")},
+{"duration": 1.0, "texture": ExtResource("f9")},
+{"duration": 1.0, "texture": ExtResource("f10")},
+{"duration": 1.0, "texture": ExtResource("f11")},
+{"duration": 1.0, "texture": ExtResource("f12")},
+{"duration": 1.0, "texture": ExtResource("f13")},
+{"duration": 1.0, "texture": ExtResource("f14")},
+{"duration": 1.0, "texture": ExtResource("f15")},
+{"duration": 1.0, "texture": ExtResource("f16")},
+{"duration": 1.0, "texture": ExtResource("f17")},
+{"duration": 1.0, "texture": ExtResource("f18")},
+{"duration": 1.0, "texture": ExtResource("f19")},
+{"duration": 1.0, "texture": ExtResource("f20")}
+],
+"loop": true,
+"name": &"walk",
+"speed": 12.0
+}]
