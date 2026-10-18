@@ -24,6 +24,9 @@ func add_field(kind: String, at: Vector2, radius: float, warning: float, duratio
 			mob_fields += 1
 	if not owner.boss and mob_fields >= MAX_MOB_FIELDS:
 		return false
+	if kind == "blast": radius *= 1.4
+	elif kind == "storm": radius *= 1.2
+	elif kind == "frost": radius *= 1.15
 	var center: Vector2 = game.arena.get_center()
 	var point: Vector2 = at.clamp(game.arena.position + Vector2.ONE * 50, game.arena.end - Vector2.ONE * 50)
 	var gap_angle := point.direction_to(center).angle()

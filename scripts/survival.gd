@@ -34,7 +34,7 @@ func start_wave() -> void:
 	game.player.immunity = maxf(game.player.immunity,1.5)
 
 func health_factor() -> float:
-	return 1.0 + tier * 0.22 + tier * tier * 0.014
+	return pow(1.35,tier)*(1.0+tier*0.08)
 
 func speed_factor() -> float:
 	return minf(1.8, 1.05 + tier * 0.035)

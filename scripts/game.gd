@@ -435,6 +435,8 @@ func spawn_enemy(is_boss: bool = false) -> void:
 	if enemy.kind == 2 and not is_boss:
 		enemy.jupiter_role = rng.randi_range(0, 2)
 		enemy.health *= 1.35 if enemy.jupiter_role == 2 else 1.15
+	# Later arenas must remain threatening after repeated damage purchases.
+	enemy.health *= (1.6 + room*0.06) if is_boss else (1.4 + room*0.07)
 	enemy.health *= progression.enemy_health_factor() * float(difficulty().health)
 	enemy.speed *= float(difficulty().speed)
 	enemy.speed *= 1 + .45 * progression.prestige_cycles / (progression.prestige_cycles + 8.0)
@@ -479,7 +481,7 @@ func shoot(origin: Vector2, direction: Vector2, amount: float, hostile: bool, is
 	var bullet := Projectile.instantiate()
 	bullet.game = self
 	bullet.position = origin + direction * (35 if hostile else 25)
-	bullet.velocity = direction * (225 * float(difficulty().bullets) if hostile else 660)
+	bullet.velocity = direction * (255 * float(difficulty().bullets) if hostile else 660)
 	bullet.damage = amount * enemy_damage() if hostile else amount
 	bullet.hostile = hostile
 	if hostile and run_mode == "endless":
@@ -1209,6 +1211,11 @@ func play_planet_music() -> void:
 		$PlanetMusic.stream = planet_music_stream
 		$PlanetMusic.volume_db = -80.0 if smoke_mode else -16.0
 		$PlanetMusic.play()
+
+func enemy_ability_rate() -> float:
+	var stage: int = survival.tier if run_mode == "endless" else room
+	var mode: float = {"easy":0.9,"medium":1.0,"hard":1.1}[run_difficulty]
+	return (1.2+minf(stage*0.025,0.4))*mode
 
 func enemy_damage() -> int:
 	return 1 + progression.prestige_cycles / 4

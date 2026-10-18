@@ -106,7 +106,7 @@ func _physics_process(delta: float) -> void:
 		return
 	age += delta
 	hit_flash -= delta
-	shot_cd -= delta
+	shot_cd -= delta*game.enemy_ability_rate()
 	var direction: Vector2 = position.direction_to(game.player.position)
 	var distance: float = position.distance_to(game.player.position)
 	var chase := direction
@@ -129,14 +129,14 @@ func _physics_process(delta: float) -> void:
 		# Reposition around cover even when already within shooting range.
 		motion *= 1.0 if obstructed or distance > 240 else (-0.7 if distance < 150 else 0.0)
 	elif kind == 2 and (boss or jupiter_role == 0):
-		charge_phase = fmod(age, 3.0)
-		if charge_phase < 1.5:
+		charge_phase = fmod(age, 2.7)
+		if charge_phase < 1.35:
 			charge_dir = direction
 			motion *= 0.6
-		elif charge_phase < 2.1:
+		elif charge_phase < 1.95:
 			motion = Vector2.ZERO
 		else:
-			motion = charge_dir * speed * 3.2
+			motion = charge_dir * speed * 4.4
 			if not boss:
 				charge_trail_cd -= delta
 				if charge_trail_cd <= 0:
@@ -220,7 +220,7 @@ func tick_jupiter_mob(delta: float, direction: Vector2) -> void:
 		storm_windup -= delta
 		if storm_windup <= 0:
 			if jupiter_role == 2:
-				game.encounters.add_field("gravity", position, 170, .8, 2.4, self, 95)
+				game.encounters.add_field("gravity", position, 210, .8, 2.4, self, 130)
 			for i in (3 if jupiter_role == 2 else 5):
 				if game.bullets.get_child_count() >= 480:
 					break
@@ -237,7 +237,7 @@ func superboss_name() -> String:
 	return "DEUS ALIENÍGENA" if god else ["IMPERADOR FERRUGEM", "LEVIATÃ BOREAL", "TITÃ DA TEMPESTADE"][mini(kind, 2)]
 
 func boss_motion(chase: Vector2, direction: Vector2, distance: float, obstructed: bool) -> Vector2:
-	var period: float = 3.2 if god else [4.2, 4.8, 3.8][kind]
+	var period: float = 2.7 if god else [3.5, 4.0, 3.2][kind]
 	var phase := fmod(age, period)
 	var cycle := floori(age / period)
 	var warning_start := period - 1.3
@@ -252,7 +252,7 @@ func boss_motion(chase: Vector2, direction: Vector2, distance: float, obstructed
 				boss_locked_dir = direction.rotated(PI / 2 * (-1 if cycle % 2 else 1))
 		return Vector2.ZERO
 	if phase >= dash_start:
-		return boss_locked_dir * (680 if god else (520 if kind == 1 else 580))
+		return boss_locked_dir * (880 if god else (680 if kind == 1 else 760))
 	if obstructed:
 		return chase * speed
 	if kind == 1 or god:
@@ -302,7 +302,7 @@ func tick_superboss(delta: float) -> void:
 			super_attack_index += 1
 			super_attack_timer = 2.2 - super_phase * 0.25
 	else:
-		super_attack_timer -= delta
+		super_attack_timer -= delta*game.enemy_ability_rate()
 		if super_attack_timer <= 0:
 			super_telegraph = 0.9
 			super_aim = position.direction_to(game.player.position + game.player.velocity.limit_length(350) * .25)
@@ -314,7 +314,7 @@ func fire_super_attack() -> void:
 	game.encounters.super_attack(self, pattern)
 	fire_super_layer(pattern, 0)
 	for layer in range(1, super_phase + 1):
-		super_followups.append({"delay": layer * 0.32, "pattern": pattern, "layer": layer})
+		super_followups.append({"delay": layer * 0.24, "pattern": pattern, "layer": layer})
 	game.fx.sparks(position, game.planet().accent, 100, 220)
 
 func fire_super_layer(pattern: int, layer: int) -> void:
@@ -342,7 +342,7 @@ func super_shard(direction: Vector2, velocity: float, offset: Vector2 = Vector2.
 		return
 	game.shoot(position + offset + direction * (radius - 20), direction, 1, true)
 	var bullet = game.bullets.get_child(game.bullets.get_child_count() - 1)
-	bullet.velocity = direction * velocity
+	bullet.velocity = direction * velocity*1.18
 	bullet.radius = 5
 	bullet.life = 3.5
 

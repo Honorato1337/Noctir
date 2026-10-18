@@ -49,7 +49,7 @@ func start_event(forced_event: String = "") -> void:
 		event = ["sand", "ice", "jupiter", "chaos"][game.planet_index]
 	active = true
 	warning = 2.0
-	duration = 19.0 if event == "chaos" else rng.randf_range(12, 16)
+	duration = 22.0 if event == "chaos" else rng.randf_range(14, 18)
 	pulse = warning
 	sound_cd = 0
 	var names := {"sand": "TEMPESTADE DE AREIA / evite o núcleo e use o dash!", "ice": "CHUVA DE GELO / saia das marcas azuis!", "jupiter": "TEMPESTADE DE JÚPITER / vórtice vermelho e raios!", "chaos": "CAOS TOTAL / areia, gelo, raios e meteoros!", "nitrogen":"ERUPÇÕES DE NITROGÊNIO / saia dos gêiseres marcados!", "comets":"CHUVA DE COMETAS / observe as áreas de impacto!", "rift":"FENDAS GRAVITACIONAIS / afaste-se dos núcleos!", "whiteout":"NEVASCA CÓSMICA / vento, gelo e pouco tempo para reagir!"}
@@ -62,13 +62,13 @@ func start_event(forced_event: String = "") -> void:
 			for attempt in 12:
 				if point.distance_to(game.player.position) >= 300 and not game.blocked(point, 70): break
 				point = random_point()
-			vortices.append({"pos": point, "velocity": Vector2.RIGHT.rotated(rng.randf_range(0, TAU)) * (75 if event == "jupiter" else 62), "radius": 270.0 if event == "jupiter" else 235.0, "core": 72.0 if event == "jupiter" else 62.0})
+			vortices.append({"pos": point, "velocity": Vector2.RIGHT.rotated(rng.randf_range(0, TAU)) * (105 if event == "jupiter" else 90), "radius": 350.0 if event == "jupiter" else 300.0, "core": 94.0 if event == "jupiter" else 82.0})
 	queue_redraw()
 
 func add_strike(kind: String, at: Vector2) -> void:
 	if strikes.size() >= MAX_STRIKES: return
 	var lead := 1.7 if kind == "nitrogen" else (1.4 if kind in ["comet","void"] else (1.35 if kind == "meteor" else 1.1))
-	var radius := 80.0 if kind == "nitrogen" else (68.0 if kind in ["meteor","comet"] else (55.0 if kind == "void" else (48.0 if kind == "lightning" else 35.0)))
+	var radius := 100.0 if kind == "nitrogen" else (104.0 if kind == "meteor" else (96.0 if kind == "comet" else (72.0 if kind == "void" else (60.0 if kind == "lightning" else 44.0))))
 	strikes.append({"kind": kind, "pos": at.clamp(game.arena.position + Vector2.ONE * 50, game.arena.end - Vector2.ONE * 50), "age": 0.0, "warning": lead, "duration": 3.0 if kind == "nitrogen" else 0.32, "radius": radius, "hit": false})
 
 func player_slowdown(at: Vector2) -> float:
@@ -81,14 +81,14 @@ func player_slowdown(at: Vector2) -> float:
 
 func player_force(at: Vector2) -> Vector2:
 	if not active or age < warning: return Vector2.ZERO
-	var result := Vector2(80,-28) if event == "whiteout" else Vector2.ZERO
+	var result := Vector2(110,-40) if event == "whiteout" else Vector2.ZERO
 	for vortex in vortices:
 		var offset: Vector2 = vortex.pos - at
 		var distance := offset.length()
 		if distance > 1 and distance < vortex.radius:
 			var toward := offset.normalized()
-			result += toward * 115 * (1 - distance / vortex.radius * 0.4)
-			if event == "jupiter": result += toward.rotated(PI / 2) * 75
+			result += toward * 150 * (1 - distance / vortex.radius * 0.4)
+			if event == "jupiter": result += toward.rotated(PI / 2) * 100
 	return result.limit_length(150)
 
 func _physics_process(delta: float) -> void:
@@ -100,7 +100,7 @@ func _physics_process(delta: float) -> void:
 	age += delta
 	sound_cd -= delta
 	if age >= warning + duration:
-		clear_active(rng.randf_range(9, 15) if game.planet_index == 3 or game.run_mode == "endless" else rng.randf_range(13, 21))
+		clear_active(rng.randf_range(7, 11) if game.planet_index == 3 or game.run_mode == "endless" else rng.randf_range(9, 15))
 		return
 	if age >= warning:
 		var bounds: Rect2 = game.arena.grow(-80)
@@ -114,16 +114,16 @@ func _physics_process(delta: float) -> void:
 				if game.state != "playing": return
 		pulse -= delta
 		if pulse <= 0:
-			pulse = (1.15 if event == "jupiter" else 0.85) / float(game.difficulty().waves)
+			pulse = (1.15 if event == "jupiter" else 0.85) / (float(game.difficulty().waves)*1.2)
 			if event in PLUTO_EVENTS:
-				pulse = (2.4 if event == "nitrogen" else (1.5 if event == "comets" else 1.2)) / float(game.difficulty().waves)
+				pulse = (2.4 if event == "nitrogen" else (1.5 if event == "comets" else 1.2)) / (float(game.difficulty().waves)*1.2)
 				var kind: String = {"nitrogen":"nitrogen","comets":"comet","rift":"void","whiteout":"ice"}[event]
-				var count := ceili((3 if event == "rift" else 5)*float(game.difficulty().waves))
+				var count := ceili((4 if event == "rift" else 7)*float(game.difficulty().waves))
 				for i in count:
 					add_strike(kind,game.player.position if i == 0 else random_point())
 			if event in ["ice", "jupiter", "chaos"]:
 				var kind := "lightning" if event == "jupiter" else "ice"
-				var count := (9 if event == "chaos" else 6)
+				var count := (12 if event == "chaos" else 8)
 				count = maxi(3, ceili(count * float(game.difficulty().waves)))
 				for i in count:
 					if event == "chaos": kind = ["ice", "lightning", "meteor"][i % 3]

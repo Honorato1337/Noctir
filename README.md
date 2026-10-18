@@ -32,7 +32,7 @@ Só três segundos para alcançar o foguete. O loot no chão fica para trás.
 
 Capturas em **1920×1080**. [Arquivos e instruções de captura](docs/media/README.md). [Fundo de Júpiter em PNG](docs/media/jupiter-fundo.png).
 
-## Versão atual: 0.2.3
+## Versão atual: 0.2.4
 
 - Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
 - Tela expandida para preencher 1920×1080 e outras proporções sem bordas, com escala uniforme e HUD centralizada.
@@ -160,7 +160,7 @@ Após desbloquear **Configurações → Desenvolvedor** com a senha do desenvolv
 
 Detalhes de implementação e testes: [expansão](docs/EXPANSAO_INFINITA.md).
 
-## Sobrevivência infinita (0.2.3)
+## Sobrevivência infinita (0.2.4)
 
 Em Iniciar Expedição, selecione Sobrevivência no seletor de modo e escolha Fácil, Médio ou Difícil. A arena mede 2048×1344: exatamente o dobro da área da arena inicial (1536×896), sem esticar os pixels.
 
@@ -174,7 +174,7 @@ Verificação: `Godot --headless --path . --script tests/survival.gd`.
 
 No modo Sobrevivência, Berserk recarrega em 90 segundos e Eco em 45 segundos desde o uso, contados somente durante o combate. Os temporizadores persistem entre hordas e mortes e congelam na loja e nos menus. Berserk continua exigindo a habilidade desbloqueada. Na campanha, Berserk continua limitado a uma vez por run e Eco a uma vez por arena. Os indicadores usam ícones de rajada radial e retorno temporal com texto compacto; nos controles por toque, os próprios botões mostram os segundos restantes.
 
-Visual 0.2.3: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
+Visual 0.2.4: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
 
 ## Plutão: Planície do Exílio
 
@@ -212,3 +212,15 @@ Os quatro frames originais de `assets/guanapo` animam o personagem, a prévia do
 ![Skin Guanapo na loja](docs/media/12-guanapo-loja.png)
 
 Teste: `Godot --headless --path . --script tests/skins.gd`. Com `-- --preview`, captura a loja e a skin com seu Eco em `docs/media`.
+
+## Rebalanceamento 0.2.4
+
+- Mobs da campanha: multiplicador adicional de vida de 1,40× na primeira arena até 2,24× na última; chefes de 1,60× a 2,32×. Dificuldade e Prestígio continuam multiplicando esses valores.
+- Sobrevivência: a vida escala por `1.35^h * (1 + 0.08*h)`, onde `h` é o número de hordas já concluídas. Isso acompanha compras repetidas de Plasma (+35% de dano) e aumenta a resistência relativa nas hordas avançadas.
+- Dashes dos mobs de Júpiter: velocidade de 3,2× para 4,4× e ciclo de 3 para 2,7 segundos. Chefes: 680 px/s em Netuno, 760 px/s nos demais e 880 px/s no Deus Alienígena, com ciclos menores.
+- Habilidades e disparos ganham recargas mais curtas conforme a arena/horda, respeitando a dificuldade. Tiros comuns hostis: 255 px/s antes dos multiplicadores (antes 225); rajadas dos superchefes, +18% de velocidade.
+- Tempestades maiores, vórtices mais rápidos e com atração mais forte, eventos mais longos e menos descanso entre eles. Mais impactos por sequência, mantendo os limites simultâneos.
+- Meteoros: raio de 104 px (antes 68). Cometas: 96 px. Também aumentaram gelo, raios, nitrogênio e explosões dos chefes.
+- Avisos de impacto, preparação dos dashes, intervalos de troca de fase, limites de entidades e limpeza das ameaças na loja foram preservados.
+
+Validação: `tests/rebalance.gd`, campanha completa (`smoke`), `planet_mechanics`, `arena_weather`, `pluto_survival` e `survival`.
