@@ -46,6 +46,19 @@ func run() -> void:
 	game.start_run()
 	hud.update_game(game)
 	check(first.texture == null and second.texture == null, "new run resets both inventory icons")
+	for slot in ["SlotOne","SlotTwo","SlotThree","EchoCard"]:
+		check(hud.get_node(slot).get_script() == load("res://scripts/pixel_slot.gd"), "shared pixel frame on " + slot)
+	game.player.rewind_ready = false
+	hud.update_game(game)
+	check(hud.get_node("EchoCard/EchoStatus").text == "USADO" and hud.get_node("EchoCard").charge == 0.0, "campaign Eco slot marks the consumed charge")
+	check(hud.get_node("Echo").position.y >= hud.get_node("EchoCard").position.y + 64, "Eco name stays beneath its frame")
+	game.run_mode = "endless"
+	game.echo_cd = 30
+	hud.update_game(game)
+	check(hud.get_node("EchoCard/EchoStatus").text == "30s" and is_equal_approx(hud.get_node("EchoCard").charge,1.0/3.0), "survival Eco slot shows recharge time and progress")
+	game.echo_cd = 0
+	hud.update_game(game)
+	check(hud.get_node("EchoCard/EchoStatus").text.is_empty() and hud.get_node("EchoCard/EchoIcon").modulate.a == 1.0, "ready Eco restores the unobstructed icon")
 	print("HUD INVENTORY RESULT: %d failures" % failures)
 	game.queue_free()
 	await process_frame

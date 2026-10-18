@@ -1,5 +1,5 @@
 {
-	"note": "Cenários de demonstração com inimigos posicionados por script; arte, HUD e efeitos renderizados pelo jogo.",
+	"note": "Cenários de demonstração no computador com inimigos posicionados por script; arte, HUD e efeitos renderizados pelo jogo.",
 	"screenshots": [
 		{
 			"caption": "Menu principal e astronauta",
@@ -50,8 +50,8 @@
 			"width": 1920
 		},
 		{
-			"caption": "Interface com controles por toque",
-			"file": "09-mobile.png",
+			"caption": "Molduras pixeladas, consumíveis, equipamento de chão e Eco usado",
+			"file": "09-eco-e-slots.png",
 			"height": 1080,
 			"width": 1920
 		},
@@ -62,6 +62,6 @@
 			"width": 1920
 		}
 	],
-	"source": "Godot, branch main após v0.2.7",
+	"source": "Godot, versão 0.3.3",
 	"staged": true
 }

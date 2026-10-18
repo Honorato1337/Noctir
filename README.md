@@ -4,9 +4,13 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 
 **Sobreviva às hordas, rebobine o combate e alcance a extração antes que o tempo acabe.** One More Orbit é um jogo 2D de ação em pixel art, com campanha pelo Sistema Solar, sobrevivência infinita e progressão entre tentativas.
 
-[**Baixar para Windows — v0.3.2**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.2/OneMoreOrbit.exe) · [**Baixar para Android — v0.3.0**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.0/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
+[**Baixar para Windows — v0.3.3**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit.exe) · [**Baixar para Android — v0.3.0**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.0/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
 
-Windows: **v0.3.2**, com efeitos adaptativos, colisões otimizadas, texturas preparadas, botão Sair, descrições em caixas e dano de 1000× no modo Teste. Android: último APK publicado **v0.3.0**; os ajustes móveis mais recentes estão no código e ainda precisam de uma nova exportação.
+Windows: **v0.3.3**, com molduras pixeladas nos slots 1, 2, 3 e Eco, nome ECO abaixo do ícone e indicação de recarga. Inclui as otimizações de desempenho, botão Sair e dano de 1000× exclusivo do Teste. Android: último APK publicado **v0.3.0**; não foi gerado um novo APK nesta atualização.
+
+[**Vídeo de 30 segundos na arena final**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit-Nexo-30s.mp4) · [**Dez prints em ZIP**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/one-more-orbit-prints.zip)
+
+O vídeo é uma demonstração controlada por script, com atributos e módulos elevados, dano ativo e uma continuação após morte. [Detalhes da gravação](docs/GRAVACAO.md).
 
 Vai continuar em outro computador? Leia o [guia de continuidade](docs/CONTINUAR_EM_OUTRO_PC.md).
 
@@ -36,8 +40,8 @@ Vai continuar em outro computador? Leia o [guia de continuidade](docs/CONTINUAR_
 | ![Júpiter e Titã de Íons](docs/media/gallery/04-jupiter.png) | ![Hordas em Plutão](docs/media/gallery/05-sobrevivencia.png) |
 | **Extração · Três segundos restantes** | **Loja · Decisões sob pressão** |
 | ![Foguete e prazo de extração](docs/media/gallery/07-extracao.png) | ![Loja entre arenas](docs/media/gallery/08-loja.png) |
-| **Menu principal** | **Controles para celular** |
-| ![Menu principal](docs/media/gallery/01-menu.png) | ![Controles por toque](docs/media/gallery/09-mobile.png) |
+| **Menu principal** | **Eco e slots pixelados** |
+| ![Menu principal](docs/media/gallery/01-menu.png) | ![Eco e slots pixelados](docs/media/gallery/09-eco-e-slots.png) |
 
 [**Baixar as 10 prints em ZIP**](docs/media/one-more-orbit-prints.zip) · [Galeria completa e legendas](docs/media/README.md)
 
@@ -125,7 +129,11 @@ Os sprites do astronauta, Guanapo, espingarda e inimigos foram criados pelo auto
 
 Projeto em desenvolvimento. As capturas mostram o estado atual da branch principal; os instaladores seguem a versão indicada na release.
 
-## Atualização 0.3.2
+## Atualização 0.3.3
+
+Os três slots de inventário compartilham uma moldura de metal e energia na paleta do astronauta. O Eco fica no canto inferior, com seu nome abaixo, indicação de uso e recarga no modo sobrevivência. A moldura é desenhada pelo Godot e permanece nítida em diferentes resoluções. Foram renovadas dez capturas de computador e uma demonstração de 30 segundos com dano ativo.
+
+## Histórico: atualização 0.3.2
 
 As otimizações da 0.3.1 estão incorporadas: limites por quadro para partículas, densidade adaptativa, busca espacial para colisões, HUD a 30 Hz e texturas preparadas. O modo Teste causa 1000× de dano; as partidas normais conservam seu dano. A documentação, os links de download e o guia para continuar em outro computador foram atualizados. Veja [desempenho](docs/PERFORMANCE.md) e [tela de conclusão](docs/preview-victory.png).
 

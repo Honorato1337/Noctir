@@ -1,6 +1,7 @@
 extends Control
 
 const ABILITY_ICONS = {"berserk":preload("res://assets/icons/berserk.svg"),"rewind":preload("res://assets/icons/echo.svg")}
+const SlotFrame = preload("res://scripts/pixel_slot.gd")
 var game: Node2D
 var fingers: Dictionary = {}
 var left_id := -1
@@ -80,7 +81,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _draw() -> void:
-	if not visible: return
+	if not visible or not is_instance_valid(game) or not is_instance_valid(game.player): return
 	var color := Color(0.44, 0.9, 0.82, 0.65)
 	for center in [left_center(), right_center()]:
 		draw_circle(center, 68, Color(0, 0, 0, 0.45))
@@ -90,8 +91,13 @@ func _draw() -> void:
 	var labels := {"dash": "DASH", "rewind": "ECO", "berserk": "FÚRIA", "interact": "ROVER", "pause": "II", "slot_one": "1", "slot_two": "2", "slot_three": "3"}
 	for action: String in buttons():
 		var point: Vector2 = buttons()[action]
-		draw_circle(point, 36, Color(0, 0, 0, 0.65))
-		draw_arc(point, 36, 0, TAU, 24, color, 2)
+		if action in ["slot_one", "slot_two", "slot_three", "rewind"]:
+			var charge := 1.0
+			if action == "rewind": charge = (1.0-game.echo_cd/game.ENDLESS_ECHO_COOLDOWN) if game.run_mode == "endless" else (1.0 if game.player.rewind_ready else 0.0)
+			SlotFrame.paint(self,Rect2(point-Vector2.ONE*32,Vector2.ONE*64),Color("71e4c5"),charge)
+		else:
+			draw_circle(point, 36, Color(0, 0, 0, 0.65))
+			draw_arc(point, 36, 0, TAU, 24, color, 2)
 		var text: String = labels[action]
 		if action == "interact" and game.state == "cleared":
 			text = "IR"

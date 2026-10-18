@@ -1,5 +1,9 @@
 extends Control
 
+func _ready() -> void:
+	# This rectangle is sized explicitly below to cover expanded aspect ratios.
+	%ScreenFlash.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+
 func update_game(game: Node2D) -> void:
 	# Keep the authored HUD centered while the world expands to fill the window.
 	var view_size := get_viewport_rect().size
@@ -8,7 +12,17 @@ func update_game(game: Node2D) -> void:
 	%ScreenFlash.position = -margin
 	%ScreenFlash.size = view_size
 	var touch: bool = game.controls.touch_enabled()
-	$SlotThree.position = Vector2(944, 100) if touch else Vector2(1024, 536)
+	$SlotOne.position = Vector2(872,20)
+	$SlotTwo.position = Vector2(944,20)
+	$SlotThree.position = Vector2(944,100) if touch else Vector2(1016,20)
+	%Timer.position.x = 620
+	%Timer.size.x = 80
+	%Coins.position.x = 712
+	%Coins.size.x = 152
+	%Score.position.x = 712
+	%Score.size.x = 152
+	%Counters.position.x = 360
+	%Counters.size.x = 340
 	%Contract.position = Vector2(230, 595) if touch else Vector2(104, 626)
 	for pair: Array in [["SlotOne", "slot_one"], ["SlotTwo", "slot_two"], ["SlotThree", "slot_three"]]:
 		get_node(pair[0] + "/Key").text = game.controls.hint(pair[1])
@@ -62,6 +76,13 @@ func update_game(game: Node2D) -> void:
 	%Chances.visible = game.state in ["playing", "cleared", "exit", "paused"]
 	%Chances.text = "RUN / %d CHANCES" % game.run_chances_left
 	%BerserkCard.position = Vector2(24,view_size.y-(124 if %MiniTutorial.visible else 88))-margin
+	%EchoCard.position = Vector2(104,view_size.y-(124 if %MiniTutorial.visible else 88))-margin
+	%Echo.position = %EchoCard.position + Vector2(-8,64)
+	%Echo.size = Vector2(80,24)
+	%Echo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	%Echo.text = "ECO"
+	%EchoCard.visible = game.state in ["playing", "paused"] and not touch
+	%Echo.visible = %EchoCard.visible
 	%BerserkCard.visible = game.state in ["playing", "paused"] and game.can_use_berserk() and not touch
 	%DashCard.visible = game.state in ["playing", "paused"] and not touch
 	if is_instance_valid(game.player):
@@ -78,8 +99,8 @@ func update_game(game: Node2D) -> void:
 		%DashCooldown.value = 1.0 - clampf(remaining / game.player.dash_recharge, 0, 1)
 		%Health.active = game.state == "playing"
 		%Health.set_health(game.player.health, game.player.max_health)
-		%Echo.text = "[%s] ECO " % game.controls.hint("rewind") + ("PRONTO" if game.player.rewind_ready else "USADO")
-
-		if game.run_mode == "endless":
-			%Echo.text = "[%s] ECO %s" % [game.controls.hint("rewind"),"%ds" % ceili(game.echo_cd) if game.echo_cd > 0 else "PRONTO"]
-			%Echo.modulate = Color("b6c4d6") if game.echo_cd > 0 else Color.WHITE
+		var echo_ready: bool = game.echo_cd <= 0 if game.run_mode == "endless" else game.player.rewind_ready
+		%EchoStatus.text = "" if echo_ready else ("%ds" % ceili(game.echo_cd) if game.run_mode == "endless" else "USADO")
+		$EchoCard/Key.text = game.controls.hint("rewind")
+		$EchoCard/EchoIcon.modulate = Color.WHITE if echo_ready else Color(1,1,1,0.25)
+		%EchoCard.set_charge(1.0 if echo_ready else (1.0-game.echo_cd/game.ENDLESS_ECHO_COOLDOWN if game.run_mode == "endless" else 0.0))

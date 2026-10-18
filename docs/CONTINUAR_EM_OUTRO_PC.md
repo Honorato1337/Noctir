@@ -19,7 +19,7 @@ Não são necessários plugins para executar o projeto. A pasta `.godot` é recr
 - Eco, dash, Berserk, contratos, melhorias permanentes, Prestígio e skins.
 - Quinze segundos para coletar e extrair; perder o prazo remove os itens e um terço das moedas. Loja da campanha com vinte segundos; sobrevivência com dez.
 - Chefes de Júpiter usam as artes `mob_jupiter2` e `mob_jupiter3`. O menu tem Sair e as descrições de equipamento aparecem em caixas.
-- Windows atual: **0.3.2**, com as otimizações da 0.3.1 e dano de 1000× no modo Teste, exclusivo de desenvolvedor. O dano normal não recebe esse multiplicador.
+- Windows atual: **0.3.3**, com as otimizações da 0.3.1, novas molduras dos slots e Eco no canto inferior. Mantém dano de 1000× no modo Teste, exclusivo de desenvolvedor. O dano normal não recebe esse multiplicador.
 - Android disponível: **0.3.0**. O código atual contém otimizações adicionais para o perfil móvel; um novo APK ainda não foi exportado. Não houve teste em aparelho nesta etapa. O autor suspeita que o encerramento relatado era do próprio celular; não há diagnóstico confirmado por log.
 - A página do itch.io foi trabalhada como rascunho, conforme pedido. Verifique o painel da conta antes de qualquer publicação; o estado do site não faz parte do Git.
 
@@ -70,4 +70,4 @@ Há uma transcrição privada desta conversa preparada em `builds/transferencia/
 
 ## Mensagem pronta para um novo chat
 
-> Este é o projeto One More Orbit, repositório Honorato1337/Noctir. Leia README.md, docs/CONTINUAR_EM_OUTRO_PC.md e docs/PERFORMANCE.md antes de alterar algo. Use o projeto nesta pasta. Preserve os sprites autorais e a fonte w95fa na interface. A versão Windows é 0.3.2 e o último APK é 0.3.0; não confunda os dois. Continue a partir desse estado e aguarde minha próxima solicitação.
+> Este é o projeto One More Orbit, repositório Honorato1337/Noctir. Leia README.md, docs/CONTINUAR_EM_OUTRO_PC.md e docs/PERFORMANCE.md antes de alterar algo. Use o projeto nesta pasta. Preserve os sprites autorais e a fonte w95fa na interface. A versão Windows é 0.3.3 e o último APK é 0.3.0; não confunda os dois. Continue a partir desse estado e aguarde minha próxima solicitação.

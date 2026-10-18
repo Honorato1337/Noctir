@@ -2,7 +2,9 @@
 
 [Voltar ao jogo](../../README.md) · [Baixar as 10 prints em ZIP](one-more-orbit-prints.zip) · [Bestiário](../BESTIARIO.md)
 
-Capturas de 18/10/2026, em **1920×1080**, da branch principal após a versão 0.2.7, incluindo os novos nomes. Cenários preparados por script e renderizados pelo próprio jogo, sem efeitos externos nos PNGs.
+Capturas de 18/10/2026, em **1920×1080**, da versão **0.3.3**, incluindo as novas molduras dos slots e do Eco. Cenários de computador preparados por script e renderizados pelo próprio jogo, sem efeitos externos nos PNGs.
+
+[Vídeo de 30 segundos na arena final](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit-Nexo-30s.mp4).
 
 ## Menu principal e astronauta
 
@@ -36,9 +38,9 @@ Capturas de 18/10/2026, em **1920×1080**, da branch principal após a versão 0
 
 ![Loja com prazo de 20 segundos e penalidade por atraso](gallery/08-loja.png)
 
-## Interface com controles por toque
+## Eco e slots de consumíveis e equipamento
 
-![Interface com controles por toque](gallery/09-mobile.png)
+![Eco e slots pixelados](gallery/09-eco-e-slots.png)
 
 ## Configurações de áudio com volumes separados
 

@@ -24,6 +24,7 @@ func device(kind: String) -> void:
 	if not game.deployables.inventory.is_empty(): game.deployables.inventory = ""
 	game.deployables.add_item(kind)
 	summary[kind] = game.deployables.place() or bool(summary[kind])
+	game.deployables.inventory = {"mine":"turret","turret":"beacon","beacon":"mine"}[kind]
 func run() -> void:
 	root.size = Vector2i(1152,720)
 	game = load("res://scenes/main.tscn").instantiate()
@@ -44,6 +45,7 @@ func run() -> void:
 	game.player.immunity = 0
 	game.loot.slots.assign(["bomb","overdrive"])
 	game.loot.coins = 180
+	game.deployables.inventory = "mine"
 	game.pending = 400
 	game.time_left = 160
 	game.begin_boss()
@@ -66,7 +68,14 @@ func run() -> void:
 	cursor.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	cursor.size = Vector2(32,32)
 	cursor.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var invert := ShaderMaterial.new()
+	invert.shader = load("res://scripts/cursor_invert.gdshader")
+	cursor.material = invert
 	layer.add_child(cursor)
+	for child in game.get_children():
+		if child.get_script() == load("res://scripts/game_cursor.gd"):
+			child.set_process(false)
+			if is_instance_valid(child.pointer): child.pointer.hide()
 	# Movie capture includes the normal game mix, without affecting saved volumes.
 	var capture_audio := CaptureAudio.new()
 	capture_audio.music = game.get_node("PlanetMusic")
@@ -150,7 +159,8 @@ func run() -> void:
 	summary["kills"] = game.kills
 	summary["seconds"] = LENGTH
 	summary["staged"] = "Scripted demonstration: maximum attributes and modules, supplied consumables/devices, extended horde and doubled final boss health; damage and lives remain active. No profile is saved."
-	var report := FileAccess.open("res://tmp/showcase-report.json",FileAccess.WRITE)
+	DirAccess.make_dir_recursive_absolute("res://builds/media")
+	var report := FileAccess.open("res://builds/media/showcase-report.json",FileAccess.WRITE)
 	report.store_string(JSON.stringify(summary,"\t"))
 	report.close()
 	print("SHOWCASE RESULT "+JSON.stringify(summary))

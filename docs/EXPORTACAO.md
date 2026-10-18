@@ -2,7 +2,7 @@
 
 ## Estado atual — 18/10/2026
 
-- Windows **0.3.2**: `OneMoreOrbit.exe` disponível na [release atual](https://github.com/Honorato1337/Noctir/releases/tag/v0.3.2), com dados incorporados e checksum SHA-256.
+- Windows **0.3.3**: `OneMoreOrbit.exe` disponível na [release atual](https://github.com/Honorato1337/Noctir/releases/tag/v0.3.3), com dados incorporados e checksum SHA-256.
 - Android: último APK publicado **0.3.0**, na [release anterior](https://github.com/Honorato1337/Noctir/releases/tag/v0.3.0). Ainda não há APK com as otimizações da 0.3.1/0.3.2.
 - Importe os recursos antes de exportar. As texturas preparadas em `assets/optimized` já estão versionadas; veja `tools/bake_runtime_art.gd` se alterar suas fontes.
 - A chave Android e as credenciais não são distribuídas no Git. Elas não estavam presentes no diretório de trabalho atual; recupere a chave original por um meio privado antes de gerar uma atualização Android compatível.
