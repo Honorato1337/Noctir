@@ -32,7 +32,7 @@ z_index = 1
 
 [node name="Sprite" type="Sprite2D" parent="Weapon"]
 texture_filter = 1
-position = Vector2(16, 0)
+position = Vector2(22, 0)
 scale = Vector2(2, 2)
 texture = SubResource("GunRegion")
 
@@ -43,6 +43,6 @@ modulate = Color(0.35, 1, 0.85, 0.55)
 
 [node name="Sprite" type="Sprite2D" parent="EchoWeapon"]
 texture_filter = 1
-position = Vector2(16, 0)
+position = Vector2(22, 0)
 scale = Vector2(2, 2)
 texture = SubResource("GunRegion")

@@ -9,7 +9,7 @@ func update_game(game: Node2D) -> void:
 	%ScreenFlash.size = view_size
 	var touch: bool = game.controls.touch_enabled()
 	$SlotThree.position = Vector2(944, 100) if touch else Vector2(1024, 536)
-	%Contract.position = Vector2(230, 595) if touch else Vector2(64, 626)
+	%Contract.position = Vector2(230, 595) if touch else Vector2(104, 626)
 	for pair: Array in [["SlotOne", "slot_one"], ["SlotTwo", "slot_two"], ["SlotThree", "slot_three"]]:
 		get_node(pair[0] + "/Key").text = game.controls.hint(pair[1])
 	%Contract.visible = game.contracts.enabled and game.state == "playing"
@@ -61,15 +61,17 @@ func update_game(game: Node2D) -> void:
 	%ScreenFlash.color = Color(1,0.08,0.12,game.extraction_pulse()) if game.state == "cleared" else Color(0.3, 0.9, 0.9, minf(game.flash * 0.4, 0.25))
 	%Chances.visible = game.state in ["playing", "cleared", "exit", "paused"]
 	%Chances.text = "RUN %d/3 CHANCES" % game.run_chances_left
+	%BerserkCard.position = Vector2(24,view_size.y-(124 if %MiniTutorial.visible else 88))-margin
 	%BerserkCard.visible = game.state in ["playing", "paused"] and game.can_use_berserk() and not touch
 	%DashCard.visible = game.state in ["playing", "paused"] and not touch
 	if is_instance_valid(game.player):
-		%BerserkStatus.modulate = Color.WHITE
 		%Echo.modulate = Color.WHITE
-		%BerserkStatus.text = "[%s] BERSERK %.1fs" % [game.controls.hint("berserk"), game.player.berserk_time] if game.player.berserk_time > 0 else ("BERSERK USADO" if game.berserk_used else "[%s] BERSERK PRONTO" % game.controls.hint("berserk"))
-		if game.run_mode == "endless":
-			%BerserkStatus.text = "[%s] BERSERK %s" % [game.controls.hint("berserk"),"ATIVO" if game.player.berserk_time > 0 else ("%ds" % ceili(game.berserk_cd) if game.berserk_cd > 0 else "PRONTO")]
-			%BerserkStatus.modulate = Color("b6c4d6") if game.berserk_cd > 0 and game.player.berserk_time <= 0 else Color.WHITE
+		var berserk_active: bool = game.player.berserk_time > 0
+		var berserk_wait: bool = game.berserk_cd > 0 if game.run_mode == "endless" else game.berserk_used
+		%BerserkStatus.text = "%ds" % ceili(game.player.berserk_time) if berserk_active else ("%ds" % ceili(game.berserk_cd) if game.run_mode == "endless" and berserk_wait else ("—" if berserk_wait else ""))
+		$BerserkCard/Key.text = game.controls.hint("berserk")
+		$BerserkCard/BerserkIcon.modulate = Color(1,1,1,0.35) if berserk_wait and not berserk_active else Color.WHITE
+		%BerserkCard.tooltip_text = "BERSERK / " + ("ATIVO" if berserk_active else ("Recarregando" if berserk_wait else "PRONTO"))
 		var remaining: float = maxf(0, game.player.dash_cd)
 		%DashStatus.text = "[%s] DASH PRONTO" % game.controls.hint("dash") if remaining <= 0 else "[%s] DASH %.1fs" % [game.controls.hint("dash"), remaining]
 		%DashStatus.modulate = Color("71e4c5") if remaining <= 0 else Color("b6c4d6")

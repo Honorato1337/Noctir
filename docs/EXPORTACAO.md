@@ -3,7 +3,7 @@
 Arquivos de saída:
 
 - builds/windows/OneMoreOrbit.exe: Windows x86_64, release, dados incorporados no executável.
-- builds/android/OneMoreOrbit.apk: Android ARM64 e ARM de 32 bits, release assinado, pacote com.noctir.onemoreorbit, versão 0.1.8.
+- builds/android/OneMoreOrbit.apk: Android ARM64 e ARM de 32 bits, release assinado, pacote com.noctir.onemoreorbit, versão 0.1.9.
 
 Para repetir a exportação, execute tools/export_game.py com Python. Na primeira execução, tools/prepare_exports.py baixa os templates oficiais Godot 4.7.2, OpenJDK Temurin 17 e ferramentas Android oficiais do Google. A instalação fica em .godot/export-tools, sem mudar Java ou Android do sistema. O Godot de exportação usa configuração portátil própria. Defina GODOT_BIN com o caminho do executável Godot 4.7.2; o script também procura Godot no PATH e na pasta Downloads do usuário. Os caminhos locais de templates são aplicados só durante a exportação, e o preset original é restaurado ao finalizar.
 
