@@ -1,5 +1,6 @@
 extends Control
 
+const ABILITY_ICONS = {"berserk":preload("res://assets/icons/berserk.svg"),"rewind":preload("res://assets/icons/echo.svg")}
 var game: Node2D
 var fingers: Dictionary = {}
 var left_id := -1
@@ -100,6 +101,13 @@ func _draw() -> void:
 			text = "%.1f" % game.player.dash_cd
 		elif action == "berserk" and is_instance_valid(game.player):
 			text = "%.0fs" % game.player.berserk_time if game.player.berserk_time > 0 else ("USADO" if game.berserk_used else "BERS")
+		if action in ABILITY_ICONS:
+			draw_texture_rect(ABILITY_ICONS[action],Rect2(point-Vector2(10,29),Vector2(20,20)),false)
+			point.y += 7
+			if game.run_mode == "endless":
+				var cd: float = game.berserk_cd if action == "berserk" else game.echo_cd
+				text = "%ds" % ceili(cd) if cd > 0 else ("BERS" if action == "berserk" else "ECO")
+				if action == "berserk" and game.player.berserk_time > 0: text = "ATIVO"
 		if action in ["slot_one", "slot_two", "slot_three"]:
 			var kind: String = game.deployables.inventory if action == "slot_three" else game.loot.slots[0 if action == "slot_one" else 1]
 			if game.loot.ICONS.has(kind):

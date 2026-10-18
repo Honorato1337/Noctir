@@ -167,7 +167,7 @@ func fire_berserk() -> Array[Vector2]:
 	return directions
 
 func rewind() -> void:
-	if not rewind_ready or history.size() < 60:
+	if game.state != "playing" or not rewind_ready or history.size() < 60 or (game.run_mode == "endless" and game.echo_cd > 0):
 		return
 	game.play_sfx("echo", position)
 	var first: Dictionary = history[0]
@@ -181,6 +181,7 @@ func rewind() -> void:
 	game.time_left += clock - float(first.t)
 	history.clear()
 	rewind_ready = false
+	if game.run_mode == "endless": game.echo_cd = game.ENDLESS_ECHO_COOLDOWN
 	immunity = 1.2
 	game.flash = 0.65
 	game.message = "ECO ATIVO • seu passado luta com você"

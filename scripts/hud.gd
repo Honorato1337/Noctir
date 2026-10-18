@@ -55,7 +55,7 @@ func update_game(game: Node2D) -> void:
 		%ExtractHeader.text = game.extraction_name() + " PRONTO / EMBARQUE" if near_rover else "EXTRAÇÃO DISPONÍVEL"
 		var touch_hint := "TOQUE EM IR" if game.extraction_vehicle() == "rocket" else "TOQUE EM ROVER"
 		%ExtractHint.text = ((touch_hint if touch else "[%s] EMBARCAR" % game.controls.hint("interact")) + " / PRÓXIMO DESTINO") if near_rover else "SIGA A SETA ATÉ O " + game.extraction_name()
-	%MiniTutorial.visible = game.room == 0 and game.state in ["playing", "exit"] and not touch
+	%MiniTutorial.visible = game.room == 0 and game.state in ["playing", "exit"] and not touch and (game.run_mode != "endless" or game.elapsed < 10)
 	$MiniTutorial/Instructions.text = game.controls.tutorial()
 	%ScreenFlash.visible = (game.state == "playing" and game.flash > 0) or game.state == "cleared"
 	%ScreenFlash.color = Color(1,0.08,0.12,game.extraction_pulse()) if game.state == "cleared" else Color(0.3, 0.9, 0.9, minf(game.flash * 0.4, 0.25))
@@ -64,7 +64,12 @@ func update_game(game: Node2D) -> void:
 	%BerserkCard.visible = game.state in ["playing", "paused"] and game.can_use_berserk() and not touch
 	%DashCard.visible = game.state in ["playing", "paused"] and not touch
 	if is_instance_valid(game.player):
-		%BerserkStatus.text = "[%s] BERSERK / %.1fs" % [game.controls.hint("berserk"), game.player.berserk_time] if game.player.berserk_time > 0 else ("BERSERK USADO / PRÓXIMA RUN" if game.berserk_used else "[%s] BERSERK / PRONTO" % game.controls.hint("berserk"))
+		%BerserkStatus.modulate = Color.WHITE
+		%Echo.modulate = Color.WHITE
+		%BerserkStatus.text = "[%s] BERSERK %.1fs" % [game.controls.hint("berserk"), game.player.berserk_time] if game.player.berserk_time > 0 else ("BERSERK USADO" if game.berserk_used else "[%s] BERSERK PRONTO" % game.controls.hint("berserk"))
+		if game.run_mode == "endless":
+			%BerserkStatus.text = "[%s] BERSERK %s" % [game.controls.hint("berserk"),"ATIVO" if game.player.berserk_time > 0 else ("%ds" % ceili(game.berserk_cd) if game.berserk_cd > 0 else "PRONTO")]
+			%BerserkStatus.modulate = Color("b6c4d6") if game.berserk_cd > 0 and game.player.berserk_time <= 0 else Color.WHITE
 		var remaining: float = maxf(0, game.player.dash_cd)
 		%DashStatus.text = "[%s] DASH PRONTO" % game.controls.hint("dash") if remaining <= 0 else "[%s] DASH %.1fs" % [game.controls.hint("dash"), remaining]
 		%DashStatus.modulate = Color("71e4c5") if remaining <= 0 else Color("b6c4d6")
@@ -72,3 +77,7 @@ func update_game(game: Node2D) -> void:
 		%Health.active = game.state == "playing"
 		%Health.set_health(game.player.health, game.player.max_health)
 		%Echo.text = "[%s] ECO " % game.controls.hint("rewind") + ("PRONTO" if game.player.rewind_ready else "USADO")
+
+		if game.run_mode == "endless":
+			%Echo.text = "[%s] ECO %s" % [game.controls.hint("rewind"),"%ds" % ceili(game.echo_cd) if game.echo_cd > 0 else "PRONTO"]
+			%Echo.modulate = Color("b6c4d6") if game.echo_cd > 0 else Color.WHITE

@@ -139,6 +139,10 @@ const EXTRACTION_RANGE := 100.0
 var travel_clock := 0.0
 const RUN_CHANCES := 3
 var run_chances_left := RUN_CHANCES
+const ENDLESS_BERSERK_COOLDOWN := 90.0
+const ENDLESS_ECHO_COOLDOWN := 45.0
+var berserk_cd := 0.0
+var echo_cd := 0.0
 var berserk_used := false
 
 func _ready() -> void:
@@ -217,6 +221,8 @@ func start_run(as_practice: bool = false, initial_room: int = 0, mode: String = 
 	run_difficulty = mode if DIFFICULTIES.has(mode) and not as_practice else "medium"
 	survival.reset(self)
 	berserk_used = false
+	berserk_cd = 0
+	echo_cd = 0
 	run_chances_left = RUN_CHANCES
 	contracts.enabled = not smoke_mode and not practice_mode and run_difficulty != "easy"
 	menu_intro_completed = true
@@ -331,6 +337,10 @@ func _physics_process(delta: float) -> void:
 	if state == "ended" and Input.is_action_just_pressed("restart"):
 		restart_current_run()
 	if state == "playing":
+		if run_mode == "endless":
+			berserk_cd = maxf(0,berserk_cd-delta)
+			echo_cd = maxf(0,echo_cd-delta)
+			if echo_cd <= 0: player.rewind_ready = true
 		elapsed += delta
 		environment_clock += delta
 		if planet_index == 1 and fmod(environment_clock, 7.0) >= 3.5 and fmod(environment_clock - delta, 7.0) < 3.5:
@@ -1180,13 +1190,16 @@ func can_use_berserk() -> bool:
 	return practice_mode or int(progression.abilities.berserk) > 0
 
 func activate_berserk() -> bool:
-	if state != "playing" or not is_instance_valid(player) or berserk_used:
+	if state != "playing" or not is_instance_valid(player):
+		return false
+	if (run_mode == "endless" and (berserk_cd > 0 or player.berserk_time > 0)) or (run_mode != "endless" and berserk_used):
 		return false
 	if not can_use_berserk():
 		message = "Desbloqueie BERSERK na aba Habilidades da Loja."
 		message_time = 2
 		return false
 	berserk_used = true
+	if run_mode == "endless": berserk_cd = ENDLESS_BERSERK_COOLDOWN
 	player.berserk_time = 6.0
 	player.cooldown = 0
 	play_sfx("overdrive")

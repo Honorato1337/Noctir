@@ -5,6 +5,9 @@
 
 [ext_resource type="Script" path="res://scripts/heart_meter.gd" id="3_hearts"]
 
+[ext_resource type="Texture2D" path="res://assets/icons/berserk.svg" id="4_berserk"]
+[ext_resource type="Texture2D" path="res://assets/icons/echo.svg" id="5_echo"]
+
 [sub_resource type="StyleBoxFlat" id="DashFill"]
 bg_color = Color(0.44, 0.9, 0.82, 1)
 
@@ -102,7 +105,7 @@ text = "MOEDAS 0"
 [node name="Echo" type="Label" parent="." unique_id=720818781]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 360.0
+offset_left = 390.0
 offset_top = 56.0
 offset_right = 560.0
 offset_bottom = 84.0
@@ -376,15 +379,15 @@ text = "CHANCES 3/3"
 unique_name_in_owner = true
 offset_left = 64.0
 offset_top = 578.0
-offset_right = 480.0
+offset_right = 354.0
 offset_bottom = 616.0
 mouse_filter = 2
 color = Color(0.018, 0.026, 0.045, 0.96)
 [node name="BerserkStatus" type="Label" parent="BerserkCard"]
 unique_name_in_owner = true
-offset_left = 12.0
+offset_left = 42.0
 offset_top = 4.0
-offset_right = 404.0
+offset_right = 284.0
 offset_bottom = 34.0
 mouse_filter = 2
 theme_override_font_sizes/font_size = 22
@@ -424,3 +427,23 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 50)
 text = "[E] EMBARCAR"
 theme_override_font_sizes/font_size = 22
+
+[node name="BerserkIcon" type="TextureRect" parent="BerserkCard"]
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 36.0
+offset_bottom = 33.0
+mouse_filter = 2
+texture = ExtResource("4_berserk")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EchoIcon" type="TextureRect" parent="."]
+offset_left = 360.0
+offset_top = 56.0
+offset_right = 384.0
+offset_bottom = 80.0
+mouse_filter = 2
+texture = ExtResource("5_echo")
+expand_mode = 1
+stretch_mode = 5
