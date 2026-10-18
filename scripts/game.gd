@@ -158,6 +158,7 @@ func projectile_limit(hostile: bool = true) -> int:
 	return (180 if hostile else 240) if mobile_optimized() else (480 if hostile else 900)
 
 func _ready() -> void:
+	add_child(preload("res://scripts/game_cursor.gd").new())
 	if mobile_optimized():
 		get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 		get_viewport().msaa_2d = Viewport.MSAA_DISABLED
