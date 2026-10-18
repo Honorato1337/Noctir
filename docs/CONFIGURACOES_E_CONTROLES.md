@@ -33,3 +33,7 @@ O projeto contém os controles e ajustes de janela/orientação. Este trabalho n
 As preferências ficam em user://settings.cfg. Saves antigos continuam válidos, mantendo o volume geral e o tempo jogado. Os novos canais começam em 100%, preservando a mixagem anterior.
 
 Testes de integração usam eventos reais do sistema de entrada do Godot (teclado, eventos de joystick e multitouch simulados), verificam buses, persistência, remapeamento, menu, movimento, tiro, dash e pausa. A resolução foi verificada na janela do Windows. Validação com joystick físico e celular continua necessária.
+
+## Ajuste de proporção — 0.1.5
+
+A base de layout é 1152×720. O canvas usa aspecto expand: em 1920×1080 a área lógica aumenta para 1280×720, preenchendo a janela sem letterbox e sem distorcer os sprites. A HUD mantém suas posições relativas à área central de 1152×720; flashes de dano e extração cobrem toda a janela. Menus, fundos e controles de toque acompanham a área visível. tests/neptune_fullhd.gd verifica Full HD e a centralização após trocar a resolução.

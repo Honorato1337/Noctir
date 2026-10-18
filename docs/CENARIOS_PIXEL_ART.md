@@ -18,3 +18,7 @@ O piso é escurecido na renderização para destacar o astronauta, os inimigos, 
 Integração: scripts/planet_terrain.gd, scripts/arena_decor.gd, scripts/pixel_cover.gd e scripts/arena_layout.gd. Para trocar as imagens, mantenha o atlas quadrado dividido em quatro linhas e quatro colunas. O código adapta os recortes ao tamanho da imagem.
 
 Validação: tests/terrain_art.gd verifica os treze mapas, obstáculos e rotas. As prévias estão em docs/preview-terrain-0.png até preview-terrain-3.png. O prompt de geração está em assets/environment/GENERATION_PROMPT.md. Foi usado o gerador integrado, sem API/CLI externo.
+
+## Chefe de Netuno — 0.1.5
+
+O chefe das arenas 5–7 usa os três frames originais em assets/mobs_netuno/mob_neturno2, animação walk de 8 FPS e escala inteira 3×. Espelha para o jogador, pausa junto com o combate e mostra feedback de dano. O desenho genérico do corpo foi removido desses chefes, mantendo escudo, vida, colisão e ataques existentes. Recurso: assets/mobs_netuno/mob_neturno2/boss_frames.tres; nó: NeptuneBossVisual em scenes/actors/enemy.tscn.

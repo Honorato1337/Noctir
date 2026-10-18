@@ -8,6 +8,8 @@
 
 [ext_resource type="SpriteFrames" path="res://assets/mobs_netuno/mob_netuno1/neptune_frames.tres" id="neptune"]
 
+[ext_resource type="SpriteFrames" path="res://assets/mobs_netuno/mob_neturno2/boss_frames.tres" id="neptune_boss"]
+
 [node name="Enemy" type="Node2D"]
 script = ExtResource("1")
 
@@ -36,4 +38,11 @@ visible = false
 texture_filter = 1
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("neptune")
+animation = &"walk"
+
+[node name="NeptuneBossVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(3,3)
+sprite_frames = ExtResource("neptune_boss")
 animation = &"walk"

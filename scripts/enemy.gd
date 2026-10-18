@@ -34,6 +34,7 @@ var charge_dir := Vector2.ZERO
 var charge_phase := 0.0
 var route_clock := 0.0
 var route_points := PackedVector2Array()
+@onready var neptune_boss_visual: AnimatedSprite2D = $NeptuneBossVisual
 @onready var neptune_visual: AnimatedSprite2D = $NeptuneVisual
 @onready var mars_visual: AnimatedSprite2D = $MarsVisual
 @onready var mars_boss_visual: AnimatedSprite2D = $MarsBossVisual
@@ -46,6 +47,13 @@ func _process(_delta: float) -> void:
 	update_visual()
 
 func update_visual() -> void:
+	neptune_boss_visual.visible = kind == 1 and boss and not superboss
+	if neptune_boss_visual.visible and is_instance_valid(game):
+		neptune_boss_visual.modulate = Color(2,2,2) if hit_flash > 0 else Color.WHITE
+		neptune_boss_visual.flip_h = game.player.position.x < position.x
+		if game.state == "playing": neptune_boss_visual.play(&"walk")
+		else: neptune_boss_visual.pause()
+	else: neptune_boss_visual.pause()
 	neptune_visual.visible = kind == 1 and not boss
 	if neptune_visual.visible and is_instance_valid(game):
 		neptune_visual.modulate = Color(2,2,2) if hit_flash > 0 else Color.WHITE
@@ -335,7 +343,7 @@ func _draw() -> void:
 		return
 	var color: Color = Color.WHITE if hit_flash > 0 else (game.planet().enemy if god else game.Planets.DATA[mini(kind, 2)].enemy)
 	draw_circle(Vector2(0, 8), radius + 2, Color(0, 0, 0, 0.25))
-	var sprite_body := kind == 0 or (kind == 1 and not boss)
+	var sprite_body := kind == 0 or (kind == 1 and not superboss)
 	if sprite_body:
 		pass
 	elif god:

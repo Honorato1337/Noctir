@@ -4,7 +4,10 @@ Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pa
 
 **Para editar o visual no editor:** veja [Editar no Godot](docs/EDITAR_NO_GODOT.md). Menu, controles, HUD, pausa, upgrades, resultado, arena e atores agora possuem cenas `.tscn` próprias em `scenes/`. O tema compartilhado está em `ui_theme.tres`. Importe o `project.godot` da raiz, não o arquivo existente dentro de `docs`.
 
-## Versão atual: 0.1.4
+## Versão atual: 0.1.5
+
+- Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
+- Tela expandida para preencher 1920×1080 e outras proporções sem bordas, com escala uniforme e HUD centralizada.
 
 - Após a vitória, 15 segundos para coletar e embarcar. O loot deixado no chão é perdido.
 - Sirene progressiva, alerta vermelho e seta até o veículo; a pausa congela a coleta.

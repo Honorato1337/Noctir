@@ -1,6 +1,12 @@
 extends Control
 
 func update_game(game: Node2D) -> void:
+	# Keep the authored HUD centered while the world expands to fill the window.
+	var view_size := get_viewport_rect().size
+	var margin := (view_size-Vector2(1152,720))*0.5
+	position = margin
+	%ScreenFlash.position = -margin
+	%ScreenFlash.size = view_size
 	var touch: bool = game.controls.touch_enabled()
 	$SlotThree.position = Vector2(944, 100) if touch else Vector2(1024, 536)
 	%Contract.position = Vector2(230, 595) if touch else Vector2(64, 626)
