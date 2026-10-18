@@ -34,8 +34,8 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 | ![Júpiter e Titã de Íons](docs/media/gallery/04-jupiter.png) | ![Hordas em Plutão](docs/media/gallery/05-sobrevivencia.png) |
 | **Extração · Três segundos restantes** | **Loja · Decisões sob pressão** |
 | ![Foguete e prazo de extração](docs/media/gallery/07-extracao.png) | ![Loja entre arenas](docs/media/gallery/08-loja.png) |
-| **Menu principal** | **Controles para celular** |
-| ![Menu principal](docs/media/gallery/01-menu.png) | ![Controles por toque](docs/media/gallery/09-mobile.png) |
+| **Menu principal** | **Júpiter · Chefe** |
+| ![Menu principal](docs/media/gallery/01-menu.png) | ![Chefe de Júpiter](docs/media/gallery/09-chefe-jupiter.png) |
 
 [**Baixar as 10 prints em ZIP**](docs/media/one-more-orbit-prints.zip) · [Galeria completa e legendas](docs/media/README.md)
 

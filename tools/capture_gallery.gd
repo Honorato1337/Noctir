@@ -71,6 +71,10 @@ func run() -> void:
 	game.smoke_mode = true
 	root.add_child(game)
 	root.size = Vector2i(1920,1080)
+	game.set_physics_process(false)
+	game.encounters.set_physics_process(false)
+	game.deployables.set_physics_process(false)
+	game.contracts.set_physics_process(false)
 	game.rng.seed = 20261018
 	game.preferences.touch_mode = 2
 	game.progression = load("res://scripts/progression.gd").new()
@@ -120,17 +124,18 @@ func run() -> void:
 	game.loot.coins = 93
 	game.board_after_clear(true)
 	await shot("08-loja","Loja com prazo de 20 segundos e penalidade por atraso")
-	prepare(8,false,true)
-	populate(18)
-	game.preferences.touch_mode = 1
+	prepare(8)
+	populate(35)
+	boss_at()
+	game.boss_ref.age = 2.9
+	game.boss_ref.update_visual()
 	shoot_scene()
-	await shot("09-mobile","Interface com controles por toque")
-	game.preferences.touch_mode = 2
+	await shot("09-chefe-jupiter","Júpiter: chefe com armadura segmentada durante a investida")
 	game.show_menu()
 	game.show_settings()
 	await shot("10-configuracoes","Configurações de áudio com volumes separados")
 	var file := FileAccess.open(DEST+"manifest.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"source":"Godot, branch main após v0.2.7","staged":true,"note":"Cenários de demonstração com inimigos posicionados por script; arte, HUD e efeitos renderizados pelo jogo.","screenshots":records},"\t"))
+	file.store_string(JSON.stringify({"source":"Godot, versão 37e966f, capturas atualizadas em 18/10/2026","staged":true,"note":"Cenários de demonstração com inimigos posicionados por script; arte, HUD e efeitos renderizados pelo jogo.","screenshots":records},"\t"))
 	file.close()
 	game.queue_free()
 	await process_frame
