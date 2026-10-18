@@ -1,0 +1,67 @@
+{
+	"note": "Cenários de demonstração com inimigos posicionados por script; arte, HUD e efeitos renderizados pelo jogo.",
+	"screenshots": [
+		{
+			"caption": "Menu principal e astronauta",
+			"file": "01-menu.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Marte: Mandíbula Ferrugem e Gosmas Rubras",
+			"file": "02-marte.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Netuno: Cervo Abissal e Espinhos Boreais",
+			"file": "03-netuno.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Júpiter: Cubos da Tormenta e Titã de Íons",
+			"file": "04-jupiter.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Horda 9 em Plutão com inimigos de todos os planetas",
+			"file": "05-sobrevivencia.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Argos em combate denso: mobs, rajadas, meteoros e Berserk",
+			"file": "06-caos-argos.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Três segundos para embarcar: itens e moedas em risco",
+			"file": "07-extracao.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Loja com prazo de 20 segundos e penalidade por atraso",
+			"file": "08-loja.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Interface com controles por toque",
+			"file": "09-mobile.png",
+			"height": 1080,
+			"width": 1920
+		},
+		{
+			"caption": "Configurações de áudio com volumes separados",
+			"file": "10-configuracoes.png",
+			"height": 1080,
+			"width": 1920
+		}
+	],
+	"source": "Godot, branch main após v0.2.7",
+	"staged": true
+}

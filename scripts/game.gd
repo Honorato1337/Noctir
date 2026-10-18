@@ -524,11 +524,11 @@ func begin_boss() -> void:
 	spawn_enemy(true)
 	pending += 14 + room * 2
 	time_left += 20
-	message = "GUARDIÃO DA ARENA • elimine o chefe e os reforços!"
+	message = boss_ref.display_name() + " • elimine o chefe e os reforços!"
 	message_time = 4
 	if planet_index == 1:
 		environment_clock = 3.5
-		message = "GUARDIÃO BOREAL • cuidado com a geada e os reforços!"
+		message = boss_ref.display_name() + " • cuidado com a geada e os reforços!"
 	if boss_ref.superboss:
 		pending += 10
 		boss_summon_budget += 8

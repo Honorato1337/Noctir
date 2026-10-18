@@ -1,5 +1,7 @@
 extends Node2D
 
+const Names = preload("res://scripts/enemy_names.gd")
+
 var attack_visual_time := 0.0
 var final_spin_time := 0.0
 var final_rotation := 0.0
@@ -269,7 +271,7 @@ func tick_jupiter_mob(delta: float, direction: Vector2) -> void:
 		game.fx.sparks(position, Color("fff0ac"), 8, 60)
 
 func superboss_name() -> String:
-	return "DEUS ALIENÍGENA" if god else ["IMPERADOR FERRUGEM", "LEVIATÃ BOREAL", "TITÃ DA TEMPESTADE"][mini(kind, 2)]
+	return Names.name_for(kind, true, true, god, jupiter_role)
 
 func boss_motion(chase: Vector2, direction: Vector2, distance: float, obstructed: bool) -> Vector2:
 	final_dashing = false
@@ -454,6 +456,4 @@ func _draw() -> void:
 					draw_line(Vector2.ZERO, Vector2.RIGHT.rotated(super_gap_angle + side * 0.30) * 320, Color(0.45, 1, 0.8, 0.65), 2)
 
 func display_name() -> String:
-	if superboss:
-		return superboss_name()
-	return ["GUARDIÃO FERRUGEM", "GUARDIÃO BOREAL", "GUARDIÃO DA TEMPESTADE"][mini(kind, 2)]
+	return Names.name_for(kind, boss, superboss, god, jupiter_role)

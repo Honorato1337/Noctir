@@ -1,51 +1,60 @@
-# Galeria e fundo de Júpiter
+# Galeria de One More Orbit
 
-Treze capturas em PNG, 1920×1080: menu, Marte, Netuno, Júpiter, sobrevivência, loja e controles por toque, além de caos no combate e extração urgente. Imagens capturadas no próprio Godot com a arte e a HUD atuais, sem montagem posterior. As cenas são preparadas para demonstração, com semente fixa e proteção do personagem durante a captura. O progresso salvo não é alterado.
+[Voltar ao jogo](../../README.md) · [Baixar as 10 prints em ZIP](one-more-orbit-prints.zip) · [Bestiário](../BESTIARIO.md)
 
-## Fundo
+Capturas de 18/10/2026, em **1920×1080**, da branch principal após a versão 0.2.7, incluindo os novos nomes. Cenários preparados por script e renderizados pelo próprio jogo, sem efeitos externos nos PNGs.
 
-- [jupiter-fundo.png](jupiter-fundo.png): 1536×896, chão completo, sem paredes, personagens ou interface. Exportado pelo mesmo renderizador de terreno usado no jogo, incluindo orientação dos tiles e tonalidade.
-- [jupiter-tile.png](jupiter-tile.png): 32×32, tile lógico de Júpiter, na paleta do jogo, antes do escurecimento aplicado ao desenhar. No cenário é ampliado para 64×64 com filtro nearest.
-- Fonte compartilhada dos pisos: `assets/environment/floor_tiles-v3.png`. O atlas contém todos os planetas; estes PNGs são exportações separadas para facilitar o uso.
+## Menu principal e astronauta
 
-## Reproduzir
+![Menu principal e astronauta](gallery/01-menu.png)
 
-Com Godot 4.7.2 e uma superfície gráfica disponível:
+## Marte: Mandíbula Ferrugem e Gosmas Rubras
+
+![Marte: Mandíbula Ferrugem e Gosmas Rubras](gallery/02-marte.png)
+
+## Netuno: Cervo Abissal e Espinhos Boreais
+
+![Netuno: Cervo Abissal e Espinhos Boreais](gallery/03-netuno.png)
+
+## Júpiter: Cubos da Tormenta e Titã de Íons
+
+![Júpiter: Cubos da Tormenta e Titã de Íons](gallery/04-jupiter.png)
+
+## Horda 9 em Plutão com inimigos de todos os planetas
+
+![Horda 9 em Plutão com inimigos de todos os planetas](gallery/05-sobrevivencia.png)
+
+## Argos em combate denso: mobs, rajadas, meteoros e Berserk
+
+![Argos em combate denso: mobs, rajadas, meteoros e Berserk](gallery/06-caos-argos.png)
+
+## Três segundos para embarcar: itens e moedas em risco
+
+![Três segundos para embarcar: itens e moedas em risco](gallery/07-extracao.png)
+
+## Loja com prazo de 20 segundos e penalidade por atraso
+
+![Loja com prazo de 20 segundos e penalidade por atraso](gallery/08-loja.png)
+
+## Interface com controles por toque
+
+![Interface com controles por toque](gallery/09-mobile.png)
+
+## Configurações de áudio com volumes separados
+
+![Configurações de áudio com volumes separados](gallery/10-configuracoes.png)
+
+## Reproduzir e empacotar
 
 ```powershell
-Godot --path . --script tools/capture_repository.gd
+godot --path . --script tools/capture_gallery.gd
+python tools/package_screenshots.py
 ```
 
-O script exporta o fundo, o tile e as seis capturas de computador. A sétima imagem usa a mesma cena de Marte com controles por toque; para refazê-la, defina temporariamente `game.preferences.touch_mode = 1` no script e salve a captura de Marte como `07-controles-mobile.png`. O valor normal é 2 (toque desativado para a galeria de computador).
+O ZIP inclui dez PNGs, legendas, manifesto e hashes SHA-256. O script valida a resolução e a integridade de cada arquivo. As capturas são feitas com perfil temporário em memória, sem progresso ou compras no save do jogador.
 
-## Pedras de Júpiter
+## Arquivos anteriores e arte de cenário
 
-[jupiter-rochas.zip](jupiter-rochas.zip) reúne dois sprites de pedra, um trecho de parede e uma prévia ampliada. Todos os PNGs têm transparência; os sprites mantêm o recorte e a paleta que o jogo aplica ao atlas, sem redesenho.
+Os PNGs numerados diretamente nesta pasta pertencem a capturas anteriores e foram preservados como histórico; a galeria atual fica em `gallery/`.
 
-## Capturas de caos e urgência
-
-- `08-caos-total.png`: mais de 70 inimigos, Deus Alienígena, Berserk, campo da baliza e vida baixa.
-- `09-extracao-urgente.png`: contagem de 3 segundos, alerta vermelho, foguete e loot abandonado.
-
-Para reproduzir essas imagens e a exportação das pedras:
-
-```powershell
-Godot --path . --script tools/capture_chaos.gd
-```
-
-São cenas de demonstração preparadas dentro do jogo, com proteção temporária do personagem, sem montagem posterior e sem alterar o save ou o balanceamento do jogo.
-
-## Plutão (0.2.0)
-
-`10-plutao.png`: Planície do Exílio, cenário exclusivo da Sobrevivência, com rochas congeladas e gêiseres de nitrogênio. É a imagem atual do modo na galeria; `05-sobrevivencia.png` registra o cenário anterior.
-
-## Leviatã Boreal (0.2.2)
-
-`11-leviata-boreal.png` mostra o superchefe de Netuno com os três frames originais de `mob_netuno3`. Para refazer: `Godot --path . --script tools/capture_neptune_super.gd`.
-
-## Guanapo (0.2.3)
-
-- `12-guanapo-loja.png`: catálogo com o nome da skin e a seleção salva.
-- `13-guanapo-eco.png`: Guanapo e seu Eco olhando para lados opostos.
-
-Para refazer: `Godot --path . --script tests/skins.gd -- --preview`.
+[Fundo de Júpiter](jupiter-fundo.png) · [Tile de Júpiter](jupiter-tile.png) · [Pedras de Júpiter em ZIP](jupiter-rochas.zip).
