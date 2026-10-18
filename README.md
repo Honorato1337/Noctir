@@ -1,6 +1,6 @@
 # One More Orbit
 
-**Baixar v0.2.6:** [Windows (.exe)](https://github.com/Honorato1337/Noctir/releases/download/v0.2.6/OneMoreOrbit.exe) · [Android (.apk)](https://github.com/Honorato1337/Noctir/releases/download/v0.2.6/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
+**Baixar v0.2.7:** [Windows (.exe)](https://github.com/Honorato1337/Noctir/releases/download/v0.2.7/OneMoreOrbit.exe) · [Android (.apk)](https://github.com/Honorato1337/Noctir/releases/download/v0.2.7/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
 
 Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pasta. Importe `project.godot` no gerenciador do Godot e aperte **F6** com a cena principal aberta, ou **F5** para executar o projeto. Não precisa instalar plugins nem baixar assets.
 
