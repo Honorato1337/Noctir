@@ -9,6 +9,15 @@ func _ready() -> void:
 	details.z_index = 100
 	details.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	details.custom_minimum_size.x = 370
+	var box := StyleBoxFlat.new()
+	box.bg_color = Color("080f15")
+	box.border_color = Color("6ce3d1")
+	box.set_border_width_all(2)
+	box.content_margin_left = 16
+	box.content_margin_right = 16
+	box.content_margin_top = 12
+	box.content_margin_bottom = 12
+	details.add_theme_stylebox_override("panel", box)
 	add_child(details)
 	description = Label.new()
 	description.custom_minimum_size.x = 330
@@ -25,6 +34,7 @@ func _ready() -> void:
 				if keyboard_navigation:
 					show_details(control))
 			control.focus_exited.connect(details.hide)
+	refresh_details()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:

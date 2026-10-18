@@ -86,6 +86,12 @@ var player: Node2D
 var enemies: Node2D
 var bullets: Node2D
 var effects: Array[Dictionary] = []
+const TARGET_CELL_SIZE := 128.0
+var target_grid: Dictionary = {}
+var target_grid_frame := -1
+var target_grid_count := -1
+var hud_update_clock := 0.0
+var hud_state := ""
 var obstacles: Array[Rect2] = []
 var hazards: Array[Vector2] = []
 var portal := Vector2(1038, 386)
@@ -152,16 +158,18 @@ var berserk_used := false
 @export var mobile_profile_override := false
 func mobile_optimized() -> bool:
 	return mobile_profile_override or OS.has_feature("mobile")
-func mob_limit() -> int: return 32 if mobile_optimized() else MAX_ACTIVE_ENEMIES
+func mob_limit() -> int: return 24 if mobile_optimized() else MAX_ACTIVE_ENEMIES
 func wave_factor() -> float: return 0.65 if mobile_optimized() else 1.0
 func projectile_limit(hostile: bool = true) -> int:
-	return (180 if hostile else 240) if mobile_optimized() else (480 if hostile else 900)
+	return (120 if hostile else 160) if mobile_optimized() else (480 if hostile else 900)
 
 func _ready() -> void:
 	add_child(preload("res://scripts/game_cursor.gd").new())
 	if mobile_optimized():
 		get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
+		get_window().content_scale_size = Vector2i(1152, 720)
 		get_viewport().msaa_2d = Viewport.MSAA_DISABLED
+		Engine.max_fps = 60
 	menu_loop_stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	menu_loop_stream.loop_begin = 0
 	menu_loop_stream.loop_end = int(round(menu_loop_stream.get_length() * menu_loop_stream.mix_rate))
@@ -288,6 +296,8 @@ func start_room() -> void:
 	environment_clock = 0.0
 	room_spawn_index = 0
 	clear_container(enemies)
+	target_grid.clear()
+	target_grid_frame = -1
 	clear_container(bullets)
 	effects.clear()
 	loot.drops.clear()
@@ -517,6 +527,25 @@ func blocked(point: Vector2, radius: float) -> bool:
 			return true
 	return false
 
+func projectile_targets(at: Vector2) -> Array:
+	# One broad-phase grid per physics tick, shared by every friendly projectile.
+	var frame := Engine.get_physics_frames()
+	if target_grid_frame != frame or target_grid_count != enemies.get_child_count():
+		target_grid_frame = frame
+		target_grid_count = enemies.get_child_count()
+		target_grid.clear()
+		for enemy in enemies.get_children():
+			if enemy.is_queued_for_deletion(): continue
+			var reach: float = enemy.radius + (13 if enemy.shield > 0 else 0) + 8
+			var first := Vector2i(((enemy.position - Vector2.ONE * reach) / TARGET_CELL_SIZE).floor())
+			var last := Vector2i(((enemy.position + Vector2.ONE * reach) / TARGET_CELL_SIZE).floor())
+			for x in range(first.x, last.x + 1):
+				for y in range(first.y, last.y + 1):
+					var cell := Vector2i(x, y)
+					if not target_grid.has(cell): target_grid[cell] = []
+					target_grid[cell].append(enemy)
+	return target_grid.get(Vector2i((at / TARGET_CELL_SIZE).floor()), [])
+
 func move_actor(actor: Node2D, movement: Vector2, radius: float) -> void:
 	# Sweep long dashes in short steps so pillars cannot be skipped.
 	var steps := maxi(1, ceili(movement.length() / 12.0))
@@ -530,7 +559,8 @@ func move_actor(actor: Node2D, movement: Vector2, radius: float) -> void:
 			actor.position.y = clampf(next.y, arena.position.y + radius, arena.end.y - radius)
 
 func burst(at: Vector2, color: Color) -> void:
-	effects.append({"pos": at, "color": color, "life": 0.4})
+	if effects.size() < (16 if mobile_optimized() else 64):
+		effects.append({"pos": at, "color": color, "life": 0.4})
 	fx.sparks(at, color, 12, 120)
 
 func begin_boss() -> void:
@@ -835,9 +865,15 @@ func show_menu() -> void:
 	bind_button("ControlsButton", show_controls)
 	bind_button("PermanentShopButton", show_permanent_shop)
 	bind_button("SettingsButton", show_settings)
+	bind_button("QuitButton", quit_game)
 	panel.find_child("TestButton", true, false).visible = developer_unlocked
 	bind_button("TestButton", show_test_menu)
 	update_menu_clock()
+
+func quit_game() -> void:
+	settle_run()
+	save_preferences()
+	get_tree().quit()
 
 func show_difficulty_menu() -> void:
 	settle_run()
@@ -1188,7 +1224,11 @@ func _process(delta: float) -> void:
 	if menu_clock_tick >= 1:
 		menu_clock_tick = 0
 		update_menu_clock()
-	$UI/HUD.update_game(self)
+	hud_update_clock += delta
+	if hud_state != state or hud_update_clock >= 1.0 / 30.0:
+		hud_state = state
+		hud_update_clock = 0
+		$UI/HUD.update_game(self)
 
 func text_at(at: Vector2, text: String, size: int, color: Color = Color("e0e8f3")) -> void:
 	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)

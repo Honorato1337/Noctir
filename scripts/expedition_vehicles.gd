@@ -8,7 +8,8 @@ static func texture(kind: String) -> Texture2D:
 	if not images.has(kind):
 		var path: String = PATHS.get(kind, "")
 		if not ResourceLoader.exists(path): return null
-		images[kind] = centered_texture(path)
+		var baked := "res://assets/optimized/%s.png" % kind
+		images[kind] = load(baked) if ResourceLoader.exists(baked) else centered_texture(path)
 		frame_counts[kind] = 2
 	return images[kind]
 static func region(kind: String, frame: int) -> Rect2:

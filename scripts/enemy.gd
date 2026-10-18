@@ -58,6 +58,7 @@ var route_points := PackedVector2Array()
 @onready var mars_super_visual: AnimatedSprite2D = $MarsSuperVisual
 
 func _ready() -> void:
+	separation_tick = randf_range(0.0, 0.1)
 	update_visual()
 
 func _process(_delta: float) -> void:
@@ -245,13 +246,14 @@ func _physics_process(delta: float) -> void:
 	motion *= game.deployables.enemy_slowdown(position, boss)
 	# Cache the local separation force on mobile instead of scanning every tick.
 	separation_tick -= delta
-	if not game.mobile_optimized() or separation_tick <= 0:
-		separation_tick = .12
+	if separation_tick <= 0:
+		separation_tick = .15 if game.mobile_optimized() else .1
 		cached_separation = Vector2.ZERO
 		for other in game.enemies.get_children():
 			if other == self or other.is_queued_for_deletion(): continue
 			var gap: Vector2 = position-other.position
-			if gap.length_squared() < pow(radius+other.radius+5,2):
+			var reach: float = radius + other.radius + 5
+			if gap.length_squared() < reach * reach:
 				cached_separation += gap.normalized()*75
 	motion += cached_separation
 	game.move_actor(self, motion * delta, radius)

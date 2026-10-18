@@ -24,7 +24,7 @@ func reset_room() -> void:
 	rng.seed = game.rng.randi()
 	clear_active(rng.randf_range(8, 13))
 	motes.clear()
-	for i in (40 if game.mobile_optimized() else AMBIENT_PARTICLES):
+	for i in (20 if game.mobile_optimized() else AMBIENT_PARTICLES):
 		motes.append(Vector2(rng.randf_range(0, game.arena.size.x), rng.randf_range(0, game.arena.size.y)))
 
 func clear_active(delay: float = 8.0) -> void:
@@ -157,9 +157,12 @@ func _draw() -> void:
 	if not active or not is_instance_valid(game) or game.state not in ["playing", "paused", "death"]: return
 	var armed := age >= warning
 	var sand := event in ["sand", "chaos"]
-	for i in motes.size():
+	var bounds: Rect2 = game.fx.visible_bounds()
+	var decoration_step := 1 if game.fx.quality > 0.7 else 2 if game.fx.quality > 0.4 else 3
+	for i in range(0, motes.size(), decoration_step):
 		var drift := Vector2(age * (135 if sand else 45), age * (30 if sand else 260))
 		var at: Vector2 = game.arena.position + Vector2(fposmod(motes[i].x + drift.x, game.arena.size.x), fposmod(motes[i].y + drift.y, game.arena.size.y))
+		if not bounds.has_point(at): continue
 		var color := Color(0.95, 0.63, 0.32, 0.5) if sand else Color(0.65, 0.86, 1, 0.35)
 		Vfx.draw_particle(self, at, Vector2.ONE*12, 1 if sand else 2, (i+int(age*5))%4, Color(1,1,1,0.55))
 	for vortex in vortices:
@@ -167,7 +170,7 @@ func _draw() -> void:
 		draw_arc(vortex.pos, vortex.radius, 0, TAU, 48, Color(color, 0.25), 2)
 		draw_circle(vortex.pos, vortex.core, Color(color, 0.23 if armed else 0.06))
 		draw_arc(vortex.pos, vortex.core, 0, TAU, 28, Color(color, 0.95 if armed else 0.55), 3)
-		for i in (24 if game.mobile_optimized() else 72):
+		for i in range(0, 12 if game.mobile_optimized() else 48, decoration_step):
 			var angle: float = i * 2.39996 + age * (1.6 + (i % 3) * 0.3)
 			var radius: float = vortex.core * (0.2 + float(i % 11) / 11 * 1.25)
 			var at: Vector2 = vortex.pos + Vector2.RIGHT.rotated(angle) * radius

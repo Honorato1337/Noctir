@@ -24,11 +24,21 @@ const FLOOR_PALETTES := [
  [Color("241d3b"),Color("2c2246"),Color("342950"),Color("40315e"),Color("4c396c"),Color("5b4779"),Color("201b33"),Color("6b5687")]
 ]
 static var cache: Dictionary = {}
+const BAKED_TEXTURES := {
+	"res://assets/effects/particle_atlas-v2.png": "res://assets/optimized/particles.png",
+	"res://assets/environment/planet_terrain_atlas-v2.png": "res://assets/optimized/terrain.png",
+	"res://assets/environment/floor_tiles-v3.png": "res://assets/optimized/floors.png"
+}
 static func texture(path: String, logical_size: Vector2i, palettes: Array, row_count: int = 1, columns: int = 1) -> Texture2D:
 	if cache.has(path): return cache[path]
+	var baked: String = BAKED_TEXTURES.get(path, "")
+	if not baked.is_empty() and ResourceLoader.exists(baked):
+		cache[path] = load(baked)
+		return cache[path]
 	if not ResourceLoader.exists(path): return null
 	var source: Texture2D = load(path)
 	var image := source.get_image()
+	if image.is_compressed(): image.decompress()
 	image.convert(Image.FORMAT_RGBA8)
 	image.resize(logical_size.x,logical_size.y,Image.INTERPOLATE_NEAREST)
 	for y in logical_size.y:

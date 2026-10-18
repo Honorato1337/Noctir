@@ -113,6 +113,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "TESTE"
 
+[node name="QuitButton" type="Button" parent="Center/Layout/Content/Mission/Box"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "SAIR"
+
 [node name="Astronaut" type="PanelContainer" parent="Center/Layout/Content" unique_id=130174619]
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2

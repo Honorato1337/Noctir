@@ -20,16 +20,18 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	if hostile:
-		if position.distance_to(game.player.position) < radius + 13:
+		if position.distance_squared_to(game.player.position) < (radius + 13) * (radius + 13):
 			game.player.hurt(maxi(1, ceili(damage)))
 			queue_free()
 	else:
-		for enemy in game.enemies.get_children():
-			if not enemy.is_queued_for_deletion() and position.distance_to(enemy.position) < radius + enemy.radius + (13 if enemy.shield > 0 else 0):
+		for enemy in game.projectile_targets(position):
+			if not is_instance_valid(enemy) or enemy.is_queued_for_deletion(): continue
+			var reach: float = radius + enemy.radius + (13 if enemy.shield > 0 else 0)
+			if position.distance_squared_to(enemy.position) < reach * reach:
 				enemy.hurt(damage)
 				queue_free()
 				break
-	queue_redraw()
+	# Shape and color are fixed at spawn; moving the node needs no redraw.
 
 func _draw() -> void:
 	if not use_placeholder_graphics:

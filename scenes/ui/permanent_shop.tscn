@@ -1,6 +1,7 @@
 [gd_scene format=3]
 [ext_resource type="Theme" path="res://ui_theme.tres" id="1"]
 [ext_resource type="Script" path="res://scripts/pixel_backdrop.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/shop_details.gd" id="details"]
 
 [ext_resource type="SpriteFrames" path="res://asssets/astronauta/astronaut_frames.tres" id="skin_astro"]
 [ext_resource type="SpriteFrames" path="res://assets/guanapo/guanapo_frames.tres" id="skin_guanapo"]
@@ -12,6 +13,7 @@ atlas = ExtResource("weapon_original")
 region = Rect2(7,12,10,9)
 
 [node name="PermanentShop" type="Control"]
+script = ExtResource("details")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

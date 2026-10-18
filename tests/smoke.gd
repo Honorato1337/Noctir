@@ -164,8 +164,9 @@ func run() -> void:
 	game.close_panel()
 	game.state = "playing"
 	game.fx.particles.clear()
-	game.fx.sparks(Vector2.ZERO, Color.WHITE, 5000)
-	check(game.fx.particles.size() == game.fx.MAX_PARTICLES, "particles obey density budget")
+	game.fx.emission_frame = -1
+	game.fx.sparks(game.player.position, Color.WHITE, 5000)
+	check(game.fx.particles.size() > 0 and game.fx.particles.size() <= game.fx.MAX_PARTICLES, "particles obey density and per-frame budgets")
 	game.loot.reset_run()
 	# Validate every actual wave, species, portal, upgrade panel and victory.
 	var layouts: Array[String] = []
