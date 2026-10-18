@@ -237,3 +237,8 @@ Validação: `tests/rebalance.gd`, campanha completa (`smoke`), `planet_mechanic
 - Espingarda animada de assets/gun2: três projéteis por tiro, intervalo base de 0,48s e Prisma adicionando dois projéteis por melhoria. O Eco reproduz os disparos e a animação.
 - Netuno: trilha original de post-punk eletrônico em tom menor, baixo pulsante, guitarra sintetizada e bateria seca; 160 BPM, entre Marte (128) e Júpiter (216). Substitui o chorinho da versão anterior.
 - Arena 13 usa o mesmo mapa de Plutão da sobrevivência: 2048×1344, oito rochas, mesmo terreno e pontos de entrada. A sobrevivência mantém seu mapa original; a campanha mantém o Deus Alienígena e o caos da arena final.
+
+### Animações dos inimigos (0.2.7)
+
+- Mob de Júpiter usa os três frames originais: fechado em repouso, abertura ao preparar o ataque e movimento ao disparar ou avançar. Marcadores de função e avisos continuam visíveis.
+- Deus Alienígena usa os 17 frames de assets/mob_final. Gira durante o dash e as rajadas circulares/espirais, retorna à posição normal entre ações e congela na pausa. A rotação afeta somente o sprite; colisão, escudo e avisos permanecem estáveis.

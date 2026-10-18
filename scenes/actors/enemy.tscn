@@ -12,6 +12,9 @@
 
 [ext_resource type="SpriteFrames" path="res://assets/mobs_netuno/mob_netuno3/super_frames.tres" id="neptune_super"]
 
+[ext_resource type="SpriteFrames" path="res://assets/mobs_jupiter/mob-jupiter1/jupiter_frames.tres" id="jupiter"]
+[ext_resource type="SpriteFrames" path="res://assets/mob_final/final_frames.tres" id="final"]
+
 [node name="Enemy" type="Node2D"]
 script = ExtResource("1")
 
@@ -54,4 +57,17 @@ visible = false
 texture_filter = 1
 scale = Vector2(2,2)
 sprite_frames = ExtResource("neptune_super")
+animation = &"walk"
+
+[node name="JupiterVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+sprite_frames = ExtResource("jupiter")
+animation = &"idle"
+
+[node name="FinalVisual" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(2,2)
+sprite_frames = ExtResource("final")
 animation = &"walk"

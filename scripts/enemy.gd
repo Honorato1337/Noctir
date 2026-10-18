@@ -1,5 +1,12 @@
 extends Node2D
 
+var attack_visual_time := 0.0
+var final_spin_time := 0.0
+var final_rotation := 0.0
+var final_dashing := false
+@onready var jupiter_visual: AnimatedSprite2D = $JupiterVisual
+@onready var final_visual: AnimatedSprite2D = $FinalVisual
+
 var game: Node2D
 var kind := 0
 var jupiter_role := 0
@@ -48,6 +55,25 @@ func _process(_delta: float) -> void:
 	update_visual()
 
 func update_visual() -> void:
+	jupiter_visual.visible = kind == 2 and not boss and not god
+	if jupiter_visual.visible:
+		jupiter_visual.modulate = Color(2,2,2) if hit_flash > 0 else Color.WHITE
+		# Scripted frames line up with the windup and release, including on pause.
+		var charging: bool = jupiter_role == 0 and charge_phase >= 1.35
+		if storm_windup > 0 or charging or attack_visual_time > 0:
+			jupiter_visual.animation = &"attack"
+			jupiter_visual.frame = 0 if storm_windup > 0 or (charging and charge_phase < 1.95) else (1 if charging or attack_visual_time > .15 else 2)
+		else:
+			jupiter_visual.animation = &"idle"
+			jupiter_visual.frame = 0
+		jupiter_visual.pause()
+	final_visual.visible = god
+	if final_visual.visible:
+		final_visual.modulate = Color(2,2,2) if hit_flash > 0 else Color.WHITE
+		final_visual.rotation = final_rotation
+		if is_instance_valid(game) and game.state == "playing": final_visual.play(&"walk")
+		else: final_visual.pause()
+	else: final_visual.pause()
 	neptune_super_visual.visible = kind == 1 and superboss and not god
 	if neptune_super_visual.visible and is_instance_valid(game):
 		neptune_super_visual.modulate = Color(2,2,2) if hit_flash > 0 else Color.WHITE
@@ -105,6 +131,8 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(game) or game.state != "playing" or is_queued_for_deletion():
 		return
 	age += delta
+	attack_visual_time = maxf(0, attack_visual_time-delta)
+	final_spin_time = maxf(0, final_spin_time-delta)
 	hit_flash -= delta
 	shot_cd -= delta*game.enemy_ability_rate()
 	var direction: Vector2 = position.direction_to(game.player.position)
@@ -150,6 +178,11 @@ func _physics_process(delta: float) -> void:
 			motion *= .25
 	if boss:
 		motion = boss_motion(chase, direction, distance, obstructed)
+	if god:
+		if final_dashing or final_spin_time > 0:
+			final_rotation = wrapf(final_rotation + delta * (TAU * 3 if final_dashing else TAU * 1.5), -PI, PI)
+		else:
+			final_rotation = rotate_toward(final_rotation, 0, delta * TAU * 2)
 	motion *= game.deployables.enemy_slowdown(position, boss)
 	# Soft separation avoids a single unreadable stack of enemies.
 	for other in game.enemies.get_children():
@@ -220,6 +253,7 @@ func tick_jupiter_mob(delta: float, direction: Vector2) -> void:
 	if storm_windup > 0:
 		storm_windup -= delta
 		if storm_windup <= 0:
+			attack_visual_time = .3
 			if jupiter_role == 2:
 				game.encounters.add_field("gravity", position, 210, .8, 2.4, self, 130)
 			for i in (3 if jupiter_role == 2 else 5):
@@ -238,6 +272,7 @@ func superboss_name() -> String:
 	return "DEUS ALIENÍGENA" if god else ["IMPERADOR FERRUGEM", "LEVIATÃ BOREAL", "TITÃ DA TEMPESTADE"][mini(kind, 2)]
 
 func boss_motion(chase: Vector2, direction: Vector2, distance: float, obstructed: bool) -> Vector2:
+	final_dashing = false
 	var period: float = 2.7 if god else [3.5, 4.0, 3.2][kind]
 	var phase := fmod(age, period)
 	var cycle := floori(age / period)
@@ -253,6 +288,7 @@ func boss_motion(chase: Vector2, direction: Vector2, distance: float, obstructed
 				boss_locked_dir = direction.rotated(PI / 2 * (-1 if cycle % 2 else 1))
 		return Vector2.ZERO
 	if phase >= dash_start:
+		final_dashing = god
 		return boss_locked_dir * (880 if god else (680 if kind == 1 else 760))
 	if obstructed:
 		return chase * speed
@@ -312,6 +348,7 @@ func tick_superboss(delta: float) -> void:
 
 func fire_super_attack() -> void:
 	var pattern := super_attack_index % 3
+	if god and pattern != 1: final_spin_time = .65
 	game.encounters.super_attack(self, pattern)
 	fire_super_layer(pattern, 0)
 	for layer in range(1, super_phase + 1):
@@ -352,7 +389,7 @@ func _draw() -> void:
 		return
 	var color: Color = Color.WHITE if hit_flash > 0 else (game.planet().enemy if god else game.Planets.DATA[mini(kind, 2)].enemy)
 	draw_circle(Vector2(0, 8), radius + 2, Color(0, 0, 0, 0.25))
-	var sprite_body := kind == 0 or (kind == 1 and not god)
+	var sprite_body := kind == 0 or (kind == 1 and not god) or (kind == 2 and not boss) or god
 	if sprite_body:
 		pass
 	elif god:
@@ -388,6 +425,11 @@ func _draw() -> void:
 	if not sprite_body:
 		draw_circle(Vector2(0, -2), radius * 0.43, Color("202338"))
 		draw_circle(Vector2(3, -4), radius * 0.17, Color("fff1b8"))
+	if kind == 2 and not boss:
+		if jupiter_role == 1: draw_line(Vector2(-10, radius+4), Vector2(10, radius+4), Color("fff0ac"), 2)
+		elif jupiter_role == 2: draw_arc(Vector2.ZERO, radius+7, age, age+TAU*.85, 20, Color("87e8ff"), 2)
+		if storm_windup > 0: draw_line(Vector2.ZERO, storm_aim*250, Color(1,.7,.9,.65), 2)
+		if jupiter_role == 0 and charge_phase >= 1.35 and charge_phase < 1.95: draw_line(Vector2.ZERO,charge_dir*150,Color(1,.4,.5,.5),2)
 	if boss or health < max_health:
 		draw_rect(Rect2(-radius, -radius - 13, radius * 2, 4), Color("181828"))
 		draw_rect(Rect2(-radius, -radius - 13, radius * 2 * maxf(health / max_health, 0), 4), Color("ff7e8d"))
