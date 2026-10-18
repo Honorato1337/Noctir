@@ -96,6 +96,8 @@ var visor_style := StyleBoxFlat.new()
 var rng := RandomNumberGenerator.new()
 var chosen_upgrades: Array[String] = []
 var smoke_mode := false
+const DEVELOPER_PASSWORD_HASH := "36247c6dbfe4bea703caf8208399b5689bd983227ca42bfedd47013ccd60bcb6"
+var developer_unlocked := false
 var practice_mode := false
 var practice_invincible := true
 var practice_equipment := "mine"
@@ -217,6 +219,7 @@ func planet() -> Dictionary:
 	return SURVIVAL_PLANET if run_mode == "endless" else Planets.DATA[planet_index]
 
 func start_run(as_practice: bool = false, initial_room: int = 0, mode: String = "medium", game_mode: String = "campaign") -> void:
+	if as_practice and not developer_unlocked: return
 	settle_run()
 	run_mode = "endless" if game_mode == "endless" and not as_practice else "campaign"
 	practice_mode = as_practice
@@ -806,6 +809,7 @@ func show_menu() -> void:
 	bind_button("ControlsButton", show_controls)
 	bind_button("PermanentShopButton", show_permanent_shop)
 	bind_button("SettingsButton", show_settings)
+	panel.find_child("TestButton", true, false).visible = developer_unlocked
 	bind_button("TestButton", show_test_menu)
 	update_menu_clock()
 
@@ -887,10 +891,46 @@ func show_settings() -> void:
 		button.text = controls.key_text(action)
 		button.pressed.connect(begin_rebind.bind(action))
 		bindings.add_child(button)
+	var password: LineEdit = panel.find_child("DeveloperPassword", true, false)
+	password.text_submitted.connect(func(_text: String): unlock_developer())
+	bind_button("UnlockDeveloperButton", unlock_developer)
+	bind_button("DeveloperTestsButton", show_test_menu)
+	bind_button("LockDeveloperButton", lock_developer)
+	refresh_developer_settings()
 	bind_button("TestSoundButton", test_volume)
 	bind_button("BackButton", show_menu)
 	panel.find_child("Tabs", true, false).tab_changed.connect(settings_tab_changed)
 	refresh_audio_settings()
+
+func refresh_developer_settings() -> void:
+	if state != "settings" or not is_instance_valid(panel): return
+	panel.find_child("DeveloperPassword",true,false).visible = not developer_unlocked
+	panel.find_child("UnlockDeveloperButton",true,false).visible = not developer_unlocked
+	panel.find_child("DeveloperTestsButton",true,false).visible = developer_unlocked
+	panel.find_child("LockDeveloperButton",true,false).visible = developer_unlocked
+	panel.find_child("DeveloperNotice",true,false).text = "Acesso liberado nesta sessão." if developer_unlocked else "Área restrita ao desenvolvedor. Digite a senha para acessar os testes."
+
+func unlock_developer() -> void:
+	if state != "settings" or not is_instance_valid(panel): return
+	var password: LineEdit = panel.find_child("DeveloperPassword",true,false)
+	var valid := password.text.sha256_text() == DEVELOPER_PASSWORD_HASH
+	password.clear()
+	if not valid:
+		panel.find_child("DeveloperNotice",true,false).text = "Senha incorreta."
+		play_sfx("error")
+		password.grab_focus()
+		return
+	developer_unlocked = true
+	refresh_developer_settings()
+	panel.find_child("DeveloperTestsButton",true,false).grab_focus()
+	play_sfx("purchase")
+
+func lock_developer() -> void:
+	developer_unlocked = false
+	if state == "settings":
+		panel.find_child("DeveloperPassword",true,false).clear()
+		refresh_developer_settings()
+		panel.find_child("DeveloperPassword",true,false).grab_focus()
 
 func set_volume(value: float) -> void:
 	preferences.volume = clampf(value, 0, 100)
@@ -1155,6 +1195,7 @@ func restart_current_run() -> void:
 	start_run(practice_mode, room if practice_mode else 0, run_difficulty, run_mode)
 
 func show_test_menu() -> void:
+	if not developer_unlocked: return
 	settle_run()
 	state = "testing"
 	show_screen("test")
@@ -1164,6 +1205,7 @@ func show_test_menu() -> void:
 	bind_button("BackButton", show_menu)
 
 func start_practice(index: int, boss_only: bool = false) -> void:
+	if not developer_unlocked: return
 	var equipment: int = panel.find_child("TestEquipment", true, false).selected
 	practice_invincible = panel.find_child("TestInvincible", true, false).button_pressed
 	practice_equipment = ["mine", "turret", "beacon"][equipment]
@@ -1350,6 +1392,9 @@ func on_joy_connection_changed(_device: int, connected: bool) -> void:
 func settings_tab_changed(index: int) -> void:
 	remap_action = ""
 	panel.find_child("SettingsNotice", true, false).text = "Clique numa tecla para remapear. Esc cancela; teclas repetidas são trocadas." if index == 2 else "Os ajustes são salvos automaticamente."
+	if index == 3:
+		panel.find_child("SettingsNotice",true,false).text = "O acesso de desenvolvedor vale apenas para esta sessão."
+		if not developer_unlocked: panel.find_child("DeveloperPassword",true,false).grab_focus()
 
 func start_transfer() -> bool:
 	if state != "exit" or player.position.distance_to(portal) >= EXTRACTION_RANGE:

@@ -30,7 +30,7 @@ Só três segundos para alcançar o foguete. O loot no chão fica para trás.
 
 Capturas em **1920×1080**. [Arquivos e instruções de captura](docs/media/README.md). [Fundo de Júpiter em PNG](docs/media/jupiter-fundo.png).
 
-## Versão atual: 0.2.0
+## Versão atual: 0.2.1
 
 - Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
 - Tela expandida para preencher 1920×1080 e outras proporções sem bordas, com escala uniforme e HUD centralizada.
@@ -154,11 +154,11 @@ Cada Prestígio aumenta em 1 o nível máximo de todos os atributos. Não há te
 
 O dash percorre cerca de 204 px. A tecla **3** coloca o equipamento de chão do terceiro slot: mina de grande área, torreta ou baliza de contenção. Os slots 1 e 2 continuam exclusivos para consumíveis.
 
-O menu **Teste** abre qualquer uma das 13 arenas ou seu chefe, com escolha de equipamento e invulnerabilidade opcional. Não concede progresso nem altera recordes. A arena 13 combina as famílias de mobs e um chefe com meteoros, atração, prisão, escudos e dash.
+Após desbloquear **Configurações → Desenvolvedor** com a senha do desenvolvedor, o menu **Teste** abre qualquer uma das 13 arenas ou seu chefe, com escolha de equipamento e invulnerabilidade opcional. Não concede progresso nem altera recordes. A arena 13 combina as famílias de mobs e um chefe com meteoros, atração, prisão, escudos e dash.
 
 Detalhes de implementação e testes: [expansão](docs/EXPANSAO_INFINITA.md).
 
-## Sobrevivência infinita (0.2.0)
+## Sobrevivência infinita (0.2.1)
 
 Em Iniciar Expedição, selecione Sobrevivência no seletor de modo e escolha Fácil, Médio ou Difícil. A arena mede 2048×1344: exatamente o dobro da área da arena inicial (1536×896), sem esticar os pixels.
 
@@ -172,7 +172,7 @@ Verificação: `Godot --headless --path . --script tests/survival.gd`.
 
 No modo Sobrevivência, Berserk recarrega em 90 segundos e Eco em 45 segundos desde o uso, contados somente durante o combate. Os temporizadores persistem entre hordas e mortes e congelam na loja e nos menus. Berserk continua exigindo a habilidade desbloqueada. Na campanha, Berserk continua limitado a uma vez por run e Eco a uma vez por arena. Os indicadores usam ícones de rajada radial e retorno temporal com texto compacto; nos controles por toque, os próprios botões mostram os segundos restantes.
 
-Visual 0.2.0: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
+Visual 0.2.1: arma e arma do Eco orbitam a 22 px do pivô (antes 16 px). Alcance e largura dos projéteis permanecem iguais. Berserk usa slot preto de 64×64 no canto inferior esquerdo, com ícone, tecla configurada e contagem de recarga sobre o ícone. Quando pronto, o ícone fica aceso; detalhes aparecem ao passar o mouse. O contrato foi deslocado para não sobrepor o slot.
 
 ## Plutão: Planície do Exílio
 
@@ -188,3 +188,9 @@ Eventos aleatórios alternam sem repetir imediatamente o anterior:
 Eventos começam após uma folga inicial de 8–13 segundos. Há aviso de 2 segundos, marcas de impacto de pelo menos 1,1 segundo e intervalos de descanso. O modo difícil cria ameaças com mais frequência. Loja, pausa e tela de morte interrompem os eventos; ao abrir a loja ou retornar de uma morte, as ameaças são limpas.
 
 Validação: `Godot --headless --path . --script tests/pluto_survival.gd`. Para atualizar a captura da arena: `Godot --path . --script tests/pluto_survival.gd -- --preview`.
+
+## Acesso do desenvolvedor
+
+O botão Teste fica oculto para os jogadores. Para acessar as arenas de teste, abra Configurações → Desenvolvedor, digite a senha definida pela equipe e pressione Desbloquear (ou Enter). O acesso vale somente na sessão atual e pode ser encerrado com Bloquear acesso. A senha digitada não é salva; a verificação utiliza um resumo SHA-256 no código.
+
+Teste automatizado: defina a variável de ambiente `OMO_DEV_TEST_PASSWORD` com a senha localmente e execute `Godot --headless --path . --script tests/developer_access.gd`. A senha não aparece nas capturas nem nos logs do teste.

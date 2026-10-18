@@ -14,6 +14,7 @@ func capture() -> void:
 	game.smoke_mode = true
 	root.add_child(game)
 	game.set_physics_process(false)
+	game.developer_unlocked = true
 	game.show_test_menu()
 	await shot("arena-test-menu")
 	game.panel.find_child("TestBoss13").pressed.emit()

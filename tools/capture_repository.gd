@@ -35,6 +35,11 @@ func capture_all() -> void:
 	game.progression = load("res://scripts/progression.gd").new()
 	game.progression.abilities.berserk = 1
 	await shot("01-menu")
+	if "--menu-only" in OS.get_cmdline_user_args():
+		game.queue_free()
+		await process_frame
+		quit()
+		return
 	for sector in 3:
 		game.start_run(false,[2,4,11][sector],"medium")
 		game.player.immunity = 999

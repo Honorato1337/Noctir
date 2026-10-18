@@ -185,6 +185,50 @@ size_flags_horizontal = 3
 columns = 4
 theme_override_constants/h_separation = 14
 theme_override_constants/v_separation = 8
+[node name="Desenvolvedor" type="VBoxContainer" parent="Center/Card/Box/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Center/Card/Box/Tabs/Desenvolvedor"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "ACESSO DO DESENVOLVEDOR"
+
+[node name="DeveloperNotice" type="Label" parent="Center/Card/Box/Tabs/Desenvolvedor"]
+layout_mode = 2
+autowrap_mode = 2
+text = "Área restrita ao desenvolvedor. Digite a senha para acessar os testes."
+
+[node name="DeveloperPassword" type="LineEdit" parent="Center/Card/Box/Tabs/Desenvolvedor"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+secret = true
+max_length = 64
+placeholder_text = "Senha"
+theme_override_font_sizes/font_size = 22
+
+[node name="UnlockDeveloperButton" type="Button" parent="Center/Card/Box/Tabs/Desenvolvedor"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = "DESBLOQUEAR"
+
+[node name="DeveloperTestsButton" type="Button" parent="Center/Card/Box/Tabs/Desenvolvedor"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = "ABRIR TESTES DE ARENAS"
+
+[node name="LockDeveloperButton" type="Button" parent="Center/Card/Box/Tabs/Desenvolvedor"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = "BLOQUEAR ACESSO"
+
+[node name="SessionHint" type="Label" parent="Center/Card/Box/Tabs/Desenvolvedor"]
+layout_mode = 2
+autowrap_mode = 2
+text = "O acesso é bloqueado novamente ao fechar o jogo."
+
 [node name="SettingsNotice" type="Label" parent="Center/Card/Box"]
 layout_mode = 2
 text = "Os ajustes são salvos automaticamente."

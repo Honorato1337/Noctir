@@ -62,6 +62,7 @@ func run() -> void:
  var previous: int = game.progression.coins
  game.start_run(false, 0, "easy")
  check(game.progression.coins == previous+150, "switching modes settles previous run with its original multiplier")
+ game.developer_unlocked = true
  game.start_run(true, 0, "hard")
  check(game.run_difficulty == "medium" and not game.contracts.enabled, "practice uses baseline difficulty and no contracts")
  game.score = 10000
