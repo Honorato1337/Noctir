@@ -18,13 +18,17 @@ func update_game(game: Node2D) -> void:
 	%Planet.text = game.planet().name + " %d/%d · %s" % [game.room + 1, game.total_rooms(), {"easy": "FÁC", "medium": "MÉD", "hard": "DIF"}[game.run_difficulty]]
 	%Timer.text = "TESTE" if game.practice_mode else "%02d:%02d" % [int(game.time_left) / 60, int(game.time_left) % 60]
 	%Timer.modulate = Color("ff9d87") if game.time_left < 10 else Color.WHITE
+	if game.run_mode == "endless":
+		%Planet.text = "INFINITO · PRESSÃO %d · %s" % [game.survival.tier+1, game.difficulty().name]
+		%Timer.text = "%02d:%02d" % [int(game.elapsed)/60, int(game.elapsed)%60]
+		%Timer.modulate = Color.WHITE
 	%Score.text = "PONTOS %05d" % game.score
 	%Coins.text = "MOEDAS %d" % game.loot.coins
 	%SlotOneIcon.texture = game.loot.ICONS.get(game.loot.slots[0], null)
 	%SlotTwoIcon.texture = game.loot.ICONS.get(game.loot.slots[1], null)
 	%SlotThreeIcon.texture = game.loot.ICONS.get(game.deployables.inventory, null)
 	%Message.text = game.message if game.message_time > 0 and game.state == "playing" else ""
-	%Counters.text = "%d INIM. (+%d)" % [game.enemies.get_child_count(), game.pending]
+	%Counters.text = "%d INIM. / CHEFE %ds" % [game.enemies.get_child_count(), ceili(game.survival.boss_left)] if game.run_mode == "endless" else "%d INIM. (+%d)" % [game.enemies.get_child_count(), game.pending]
 	%BossBar.visible = game.state == "playing" and is_instance_valid(game.boss_ref) and not game.boss_ref.is_queued_for_deletion()
 	%BossTitle.visible = %BossBar.visible and game.message_time <= 0
 	%BossShield.visible = %BossBar.visible and game.boss_ref.shield > 0

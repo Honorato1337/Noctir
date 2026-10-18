@@ -41,7 +41,7 @@ custom_minimum_size = Vector2(880, 0)
 [node name="Box" type="VBoxContainer" parent="Center/Card"]
 layout_mode = 2
 theme_override_constants/separation = 14
-theme_override_constants/separation = 18
+theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="Center/Card/Box"]
 layout_mode = 2
@@ -49,23 +49,33 @@ theme_override_font_sizes/font_size = 36
 theme_override_colors/font_color = Color(0.44, 0.9, 0.82, 1)
 text = "INICIAR EXPEDIÇÃO"
 
+[node name="ModeSelector" type="OptionButton" parent="Center/Card/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+item_count = 2
+selected = 0
+popup/item_0/text = "EXPEDIÇÃO / 13 ARENAS"
+popup/item_0/id = 0
+popup/item_1/text = "SOBREVIVÊNCIA / INFINITO"
+popup/item_1/id = 1
+
 [node name="Description" type="Label" parent="Center/Card/Box"]
 layout_mode = 2
 text = "Escolha a dificuldade desta run. Você terá 3 chances por run."
 
 [node name="EasyButton" type="Button" parent="Center/Card/Box"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 114)
+custom_minimum_size = Vector2(0, 100)
 text = "FÁCIL / 25% DOS COINS\nHordas menores, inimigos mais fracos e lentos. Mais tempo.\nContratos desativados: sem SpaceCoin."
 theme_override_font_sizes/font_size = 22
 [node name="MediumButton" type="Button" parent="Center/Card/Box"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 114)
+custom_minimum_size = Vector2(0, 100)
 text = "MÉDIO / 100% DOS COINS\nCombate e recompensas padrão.\nContrato por run disponível: até 1 SpaceCoin."
 theme_override_font_sizes/font_size = 22
 [node name="HardButton" type="Button" parent="Center/Card/Box"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 114)
+custom_minimum_size = Vector2(0, 100)
 text = "DIFÍCIL / 150% DOS COINS\nHordas maiores, mais vida e velocidade. Tiros mais rápidos.\nMenos tempo. Contrato por run disponível: até 1 SpaceCoin."
 theme_override_font_sizes/font_size = 22
 [node name="Note" type="Label" parent="Center/Card/Box"]

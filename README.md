@@ -4,7 +4,7 @@ Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pa
 
 **Para editar o visual no editor:** veja [Editar no Godot](docs/EDITAR_NO_GODOT.md). Menu, controles, HUD, pausa, upgrades, resultado, arena e atores agora possuem cenas `.tscn` próprias em `scenes/`. O tema compartilhado está em `ui_theme.tres`. Importe o `project.godot` da raiz, não o arquivo existente dentro de `docs`.
 
-## Versão atual: 0.1.5
+## Versão atual: 0.1.6
 
 - Chefe de Netuno animado com os três frames originais de `assets/mobs_netuno/mob_neturno2`.
 - Tela expandida para preencher 1920×1080 e outras proporções sem bordas, com escala uniforme e HUD centralizada.
@@ -131,3 +131,13 @@ O dash percorre cerca de 204 px. A tecla **3** coloca o equipamento de chão do 
 O menu **Teste** abre qualquer uma das 13 arenas ou seu chefe, com escolha de equipamento e invulnerabilidade opcional. Não concede progresso nem altera recordes. A arena 13 combina as famílias de mobs e um chefe com meteoros, atração, prisão, escudos e dash.
 
 Detalhes de implementação e testes: [expansão](docs/EXPANSAO_INFINITA.md).
+
+## Sobrevivência infinita (0.1.6)
+
+Em Iniciar Expedição, selecione Sobrevivência no seletor de modo e escolha Fácil, Médio ou Difícil. A arena mede 2048×1344: exatamente o dobro da área da arena inicial (1536×896), sem esticar os pixels.
+
+Hordas contínuas; pressão aumenta a cada minuto de combate (mais depressa no Difícil). Chefes a cada 80/60/45 segundos conforme a dificuldade, com até três chefes simultâneos; cada terceiro é um superchefe e cada sexto é o Deus Alienígena. Novas espécies entram com a pressão. Vida cresce sem teto; velocidade e inimigos simultâneos têm limites para manter o jogo controlável e o desempenho previsível.
+
+A cada dois minutos de combate, a loja abre por 20 segundos. O combate fica suspenso e depois retorna na mesma arena, preservando inimigos, loot e chances. São três chances para toda a run. Coins mantêm os multiplicadores de 25%/100%/150%, e contratos continuam indisponíveis no Fácil. Não existe extração ou vitória automática neste modo.
+
+Verificação: `Godot --headless --path . --script tests/survival.gd`.

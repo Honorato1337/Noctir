@@ -30,6 +30,9 @@ const DIFFICULTIES := {
  "hard": {"name": "DIFÍCIL", "reward": 1.5, "health": 1.35, "speed": 1.15, "waves": 1.3, "bullets": 1.2, "time": 0.95}
 }
 var run_difficulty := "medium"
+var run_mode := "campaign"
+var selected_run_mode := "campaign"
+var survival = preload("res://scripts/survival.gd").new()
 
 func difficulty() -> Dictionary:
 	return DIFFICULTIES[run_difficulty]
@@ -207,10 +210,12 @@ func setup_inputs() -> void:
 func planet() -> Dictionary:
 	return Planets.DATA[planet_index]
 
-func start_run(as_practice: bool = false, initial_room: int = 0, mode: String = "medium") -> void:
+func start_run(as_practice: bool = false, initial_room: int = 0, mode: String = "medium", game_mode: String = "campaign") -> void:
 	settle_run()
+	run_mode = "endless" if game_mode == "endless" and not as_practice else "campaign"
 	practice_mode = as_practice
 	run_difficulty = mode if DIFFICULTIES.has(mode) and not as_practice else "medium"
+	survival.reset(self)
 	berserk_used = false
 	run_chances_left = RUN_CHANCES
 	contracts.enabled = not smoke_mode and not practice_mode and run_difficulty != "easy"
@@ -265,7 +270,7 @@ func start_room() -> void:
 	planet_index = room / ARENAS_PER_PLANET
 	play_planet_music()
 	contracts.start_room()
-	var next_scene: PackedScene = arena_scenes[room]
+	var next_scene: PackedScene = preload("res://scenes/world/endless_arena.tscn") if run_mode == "endless" else arena_scenes[room]
 	if $Arena.scene_file_path != next_scene.resource_path:
 		var old_arena := $Arena
 		remove_child(old_arena)
@@ -295,6 +300,9 @@ func start_room() -> void:
 	message = $Arena.layout_name
 	message_time = 3
 	state = "playing"
+	if run_mode == "endless":
+		pending = 0
+		message = "SOBREVIVÊNCIA INFINITA / NÃO HÁ EXTRAÇÃO"
 
 func _physics_process(delta: float) -> void:
 	if state == "shop":
@@ -330,34 +338,38 @@ func _physics_process(delta: float) -> void:
 			play_sfx("frost_warning")
 			message = "GEADA CHEGANDO • saia das áreas marcadas ou use o dash!"
 			message_time = 1.5
-		time_left = maxf(0, time_left - delta) if not practice_mode else time_left
-		message_time -= delta
-		spawn_cd -= delta
-		if pending > 0 and spawn_cd <= 0:
-			var batch := mini(pending, 6 + room / 3)
-			batch = mini(batch, MAX_ACTIVE_ENEMIES - enemies.get_child_count())
-			for i in maxi(0, batch):
-				spawn_enemy()
-				pending -= 1
-			spawn_cd = maxf(0.28, 0.65 - room * 0.025)
-		if not boss_spawned and pending == 0 and phase_kills >= int(wave_total * 0.65):
-			begin_boss()
-		if boss_spawned and is_instance_valid(boss_ref) and not boss_ref.is_queued_for_deletion():
-			boss_summon_cd -= delta
-			if boss_summon_cd <= 0 and boss_summon_budget > 0:
-				var reinforcement := mini(4 + planet_index, boss_summon_budget)
-				pending += reinforcement
-				boss_summon_budget -= reinforcement
-				boss_summon_cd = 5.5 if boss_ref.superboss else 7.0
-				fx.floating(boss_ref.position, "REFORÇOS!", Color("ff7e8d"))
-		if planet_index == 1 and frost_active():
-			for hazard in hazards:
-				if player.position.distance_to(hazard) < 54:
-					player.hurt(1)
-		if state == "playing" and time_left <= 0:
-			finish(false, "A janela de extração fechou. Priorize os alvos distantes.")
-		if state == "playing" and boss_spawned and pending == 0 and enemies.get_child_count() == 0:
-			finish_arena()
+		if run_mode == "endless":
+			message_time -= delta
+			survival.tick(delta)
+		else:
+			time_left = maxf(0, time_left - delta) if not practice_mode else time_left
+			message_time -= delta
+			spawn_cd -= delta
+			if pending > 0 and spawn_cd <= 0:
+				var batch := mini(pending, 6 + room / 3)
+				batch = mini(batch, MAX_ACTIVE_ENEMIES - enemies.get_child_count())
+				for i in maxi(0, batch):
+					spawn_enemy()
+					pending -= 1
+				spawn_cd = maxf(0.28, 0.65 - room * 0.025)
+			if not boss_spawned and pending == 0 and phase_kills >= int(wave_total * 0.65):
+				begin_boss()
+			if boss_spawned and is_instance_valid(boss_ref) and not boss_ref.is_queued_for_deletion():
+				boss_summon_cd -= delta
+				if boss_summon_cd <= 0 and boss_summon_budget > 0:
+					var reinforcement := mini(4 + planet_index, boss_summon_budget)
+					pending += reinforcement
+					boss_summon_budget -= reinforcement
+					boss_summon_cd = 5.5 if boss_ref.superboss else 7.0
+					fx.floating(boss_ref.position, "REFORÇOS!", Color("ff7e8d"))
+			if planet_index == 1 and frost_active():
+				for hazard in hazards:
+					if player.position.distance_to(hazard) < 54:
+						player.hurt(1)
+			if state == "playing" and time_left <= 0:
+				finish(false, "A janela de extração fechou. Priorize os alvos distantes.")
+			if state == "playing" and boss_spawned and pending == 0 and enemies.get_child_count() == 0:
+				finish_arena()
 	elif state in ["cleared", "exit"]:
 		var direction: Vector2 = controls.movement()
 		move_actor(player,direction*player.speed*delta,13)
@@ -385,9 +397,15 @@ func spawn_enemy(is_boss: bool = false) -> void:
 	enemy.kind = room_spawn_index % 3 if room == 12 and not is_boss else int(planet().kind)
 	if not is_boss:
 		room_spawn_index += 1
+	if run_mode == "endless":
+		enemy.kind = survival.enemy_kind(is_boss)
 	enemy.boss = is_boss
 	enemy.superboss = is_boss and ((room + 1) % ARENAS_PER_PLANET == 0 or room == 12)
 	enemy.god = is_boss and room == 12
+	if run_mode == "endless":
+		enemy.superboss = is_boss and survival.boss_number % 3 == 0
+		enemy.god = enemy.superboss and survival.boss_number % 6 == 0
+		if enemy.god: enemy.kind = 3
 	enemy.speed = float(Planets.DATA[enemy.kind].speed) + 12 + (room % ARENAS_PER_PLANET) * 6
 	enemy.health = 2.0 + planet_index * 0.65 + floorf(room / 6.0) * 0.5
 	if is_boss:
@@ -406,6 +424,9 @@ func spawn_enemy(is_boss: bool = false) -> void:
 	enemy.health *= progression.enemy_health_factor() * float(difficulty().health)
 	enemy.speed *= float(difficulty().speed)
 	enemy.speed *= 1 + .45 * progression.prestige_cycles / (progression.prestige_cycles + 8.0)
+	if run_mode == "endless":
+		enemy.health *= survival.health_factor()
+		enemy.speed *= survival.speed_factor()
 	enemy.max_health = enemy.health
 	if is_boss and enemy.kind >= 1:
 		enemy.max_shield = enemy.health * (.75 if enemy.god else ((.55 if enemy.superboss else .35) if enemy.kind == 1 else (.85 if enemy.superboss else .65)))
@@ -432,6 +453,8 @@ func spawn_enemy(is_boss: bool = false) -> void:
 					enemy.position = gate
 					break
 		boss_ref = enemy
+	if run_mode == "endless":
+		enemy.position = survival.spawn_position(enemy.radius)
 	enemy.shot_cd = rng.randf_range(0.6, 2.0)
 	enemies.add_child(enemy)
 	burst(enemy.position, planet().accent)
@@ -445,6 +468,8 @@ func shoot(origin: Vector2, direction: Vector2, amount: float, hostile: bool, is
 	bullet.velocity = direction * (225 * float(difficulty().bullets) if hostile else 660)
 	bullet.damage = amount * enemy_damage() if hostile else amount
 	bullet.hostile = hostile
+	if hostile and run_mode == "endless":
+		bullet.velocity *= minf(1.6, 1.0 + survival.tier * 0.025)
 	bullet.frost = hostile and planet_index == 1
 	bullet.echo = is_echo
 	bullet.radius = 6 if hostile else clampf(3.5 + amount, 4, 8)
@@ -507,7 +532,7 @@ func open_shop() -> void:
 	play_sfx("stage_clear")
 	clear_container(bullets)
 	player.echo_frames.clear()
-	lost_loot = loot.discard_remaining()
+	lost_loot = {"coins":0,"items":0} if run_mode == "endless" else loot.discard_remaining()
 	show_screen("shop")
 	shop_stock.clear()
 	shop_purchased = [false, false, false]
@@ -574,6 +599,8 @@ func refresh_shop() -> void:
 	update_shop_clock()
 	panel.find_child("Wallet", true, false).text = "MOEDAS   %03d" % loot.coins
 	panel.find_child("ShopPhase", true, false).text = "%s  /  ARENA %02d CONCLUÍDA" % [planet().name, room + 1]
+	if run_mode == "endless":
+		panel.find_child("ShopPhase", true, false).text = "SOBREVIVÊNCIA / PRESSÃO %d / COMBATE SUSPENSO" % (survival.tier+1)
 	if int(lost_loot.coins)+int(lost_loot.items) > 0:
 		panel.find_child("ShopPhase", true, false).text += "  /  PERDIDO: %d MOEDAS, %d %s" % [lost_loot.coins,lost_loot.items,"ITEM" if lost_loot.items == 1 else "ITENS"]
 	for index in 2:
@@ -674,6 +701,12 @@ func leave_shop() -> void:
 	if state != "shop":
 		return
 	close_panel()
+	if run_mode == "endless":
+		room_cleared = false
+		state = "playing"
+		message = "REFORÇOS CHEGANDO / SOBREVIVA"
+		message_time = 3
+		return
 	state = "exit"
 	if extraction_boarded:
 		player.position = portal
@@ -719,7 +752,7 @@ func finish(won: bool, reason: String, result_sound: bool = true) -> void:
 	panel.find_child("ScoreValue", true, false).text = "%05d" % score
 	panel.find_child("BestValue", true, false).text = "%05d" % best
 	panel.find_child("KillsValue", true, false).text = str(kills)
-	panel.find_child("ArenaValue", true, false).text = "%02d/%02d" % [room + 1, total_rooms()]
+	panel.find_child("ArenaValue", true, false).text = "INFINITO / PRESSÃO %d" % (survival.tier + 1) if run_mode == "endless" else "%02d/%02d" % [room + 1, total_rooms()]
 	panel.find_child("TimeValue", true, false).text = "%s / TEMPO %02d:%02d" % [difficulty().name, int(elapsed) / 60, int(elapsed) % 60]
 	panel.find_child("RewardValue", true, false).text = "+%d COINS PERMANENTES  /  SALDO %d\nProgresso para o próximo coin: %d/%d pontos" % [run_reward, progression.coins, progression.remainder, Progression.POINTS_PER_COIN]
 	panel.find_child("RewardValue", true, false).text += " / COINS %s×" % str(difficulty().reward)
@@ -772,7 +805,27 @@ func show_difficulty_menu() -> void:
 	show_screen("difficulty")
 	for mode: String in DIFFICULTIES:
 		bind_button(mode.capitalize() + "Button", start_run.bind(false, 0, mode))
+	var selector: OptionButton = panel.find_child("ModeSelector", true, false)
+	selector.select(1 if selected_run_mode == "endless" else 0)
+	selector.item_selected.connect(select_game_mode)
+	select_game_mode(selector.selected)
 	bind_button("BackButton", show_menu)
+
+func select_game_mode(index: int) -> void:
+	panel.find_child("ModeSelector", true, false).select(index)
+	selected_run_mode = "endless" if index == 1 else "campaign"
+	var infinite := index == 1
+	panel.find_child("Description", true, false).text = "Área 2× maior / hordas sem fim / 3 chances por run." if infinite else "Escolha a dificuldade desta run. Você terá 3 chances por run."
+	panel.find_child("Note", true, false).text = "Pressão aumenta a cada minuto. Chefes periódicos. Loja a cada 2 minutos." if infinite else "Multiplicador aplicado aos Coins da loja permanente."
+	for key: String in DIFFICULTIES:
+		var button: Button = panel.find_child(key.capitalize() + "Button", true, false)
+		for connection: Dictionary in button.pressed.get_connections():
+			button.pressed.disconnect(connection.callable)
+		button.pressed.connect(start_run.bind(false, 0, key, selected_run_mode))
+		if infinite:
+			button.text = {"easy":"FÁCIL / 25% DOS COINS\nEscalada mais lenta, mas sem limite. Sem contratos.", "medium":"MÉDIO / 100% DOS COINS\nHordas densas, chefes a cada 60s e ameaças de todos os planetas.", "hard":"DIFÍCIL / 150% DOS COINS\nMais inimigos desde o início. Chefes a cada 45s. Escalada acelerada."}[key]
+		else:
+			button.text = {"easy":"FÁCIL / 25% DOS COINS\nHordas menores e inimigos mais fracos. Sem contratos.", "medium":"MÉDIO / 100% DOS COINS\nCombate padrão. Contratos disponíveis.", "hard":"DIFÍCIL / 150% DOS COINS\nHordas maiores e inimigos mais rápidos. Contratos disponíveis."}[key]
 
 func update_menu_clock() -> void:
 	if state == "menu" and is_instance_valid(panel) and panel.name == "MainMenu":
@@ -1088,7 +1141,7 @@ func enemy_damage() -> int:
 	return 1 + progression.prestige_cycles / 4
 
 func restart_current_run() -> void:
-	start_run(practice_mode, room if practice_mode else 0, run_difficulty)
+	start_run(practice_mode, room if practice_mode else 0, run_difficulty, run_mode)
 
 func show_test_menu() -> void:
 	settle_run()
