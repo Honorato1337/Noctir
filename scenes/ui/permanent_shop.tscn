@@ -5,6 +5,12 @@
 [ext_resource type="SpriteFrames" path="res://asssets/astronauta/astronaut_frames.tres" id="skin_astro"]
 [ext_resource type="SpriteFrames" path="res://assets/guanapo/guanapo_frames.tres" id="skin_guanapo"]
 
+[ext_resource type="Texture2D" path="res://assets/gun/gun.png" id="weapon_original"]
+[ext_resource type="Texture2D" path="res://assets/gun2/pixil-frame-0.png" id="weapon_shotgun"]
+[sub_resource type="AtlasTexture" id="OriginalWeaponIcon"]
+atlas = ExtResource("weapon_original")
+region = Rect2(7,12,10,9)
+
 [node name="PermanentShop" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -91,7 +97,7 @@ text = "HABILIDADES"
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 size_flags_horizontal = 3
-text = "EQUIP. / TESTE"
+text = "EQUIPAMENTOS"
 
 [node name="PrestigeTab" type="Button" parent="Center/Card/Box/Tabs"]
 layout_mode = 2
@@ -580,33 +586,32 @@ theme_override_constants/separation = 24
 
 [node name="Heading" type="Label" parent="Center/Card/Box/Content/Equipment"]
 layout_mode = 2
-text = "EQUIPAMENTOS / AMBIENTE DE TESTE"
+text = "EQUIPAMENTOS"
 theme_override_font_sizes/font_size = 28
 
 [node name="Description" type="Label" parent="Center/Card/Box/Content/Equipment"]
 layout_mode = 2
-text = "SpaceCoin será usada para equipamentos com habilidades. Catálogo em desenvolvimento."
+text = "Desbloqueie a espingarda com SpaceCoin e escolha a arma inicial. A compra e a seleção ficam salvas."
 autowrap_mode = 2
 
 [node name="Catalog" type="HBoxContainer" parent="Center/Card/Box/Content/Equipment"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Preview0" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
+[node name="OriginalWeaponButton" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 180)
 size_flags_horizontal = 3
 disabled = true
-text = "TRAJES\n\nEM BREVE"
-tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+text = "ARMA ORIGINAL\nTIRO SIMPLES\nEQUIPADA"
+tooltip_text = "Arma inicial gratuita. Um projétil, intervalo base de 0,18s. Reequipar é grátis."
 
-[node name="Preview1" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
+[node name="ShotgunWeaponButton" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 180)
 size_flags_horizontal = 3
-disabled = true
-text = "ARMAS\n\nEM BREVE"
-tooltip_text = "Prévia do catálogo. Compras ainda indisponíveis."
+text = "ESPINGARDA\n3 PROJÉTEIS\nCOMPRAR / 3 SPACECOIN"
+tooltip_text = "Compra permanente por 3 SpaceCoin. Três projéteis em leque, intervalo base de 0,48s. Usa a arte animada gun2. Equipa para as próximas runs, sem ocupar slots de itens."
 
 [node name="Preview2" type="Button" parent="Center/Card/Box/Content/Equipment/Catalog"]
 layout_mode = 2
@@ -742,3 +747,29 @@ exclusive = true
 dialog_text = "Gastar 1.000 Coins e zerar todos os atributos permanentes?\nVocê receberá 1 Prestígio. Os limites e a dificuldade aumentarão.\nSpaceCoin e Coins excedentes serão mantidos."
 ok_button_text = "CONFIRMAR RESET"
 cancel_button_text = "CANCELAR"
+
+[node name="Icon" type="TextureRect" parent="Center/Card/Box/Content/Equipment/Catalog/OriginalWeaponButton"]
+texture_filter = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 14.0
+offset_right = 32.0
+offset_bottom = 54.0
+mouse_filter = 2
+texture = SubResource("OriginalWeaponIcon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="Center/Card/Box/Content/Equipment/Catalog/ShotgunWeaponButton"]
+texture_filter = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 14.0
+offset_right = 32.0
+offset_bottom = 54.0
+mouse_filter = 2
+texture = ExtResource("weapon_shotgun")
+expand_mode = 1
+stretch_mode = 5

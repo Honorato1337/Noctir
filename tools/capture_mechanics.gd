@@ -9,7 +9,7 @@ const CLIPS := [
 	["05-dash","DASH","Investida com invulnerabilidade",80],
 	["06-eco","ECO TEMPORAL","Rebobina e repete os disparos",120],
 	["07-berserk","BERSERK","Rajadas em todas as direções",80],
-	["08-arma-original","ARMA ORIGINAL","Demonstração do asset antigo",80]]
+	["08-arma-original","ARMA ORIGINAL","Tiro simples e cadência rápida",80]]
 var game: Node2D
 var heading: Label
 var caption: Label
@@ -42,9 +42,6 @@ func run() -> void:
 	caption.add_theme_font_override("font",game.font)
 	caption.add_theme_font_size_override("font_size",18)
 	overlay.add_child(caption)
-	var old_gun := AtlasTexture.new()
-	old_gun.atlas = load("res://assets/gun/gun.png")
-	old_gun.region = Rect2(7,12,10,9)
 	var manifest: Array[Dictionary] = []
 	for spec in CLIPS:
 		game.start_run()
@@ -69,6 +66,9 @@ func run() -> void:
 		heading.text = spec[1]
 		caption.text = spec[2]
 		var kind: String = spec[0]
+		if kind in ["02-espingarda","04-prisma"]:
+			game.player.shotgun_owned = true
+			assert(game.player.equip_weapon("shotgun"))
 		if kind == "04-prisma": game.apply_upgrade("spread")
 		if kind == "07-berserk": game.activate_berserk()
 		if kind == "05-dash": game.player.position.x -= 90
@@ -76,7 +76,7 @@ func run() -> void:
 		for frame in int(spec[3]):
 			var time := float(frame)/FPS
 			var moving: bool = kind in ["01-andando","03-andando-atirando","06-eco"]
-			var firing: bool = kind in ["02-espingarda","03-andando-atirando","04-prisma","06-eco"]
+			var firing: bool = kind in ["02-espingarda","03-andando-atirando","04-prisma","06-eco","08-arma-original"]
 			game.controls.touch_move = Vector2(cos(time*TAU/4)*.42,0) if moving else Vector2.ZERO
 			game.controls.touch_aim = Vector2.RIGHT if firing else Vector2.ZERO
 			if kind == "05-dash":
@@ -95,15 +95,11 @@ func run() -> void:
 					if not bullet.is_queued_for_deletion(): bullet._physics_process(1.0/60)
 			Input.action_release("dash")
 			game.player._process(1.0/FPS)
-			if kind == "08-arma-original":
-				game.player.weapon_sprite.texture = old_gun
-				game.player.weapon_sprite.flip_h = false
-				if frame%4 == 0: game.shoot(game.player.position,Vector2.RIGHT,1,false)
 			game.fx._process(1.0/FPS)
 			await process_frame
 			await RenderingServer.frame_post_draw
 			assert(root.get_texture().get_image().save_png(FRAME_DIR+kind+"/%04d.png"%frame) == OK)
-		manifest.append({"file":kind+".gif","title":spec[1],"caption":spec[2],"frames":spec[3],"fps":FPS,"legacy":kind == "08-arma-original"})
+		manifest.append({"file":kind+".gif","title":spec[1],"caption":spec[2],"frames":spec[3],"fps":FPS,"legacy":false})
 		print("CAPTURED "+kind+" / "+str(spec[3])+" frames")
 	var out := FileAccess.open("res://docs/media/gifs/manifest.json",FileAccess.WRITE)
 	out.store_string(JSON.stringify({"size":[640,360],"clips":manifest,"source":"Godot native rendering, staged isolated gameplay","audio":false},"\t"))

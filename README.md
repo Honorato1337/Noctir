@@ -6,20 +6,22 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 
 [**Baixar para Windows**](https://github.com/Honorato1337/Noctir/releases/download/v0.2.7/OneMoreOrbit.exe) · [**Baixar para Android**](https://github.com/Honorato1337/Noctir/releases/download/v0.2.7/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
 
-Últimos instaladores publicados: **v0.2.7**. A branch `main` também inclui os novos nomes do bestiário apresentados nesta página.
+Últimos instaladores publicados: **v0.2.7**. A branch `main` também inclui a correção da espingarda como equipamento comprável.
 
 ![Argos, o Olho do Caos, cercado por hordas e rajadas](docs/media/gallery/06-caos-argos.png)
 
 ## Só mais uma órbita
 
 - **Eco temporal:** volte até cinco segundos e deixe uma cópia repetindo seus movimentos e disparos.
-- **Espingarda:** três projéteis por tiro, com upgrades, animação e reprodução pelo Eco.
+- **Armas:** comece com a arma original de tiro simples. Desbloqueie a espingarda por 3 SpaceCoins em Loja → Equipamentos: três projéteis, cadência menor e animação própria. Escolha a arma das próximas runs na aba Equipamentos; compra e seleção ficam salvas.
 - **Campanha:** quatro arenas em Marte, quatro em Netuno, quatro em Júpiter e o confronto final no Nexo.
 - **Sobrevivência:** hordas crescentes em Plutão, inimigos dos três planetas e loja de dez segundos entre ondas.
 - **Superchefes:** ataques próprios, escudos, investidas e eventos de arena. Cada superchefe planetário da campanha devolve uma chance.
 - **Extração urgente:** quinze segundos para coletar e embarcar. Atrasar custa os três slots e um terço das moedas da run.
 - **Escolhas entre partidas:** melhorias permanentes, contratos por SpaceCoin, habilidades, Prestígio e skins.
 - **Três dificuldades:** Fácil, Médio e Difícil; teclado, joystick e controles por toque.
+
+[Ver a espingarda em Loja → Equipamentos](docs/media/equipamentos-espingarda.png). Compra permanente de **3 SpaceCoins**, seleção salva e arma original gratuita.
 
 ## Galeria
 
@@ -47,7 +49,7 @@ Capturas Full HD **1920×1080**, renderizadas no Godot a partir da branch `main`
 
 [**Ver os oito GIFs**](docs/media/gifs/README.md) · [**Baixar o pacote em ZIP**](docs/media/one-more-orbit-gifs.zip)
 
-Inclui movimento, espingarda parada, movimento com disparos, Prisma, dash, Eco, Berserk e uma demonstração da arma original dos assets. A arma original está identificada como antiga; a espingarda é a arma equipada atualmente.
+Inclui movimento, espingarda comprada, movimento com a arma original, Prisma, dash, Eco, Berserk e tiro simples. A arma original é a inicial gratuita; a espingarda é um equipamento opcional de 3 SpaceCoins. A arma escolhida na aba Equipamentos inicia as próximas runs.
 
 ## Habitantes de cada órbita
 

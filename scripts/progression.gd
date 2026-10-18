@@ -1,6 +1,10 @@
 extends RefCounted
 
 const Skins = preload("res://scripts/skin_catalog.gd")
+const SHOTGUN_COST := 3
+var owned_weapons: Array[String] = ["original"]
+var selected_weapon := "original"
+
 const POINTS_PER_COIN := 100
 const PRESTIGE_COST := 1000
 const MAX_WALLET := 0x7FFFFFFFFFFFFFFF
@@ -54,6 +58,13 @@ func load_profile() -> Error:
 			if key is String and Skins.DATA.has(key) and key not in owned_skins: owned_skins.append(key)
 	var chosen: Variant = file.get_value("cosmetics","selected","astronaut")
 	selected_skin = chosen if chosen is String and chosen in owned_skins else "astronaut"
+	owned_weapons = ["original"]
+	var stored_weapons: Variant = file.get_value("equipment","owned",PackedStringArray())
+	if stored_weapons is Array or stored_weapons is PackedStringArray:
+		for key in stored_weapons:
+			if key is String and key == "shotgun" and key not in owned_weapons: owned_weapons.append(key)
+	var equipped: Variant = file.get_value("equipment","selected","original")
+	selected_weapon = equipped if equipped is String and equipped in owned_weapons else "original"
 	return OK
 
 func valid_int(value: Variant, minimum: int, maximum: int) -> int:
@@ -61,6 +72,8 @@ func valid_int(value: Variant, minimum: int, maximum: int) -> int:
 
 func save_profile() -> Error:
 	var file := ConfigFile.new()
+	file.set_value("equipment","owned",PackedStringArray(owned_weapons))
+	file.set_value("equipment","selected",selected_weapon)
 	file.set_value("cosmetics","owned",PackedStringArray(owned_skins))
 	file.set_value("cosmetics","selected",selected_skin)
 	file.set_value("wallet", "coins", coins)
@@ -77,6 +90,22 @@ func save_profile() -> Error:
 	if last_save_error == OK:
 		last_save_error = DirAccess.rename_absolute(ProjectSettings.globalize_path(save_path + ".tmp"), ProjectSettings.globalize_path(save_path))
 	return last_save_error
+
+func equip_weapon(key: String, persist: bool = true) -> bool:
+	if key not in ["original","shotgun"]: return false
+	var cost: int = SHOTGUN_COST if key == "shotgun" and key not in owned_weapons else 0
+	if space_coins < cost: return false
+	var previous_owned := owned_weapons.duplicate()
+	var previous_selected := selected_weapon
+	space_coins -= cost
+	if key not in owned_weapons: owned_weapons.append(key)
+	selected_weapon = key
+	if persist and save_profile() != OK:
+		space_coins += cost
+		owned_weapons = previous_owned
+		selected_weapon = previous_selected
+		return false
+	return true
 
 func equip_skin(key: String, persist: bool = true) -> bool:
 	if not Skins.DATA.has(key): return false
@@ -161,6 +190,8 @@ func buy(index: int, persist: bool = true) -> bool:
 
 func apply_to(player: Node2D) -> void:
 	player.set_skin(selected_skin)
+	player.shotgun_owned = "shotgun" in owned_weapons
+	player.equip_weapon(selected_weapon)
 	# Called only on a fresh player instance; temporary run modules stay separate.
 	player.max_health += int(levels.health) + prestige_cycles
 	player.health = player.max_health

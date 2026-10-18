@@ -993,6 +993,8 @@ func show_permanent_shop() -> void:
 		bind_button(tab.capitalize() + "Tab", set_permanent_tab.bind(tab))
 	for index in Progression.ABILITIES.size():
 		bind_button("AbilityBuy%d" % (index + 1), buy_ability.bind(index))
+	bind_button("OriginalWeaponButton", equip_player_weapon.bind("original"))
+	bind_button("ShotgunWeaponButton", equip_player_weapon.bind("shotgun"))
 	bind_button("AstronautSkinButton", equip_player_skin.bind("astronaut"))
 	bind_button("GuanapoSkinButton", equip_player_skin.bind("guanapo"))
 	bind_button("PrestigeButton", request_prestige)
@@ -1027,7 +1029,24 @@ func refresh_permanent_shop() -> void:
 		var button: Button = panel.find_child(prefix+"SkinButton",true,false)
 		button.text = "EQUIPADA" if progression.selected_skin == key else ("EQUIPAR" if key in progression.owned_skins else "COMPRAR / 1 PRESTÍGIO")
 		button.disabled = progression.selected_skin == key or (key not in progression.owned_skins and progression.prestige < 1)
+	for key: String in ["original","shotgun"]:
+		var button: Button = panel.find_child("OriginalWeaponButton" if key == "original" else "ShotgunWeaponButton",true,false)
+		var owned: bool = key in progression.owned_weapons
+		var status := "EQUIPADA" if progression.selected_weapon == key else ("EQUIPAR" if owned else "COMPRAR / %d SPACECOIN" % Progression.SHOTGUN_COST)
+		button.text = ("ARMA ORIGINAL\nTIRO SIMPLES\n" if key == "original" else "ESPINGARDA\n3 PROJÉTEIS\n") + status
+		button.disabled = progression.selected_weapon == key or (not owned and progression.space_coins < Progression.SHOTGUN_COST)
 	set_permanent_tab(permanent_tab)
+
+func equip_player_weapon(key: String) -> bool:
+	if state != "permanent": return false
+	if not progression.equip_weapon(key, not smoke_mode):
+		panel.find_child("PermanentNotice",true,false).text = "Compra recusada: SpaceCoin insuficiente ou falha ao salvar."
+		play_sfx("error")
+		return false
+	refresh_permanent_shop()
+	panel.find_child("PermanentNotice",true,false).text = "Espingarda equipada para a próxima run." if key == "shotgun" else "Arma original equipada para a próxima run."
+	play_sfx("purchase")
+	return true
 
 func set_permanent_tab(tab: String) -> void:
 	if state != "permanent" or tab not in ["attributes", "skills", "equipment", "prestige", "skins"]:
@@ -1040,7 +1059,7 @@ func set_permanent_tab(tab: String) -> void:
 	panel.find_child("PermanentNotice", true, false).text = {
 		"attributes": "Coins melhoram os atributos iniciais das próximas runs.",
 		"skills": "SpaceCoin compra habilidades permanentes. Elas permanecem após o Prestígio.",
-		"equipment": "TESTE • Um contrato por run rende 1 SpaceCoin. Compras em breve.",
+		"equipment": "SpaceCoin desbloqueia equipamentos permanentes. Escolha a arma da próxima run.",
 		"prestige": "CICLO %d • +1 nível máximo por reset. Inimigos +18%% de vida/ciclo." % progression.prestige_cycles,
 		"skins": "Aparências cosméticas. Sua escolha fica salva para as próximas runs."
 	}[tab]

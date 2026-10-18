@@ -82,3 +82,14 @@ A vida dos inimigos é multiplicada por `1 + 0,18 × ciclo`. O dano de contato, 
 Movimento e recarga de dash usam retornos decrescentes depois dos três primeiros níveis. Isso evita velocidade impraticável ou recarga negativa; os níveis máximos e o poder de vida/dano continuam crescendo. Acima de 42 de vida, a HUD usa um coração com contador exato, sem criar milhares de desenhos.
 
 A expansão é verificada também por `tests/infinite_deployables.gd`, incluindo ciclos altos, salvamento dos novos máximos e dano dos inimigos.
+
+## Equipamentos de armas
+
+Em Loja → Equipamentos, a espingarda é desbloqueada por **3 SpaceCoins**. A compra é permanente e permite escolher a arma das próximas runs nessa aba, sem cobrar novamente. A arma original é gratuita e continua disponível.
+
+- Original: um projétil, intervalo base de 0,18s.
+- Espingarda: três projéteis em leque, intervalo base de 0,48s e os dez frames de gun2.
+- Prisma adiciona dois projéteis em qualquer arma; melhorias de cadência continuam funcionando.
+- Eco grava o modelo da arma, os projéteis e o dano usados no momento original.
+
+O desbloqueio e a seleção são preservados ao morrer, trocar de arena, iniciar nova run e fazer Prestígio. Os saves antigos começam com a arma original e mantêm seus saldos. O equipamento não ocupa os slots [1], [2] ou [3] e não é vendido por moedas da run.

@@ -10,7 +10,7 @@ var health := 5
 @export var max_health := 5
 @export var speed := 210.0
 @export var damage := 1.0
-@export var interval := 0.48
+@export var interval := 0.18
 @export_group("Visual")
 @export var use_placeholder_graphics := false
 @onready var visual: AnimatedSprite2D = $Visual
@@ -31,6 +31,11 @@ const SHOTGUN_FRAMES = [
 	preload("res://assets/gun2/pixil-frame-8.png"),
 	preload("res://assets/gun2/pixil-frame-9.png")
 ]
+const ORIGINAL_GUN = preload("res://assets/gun/gun.png")
+var original_gun: AtlasTexture
+var weapon_id := "original"
+var shotgun_owned := false
+var echo_weapon_id := "original"
 var weapon_animation := 0.0
 var echo_weapon_frame := 0
 var echo_aim := Vector2.RIGHT
@@ -59,6 +64,9 @@ var berserk_time := 0.0
 
 func _ready() -> void:
 	health = max_health
+	original_gun = AtlasTexture.new()
+	original_gun.atlas = ORIGINAL_GUN
+	original_gun.region = Rect2(7,12,10,9)
 	update_animation()
 
 func set_skin(key: String) -> void:
@@ -87,7 +95,8 @@ func update_animation() -> void:
 	weapon.rotation = aim.angle()
 	weapon.z_index = -1 if aim.y < -0.25 else 1
 	weapon_sprite.flip_v = aim.x < 0
-	weapon_sprite.texture = SHOTGUN_FRAMES[weapon_frame()]
+	weapon_sprite.texture = SHOTGUN_FRAMES[weapon_frame()] if weapon_id == "shotgun" else original_gun
+	weapon_sprite.flip_h = weapon_id == "shotgun"
 	if active:
 		var moving: bool = game.controls.movement().length_squared() > 0.01 or dash_time > 0
 		var animation: StringName = &"walk" if moving else &"idle"
@@ -107,7 +116,8 @@ func update_animation() -> void:
 	echo_weapon.rotation = echo_aim.angle()
 	echo_weapon.z_index = -1 if echo_aim.y < -0.25 else 1
 	echo_weapon_sprite.flip_v = echo_aim.x < 0
-	echo_weapon_sprite.texture = SHOTGUN_FRAMES[echo_weapon_frame]
+	echo_weapon_sprite.texture = SHOTGUN_FRAMES[clampi(echo_weapon_frame,0,9)] if echo_weapon_id == "shotgun" else original_gun
+	echo_weapon_sprite.flip_h = echo_weapon_id == "shotgun"
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(game) or game.state != "playing":
@@ -157,10 +167,10 @@ func _physics_process(delta: float) -> void:
 		cooldown = .1
 		shots = fire_berserk()
 	elif (game.controls.wants_fire() or keyboard_aim != Vector2.ZERO) and cooldown <= 0:
-		cooldown = interval * (0.45 if overdrive_time > 0 else 1.0)
+		cooldown = fire_interval() * (0.45 if overdrive_time > 0 else 1.0)
 		shots = fire(position, aim, false)
 	# Store every physics frame: exact fire events must survive into the echo.
-	history.append({"t": clock, "pos": position, "health": health, "shots": shots, "damage": shot_damage(), "visual_frame": visual.frame, "weapon_frame": weapon_frame(), "flip_h": visual.flip_h, "aim": aim})
+	history.append({"t": clock, "pos": position, "health": health, "shots": shots, "damage": shot_damage(), "visual_frame": visual.frame, "weapon_frame": weapon_frame(), "weapon_id": weapon_id, "flip_h": visual.flip_h, "aim": aim})
 	while not history.is_empty() and clock - float(history[0].t) > 5.0:
 		history.pop_front()
 	if Input.is_action_just_pressed("rewind"):
@@ -172,11 +182,24 @@ func _physics_process(delta: float) -> void:
 			echo_pos = frame.pos
 			echo_frame = int(frame.get("visual_frame", 0))
 			echo_weapon_frame = int(frame.get("weapon_frame", 0))
+			echo_weapon_id = str(frame.get("weapon_id", "original"))
 			echo_flip_h = bool(frame.get("flip_h",false))
 			echo_aim = frame.get("aim", aim)
 			for direction in frame.shots:
 				game.shoot(echo_pos, direction, float(frame.damage), false, true)
 	queue_redraw()
+
+func equip_weapon(key: String) -> bool:
+	if key not in ["original","shotgun"] or (key == "shotgun" and not shotgun_owned): return false
+	weapon_id = key
+	weapon_animation = 0
+	cooldown = maxf(cooldown, fire_interval())
+	update_animation()
+	return true
+
+func fire_interval() -> float:
+	# Keep upgrades on the shared base rate, so changing weapons cannot erase them.
+	return interval * (0.48 / 0.18 if weapon_id == "shotgun" else 1.0)
 
 func weapon_frame() -> int:
 	return clampi(int((0.5 - weapon_animation) * 20), 0, 9) if weapon_animation > 0 else 0
@@ -185,8 +208,9 @@ func fire(origin: Vector2, direction: Vector2, is_echo: bool) -> Array[Vector2]:
 	if not is_echo:
 		game.play_sfx("shot", origin)
 		weapon_animation = 0.5
-	var directions: Array[Vector2] = [direction, direction.rotated(0.16), direction.rotated(-0.16)]
-	for i in range(2, spread + 2):
+	var directions: Array[Vector2] = [direction]
+	var pellet_pairs: int = spread + (1 if weapon_id == "shotgun" else 0)
+	for i in range(1, pellet_pairs + 1):
 		directions.append(direction.rotated(i * 0.16))
 		directions.append(direction.rotated(-i * 0.16))
 	for vector in directions:
@@ -218,6 +242,7 @@ func rewind() -> void:
 	echo_pos = first.pos
 	echo_frame = int(first.get("visual_frame", 0))
 	echo_weapon_frame = int(first.get("weapon_frame", 0))
+	echo_weapon_id = str(first.get("weapon_id", "original"))
 	echo_flip_h = bool(first.get("flip_h",false))
 	echo_aim = first.get("aim", aim)
 	game.time_left += clock - float(first.t)

@@ -4,7 +4,7 @@
 
 Oito GIFs em **640×360**, **20 FPS**, loop infinito e sem áudio. Capturados no Godot, com o astronauta e a câmera em uma área isolada para destacar as mecânicas. As legendas fazem parte da captura. Os frames foram codificados com paleta compartilhada e sem dithering para preservar a pixel art.
 
-A arma equipada na versão atual é a espingarda. Prisma e Berserk são variações de disparo, não armas separadas. O último GIF mostra o asset da arma original e o tiro simples antigo somente como demonstração; não há seletor dessa arma na versão atual.
+A arma original é a inicial gratuita. A espingarda é um equipamento permanente comprado por 3 SpaceCoins em Loja → Equipamentos. Após adquirir, é possível selecionar gratuitamente a arma das próximas runs nessa aba. Prisma e Berserk são variações de disparo, não armas separadas.
 
 ## MOVIMENTO
 
@@ -50,7 +50,7 @@ Rajadas em todas as direções.
 
 ## ARMA ORIGINAL
 
-Demonstração do asset antigo.
+Tiro simples e cadência rápida.
 
 ![Demonstração do asset antigo](08-arma-original.gif)
 
