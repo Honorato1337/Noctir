@@ -4,9 +4,9 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 
 **Sobreviva às hordas, rebobine o combate e alcance a extração antes que o tempo acabe.** One More Orbit é um jogo 2D de ação em pixel art, com campanha pelo Sistema Solar, sobrevivência infinita e progressão entre tentativas.
 
-[**Baixar para Windows**](https://github.com/Honorato1337/Noctir/releases/download/v0.2.8/OneMoreOrbit.exe) · [**Baixar para Android**](https://github.com/Honorato1337/Noctir/releases/download/v0.2.8/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
+[**Baixar para Windows**](https://github.com/Honorato1337/Noctir/releases/download/v0.2.9/OneMoreOrbit.exe) · [**Baixar para Android**](https://github.com/Honorato1337/Noctir/releases/download/v0.2.9/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
 
-Últimos instaladores publicados: **v0.2.8**, com a arma original restaurada e a espingarda permanente na aba Equipamentos, comprável por 3 SpaceCoins.
+Últimos instaladores publicados: **v0.2.9**, com bomba de alcance limitado, dano por distância e até 12 alvos. A espingarda continua permanente em Equipamentos por 3 SpaceCoins.
 
 ![Argos, o Olho do Caos, cercado por hordas e rajadas](docs/media/gallery/06-caos-argos.png)
 
