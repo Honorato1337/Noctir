@@ -33,7 +33,7 @@ func update_game(game: Node2D) -> void:
 	%CleanupShopButton.disabled = game.state != "cleared" or game.player.position.distance_to(game.portal) >= game.EXTRACTION_RANGE
 	%CleanupShopButton.text = ("EMBARCAR" if touch else "[%s] EMBARCAR" % game.controls.hint("interact")) if not %CleanupShopButton.disabled else "SIGA A SETA ATÉ O " + game.extraction_name()
 	$Cleanup/Box/Title.text = "EXTRAÇÃO / %02ds" % ceili(game.collection_left)
-	%CleanupHint.text = "COLETE OS ITENS E ENTRE NO VEÍCULO"
+	%CleanupHint.text = "O LOOT NO CHÃO FICA PARA TRÁS"
 	if game.loot.nearby_drop() >= 0:
 		%CleanupHint.text = "[%s / %s] ESCOLHER SLOT DO ITEM" % ["1" if touch else game.controls.hint("slot_one"),"2" if touch else game.controls.hint("slot_two")]
 	elif game.loot.nearby_drop(true) >= 0:

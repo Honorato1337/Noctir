@@ -66,7 +66,10 @@ var pending := 0
 var spawn_cd := 0.0
 var clear_wait := 0.0
 var room_cleared := false
-const COLLECTION_DURATION := 30.0
+const COLLECTION_DURATION := 15.0
+const SHOP_DURATION := 20.0
+var shop_left := 0.0
+var lost_loot := {"coins":0,"items":0}
 var collection_left := 0.0
 var extraction_boarded := false
 var paused_from := "playing"
@@ -245,6 +248,8 @@ func start_run(as_practice: bool = false, initial_room: int = 0, mode: String = 
 func start_room() -> void:
 	room_cleared = false
 	collection_left = 0
+	shop_left = 0
+	lost_loot = {"coins":0,"items":0}
 	extraction_boarded = false
 	encounters.reset()
 	deployables.clear_room()
@@ -292,6 +297,13 @@ func start_room() -> void:
 	state = "playing"
 
 func _physics_process(delta: float) -> void:
+	if state == "shop":
+		shop_left = maxf(0,shop_left-delta)
+		update_shop_clock()
+		if shop_left <= 0:
+			extraction_boarded = true
+			leave_shop()
+		return
 	if state == "travel":
 		travel_clock += delta
 		if travel_clock >= TRAVEL_DURATION:
@@ -490,10 +502,12 @@ func open_shop() -> void:
 	clear_combat_effects()
 	room_cleared = true
 	state = "shop"
+	shop_left = SHOP_DURATION
+	$GameAudio.stop_alarm()
 	play_sfx("stage_clear")
 	clear_container(bullets)
 	player.echo_frames.clear()
-	loot.collect_remaining()
+	lost_loot = loot.discard_remaining()
 	show_screen("shop")
 	shop_stock.clear()
 	shop_purchased = [false, false, false]
@@ -538,7 +552,7 @@ func roll_shop_stock() -> void:
 			shop_stock.append(stock)
 
 func reroll_shop() -> bool:
-	if state != "shop" or shop_rerolls >= 2 or not shop_purchased.has(false):
+	if state != "shop" or shop_left <= 0 or shop_rerolls >= 2 or not shop_purchased.has(false):
 		return false
 	var cost := Economy.reroll_price(room, shop_rerolls)
 	if loot.coins < cost:
@@ -557,8 +571,11 @@ func shop_notice(text: String) -> void:
 		play_sfx("error")
 
 func refresh_shop() -> void:
+	update_shop_clock()
 	panel.find_child("Wallet", true, false).text = "MOEDAS   %03d" % loot.coins
 	panel.find_child("ShopPhase", true, false).text = "%s  /  ARENA %02d CONCLUÍDA" % [planet().name, room + 1]
+	if int(lost_loot.coins)+int(lost_loot.items) > 0:
+		panel.find_child("ShopPhase", true, false).text += "  /  PERDIDO: %d MOEDAS, %d %s" % [lost_loot.coins,lost_loot.items,"ITEM" if lost_loot.items == 1 else "ITENS"]
 	for index in 2:
 		var icon: TextureRect = panel.find_child("StoreIcon%d" % (index + 1), true, false)
 		icon.texture = loot.ICONS.get(loot.slots[index], null)
@@ -614,7 +631,7 @@ func slot_name(index: int) -> String:
 	return "vazio" if loot.slots[index].is_empty() else loot.ITEMS[loot.slots[index]].name
 
 func buy_upgrade(index: int) -> bool:
-	if state != "shop" or index < 0 or index >= shop_stock.size() or shop_purchased[index]:
+	if state != "shop" or shop_left <= 0 or index < 0 or index >= shop_stock.size() or shop_purchased[index]:
 		return false
 	var stock: Dictionary = shop_stock[index]
 	if loot.coins < int(stock.cost):
@@ -629,7 +646,7 @@ func buy_upgrade(index: int) -> bool:
 	return true
 
 func buy_supply(kind: String) -> bool:
-	if state != "shop" or kind not in ["repair", "bomb", "shield", "overdrive", "mine", "turret", "beacon"] or shop_supplies.has(kind):
+	if state != "shop" or shop_left <= 0 or kind not in ["repair", "bomb", "shield", "overdrive", "mine", "turret", "beacon"] or shop_supplies.has(kind):
 		return false
 	var cost := Economy.supply_price(kind, room)
 	if loot.coins < cost:
@@ -990,7 +1007,7 @@ func configure_camera() -> void:
 	camera.force_update_scroll()
 
 func _process(delta: float) -> void:
-	$PlanetMusic.volume_db = -80.0 if smoke_mode else (-23.0 if state in ["shop", "paused", "death"] else -16.0)
+	$PlanetMusic.volume_db = -80.0 if smoke_mode else (-23.0 if state in ["shop", "paused", "death", "cleared", "travel"] else -16.0)
 	if state in ["menu", "settings", "permanent", "testing", "difficulty"] and not $MenuMusic.playing:
 		on_menu_music_finished()
 	if state in ["playing", "cleared", "exit"]:
@@ -1279,6 +1296,7 @@ func start_transfer() -> bool:
 	play_sfx("stage_clear")
 	show_screen("travel")
 	panel.game = self
+	$GameAudio.play_transport(travel_kind)
 	return true
 
 func extraction_vehicle() -> String:
@@ -1318,6 +1336,7 @@ func finish_arena() -> void:
 	message = "ARENA LIMPA / %d segundos para coletar e embarcar." % int(COLLECTION_DURATION)
 	message_time = 0
 	play_sfx("stage_clear")
+	$GameAudio.sync_state()
 
 func board_after_clear(automatic: bool = false) -> bool:
 	if state != "cleared": return false
@@ -1331,3 +1350,10 @@ func extraction_pulse() -> float:
 	if state != "cleared": return 0.0
 	var urgent := collection_left <= 10.0
 	return (0.10 if urgent else 0.035) + (0.12 if urgent else 0.05) * (0.5 + 0.5 * sin((COLLECTION_DURATION-collection_left)*TAU*(1.5 if urgent else 0.75)))
+
+func update_shop_clock() -> void:
+	if state != "shop" or not is_instance_valid(panel): return
+	var clock: Label = panel.find_child("ShopTimer",true,false)
+	clock.text = "%02ds" % ceili(shop_left)
+	clock.tooltip_text = "Embarque automático ao zerar. Comprar ou trocar ofertas não reinicia o prazo."
+	clock.modulate = Color("ff657b") if shop_left <= 5 else Color("ffdf72")

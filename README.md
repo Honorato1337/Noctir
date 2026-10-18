@@ -4,6 +4,32 @@ Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pa
 
 **Para editar o visual no editor:** veja [Editar no Godot](docs/EDITAR_NO_GODOT.md). Menu, controles, HUD, pausa, upgrades, resultado, arena e atores agora possuem cenas `.tscn` próprias em `scenes/`. O tema compartilhado está em `ui_theme.tres`. Importe o `project.godot` da raiz, não o arquivo existente dentro de `docs`.
 
+## Versão atual: 0.1.3
+
+- Após a vitória, 15 segundos para coletar e embarcar. O loot deixado no chão é perdido.
+- Sirene progressiva, alerta vermelho e seta até o veículo; a pausa congela a coleta.
+- Loja da run com limite de 20 segundos; compras não reiniciam o prazo. Depois, a viagem começa automaticamente.
+- Rover entre arenas do mesmo planeta; foguete entre planetas. Ambos têm animação e som próprios.
+- Áudio de morte fornecido pelo time e músicas com loop contínuo.
+
+## Clonar e executar
+
+```powershell
+git clone https://github.com/Honorato1337/Noctir.git
+```
+
+Abra `project.godot` da raiz no Godot 4.7.2 Standard, espere a importação dos recursos e pressione F5. O cache `.godot` é recriado automaticamente.
+
+Para exportar no Windows, instale Python, indique o executável do Godot e execute:
+
+```powershell
+$env:GODOT_BIN = "C:/caminho/Godot_v4.7.2-stable_win64.exe"
+python tools/export_game.py
+python tools/verify_exports.py
+```
+
+O script prepara os templates e as ferramentas Android em `.godot/export-tools`. Os pacotes ficam em `builds/windows` e `builds/android`. Builds, logs, arquivos temporários e chaves de assinatura são locais e não são enviados ao repositório. Guarde um backup privado de `.export-signing` para atualizar o mesmo APK. Consulte [Exportação](docs/EXPORTACAO.md).
+
 ## O que já funciona
 
 - Treze arenas: quatro em Marte, quatro em Netuno, quatro em Júpiter e o Nexo final com o Deus Alienígena. Consulte o [catálogo de arenas](docs/ARENAS.md).

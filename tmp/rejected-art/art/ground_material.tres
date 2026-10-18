@@ -1,8 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3]
-
-[ext_resource type="Shader" path="res://assets/art/pixel_sampling.gdshader" id="1"]
-
-[resource]
-shader = ExtResource("1")
-shader_parameter/source_pixel_step = 8.0
-shader_parameter/flatten_strength = 0.35

@@ -214,9 +214,10 @@ func run() -> void:
 		await process_frame
 		game._physics_process(0.4)
 		check(game.state == "cleared", "phase clear offers safe collection %d" % (room_index + 1))
+		var coins_before_boarding: int = game.loot.coins
 		game.player.position = game.portal
 		game.get_node("UI/HUD/Cleanup/Box/CleanupShopButton").pressed.emit()
-		check(game.state == "shop" and game.loot.coins > 0, "opening shop salvages remaining coins %d" % (room_index + 1))
+		check(game.state == "shop" and game.loot.coins == coins_before_boarding and game.loot.drops.is_empty(), "boarding discards only uncollected loot %d" % (room_index + 1))
 		var balance: int = game.loot.coins
 		var price: int = game.shop_stock[0].cost
 		# Transaction coverage is independent of whether this run can afford the stock.

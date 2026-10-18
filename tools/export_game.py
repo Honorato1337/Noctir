@@ -20,8 +20,11 @@ def main():
  for fn in [prepare_exports.templates,prepare_exports.java,prepare_exports.android]:fn()
  java=next(BASE.glob('jdk*/bin/java.exe')).parent.parent
  engine=BASE/'godot'/'Godot.exe';engine.parent.mkdir(exist_ok=True)
- source=Path('C:/Users/heads/Downloads/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64.exe')
- if not engine.exists():shutil.copy2(source,engine)
+ if not engine.exists():
+  candidates=[os.environ.get('GODOT_BIN'),shutil.which('godot'),shutil.which('godot4'),Path.home()/'Downloads'/'Godot_v4.7.2-stable_win64.exe'/'Godot_v4.7.2-stable_win64.exe']
+  source=next((Path(item) for item in candidates if item and Path(item).is_file()),None)
+  if source is None:raise RuntimeError('Set GODOT_BIN to your Godot 4.7.2 executable before exporting.')
+  shutil.copy2(source,engine)
  (engine.parent/'_sc_').touch()
  settings=engine.parent/'editor_data';settings.mkdir(exist_ok=True)
  sdk=BASE/'android-sdk'
@@ -41,18 +44,21 @@ def main():
  text=replace_values(text,'preset.0.options',{'keystore/release':quote(key),'keystore/release_user':quote('noctir'),'keystore/release_password':quote(password)})
  credentials.write_text(text,encoding='utf-8')
  (settings/'editor_settings-4.7.tres').write_text('[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/java_sdk_path = '+quote(java)+'\nexport/android/android_sdk_path = '+quote(sdk)+'\nexport/android/debug_keystore = '+quote(key)+'\nexport/android/debug_keystore_user = "noctir"\nexport/android/debug_keystore_pass = '+quote(password)+'\n',encoding='utf-8')
- presets=ROOT/'export_presets.cfg';text=presets.read_text(encoding='utf-8')
+ presets=ROOT/'export_presets.cfg';original_presets=presets.read_text(encoding='utf-8');text=original_presets
  text=replace_values(text,'preset.0.options',{'custom_template/debug':quote(BASE/'templates'/'android_debug.apk'),'custom_template/release':quote(BASE/'templates'/'android_release.apk')})
  text=replace_values(text,'preset.1.options',{'custom_template/release':quote(BASE/'templates'/'windows_release_x86_64.exe')})
- presets.write_text(text,encoding='utf-8')
- for preset,output in [('Windows Desktop',ROOT/'builds'/'windows'/'NOCTIR.exe'),('Android',ROOT/'builds'/'android'/'NOCTIR.apk')]:
-  output.parent.mkdir(parents=True,exist_ok=True)
-  log=ROOT/'builds'/('export-windows.log' if preset=='Windows Desktop' else 'export-android.log')
-  print('Exporting '+preset,flush=True)
-  with log.open('w',encoding='utf-8') as stream:
-   result=subprocess.run([str(engine),'--headless','--path',str(ROOT),'--export-release',preset,str(output)],env=env,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
-  if result.returncode or not output.exists():
-   print(log.read_text(encoding='utf-8'),flush=True);raise RuntimeError('Export failed: '+preset)
-  print(f'Built {output.name}: {output.stat().st_size:,} bytes',flush=True)
+ try:
+  presets.write_text(text,encoding='utf-8')
+  for preset,output in [('Windows Desktop',ROOT/'builds'/'windows'/'NOCTIR.exe'),('Android',ROOT/'builds'/'android'/'NOCTIR.apk')]:
+   output.parent.mkdir(parents=True,exist_ok=True)
+   log=ROOT/'builds'/('export-windows.log' if preset=='Windows Desktop' else 'export-android.log')
+   print('Exporting '+preset,flush=True)
+   with log.open('w',encoding='utf-8') as stream:
+    result=subprocess.run([str(engine),'--headless','--path',str(ROOT),'--export-release',preset,str(output)],env=env,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
+   if result.returncode or not output.exists():
+    print(log.read_text(encoding='utf-8'),flush=True);raise RuntimeError('Export failed: '+preset)
+   print(f'Built {output.name}: {output.stat().st_size:,} bytes',flush=True)
+ finally:
+  presets.write_text(original_presets,encoding='utf-8')
  print('Both export files ready',flush=True)
 if __name__=='__main__':main()

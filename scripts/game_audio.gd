@@ -8,8 +8,24 @@ var enabled := true
 var game: Node2D
 const DEATH_STREAM = preload("res://musica/morte1.mp3")
 var death_voice: AudioStreamPlayer
+const ALARM_STREAM = preload("res://musica/processed/alarme.wav")
+const TRANSPORT_STREAMS = {"rover":preload("res://assets/audio/sfx/rover_engine.wav"),"rocket":preload("res://assets/audio/sfx/rocket_engine.wav")}
+var alarm_voice: AudioStreamPlayer
+var travel_voice: AudioStreamPlayer
 
 func _ready() -> void:
+	alarm_voice = AudioStreamPlayer.new()
+	var alarm: AudioStreamWAV = ALARM_STREAM.duplicate()
+	alarm.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	alarm.loop_begin = 0
+	alarm.loop_end = roundi(alarm.get_length()*alarm.mix_rate)
+	alarm_voice.stream = alarm
+	alarm_voice.bus = &"SFX"
+	add_child(alarm_voice)
+	travel_voice = AudioStreamPlayer.new()
+	travel_voice.bus = &"SFX"
+	travel_voice.volume_db = -9
+	add_child(travel_voice)
 	death_voice = AudioStreamPlayer.new()
 	death_voice.stream = DEATH_STREAM.duplicate()
 	death_voice.stream.loop = false
@@ -55,6 +71,41 @@ func play_event(event: String, at: Vector2 = Vector2.INF) -> bool:
 func play_death() -> bool:
 	if not enabled: return false
 	for voice in voices: voice.stop()
+	stop_alarm()
+	travel_voice.stop()
 	death_voice.stop()
 	death_voice.play()
 	return true
+
+func stop_alarm() -> void:
+	alarm_voice.stop()
+	alarm_voice.stream_paused = false
+
+func play_transport(kind: String) -> bool:
+	travel_voice.stop()
+	if not enabled or not TRANSPORT_STREAMS.has(kind): return false
+	travel_voice.stream = TRANSPORT_STREAMS[kind]
+	travel_voice.pitch_scale = 1.0
+	travel_voice.play()
+	return true
+
+func _process(_delta: float) -> void:
+	sync_state()
+
+func sync_state() -> void:
+	if not is_instance_valid(game): return
+	if not enabled:
+		stop_alarm()
+		travel_voice.stop()
+		return
+	if game.state == "cleared":
+		var urgency: float = clampf(1.0-game.collection_left/game.COLLECTION_DURATION,0,1)
+		alarm_voice.stream_paused = false
+		alarm_voice.pitch_scale = lerpf(0.85,1.65,pow(urgency,1.3))
+		alarm_voice.volume_db = lerpf(-20,-6,urgency)
+		if not alarm_voice.playing: alarm_voice.play()
+	elif game.state == "paused" and game.paused_from == "cleared":
+		alarm_voice.stream_paused = true
+	else:
+		stop_alarm()
+	if game.state != "travel": travel_voice.stop()

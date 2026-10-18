@@ -18,5 +18,4 @@ Thumbs.db
 
 # Local signing credentials and generated exports
 /.export-signing/
-/builds/android/
-/builds/windows/
+/builds/

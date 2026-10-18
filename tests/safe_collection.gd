@@ -44,9 +44,9 @@ func run() -> void:
  check(game.loot.drops.size() == loot_count and loot_count > 0, "victory preserves enemy drops on ground")
  var score: int = game.score
  var time: float = game.time_left
- game._physics_process(15)
- game.weather._physics_process(15)
- check(game.state == "cleared" and game.time_left == time and game.score == score and not game.weather.active and game.collection_left == 15.0, "collection countdown advances while combat timer and hazards stay frozen")
+ game._physics_process(10)
+ game.weather._physics_process(10)
+ check(game.state == "cleared" and game.time_left == time and game.score == score and not game.weather.active and game.collection_left == 5.0, "collection countdown advances while combat timer and hazards stay frozen")
  game.pause_run()
  game.panel.find_child("ResumeButton",true,false).pressed.emit()
  check(game.state == "cleared", "pause returns to collection without skipping shop")
@@ -97,7 +97,7 @@ func run() -> void:
  game._physics_process(40)
  check(game.collection_left == remaining and game.state == "paused", "pausing suspends collection deadline")
  game.panel.find_child("ResumeButton",true,false).pressed.emit()
- game._physics_process(31)
+ game._physics_process(16)
  check(game.state == "shop" and game.extraction_boarded, "timeout safely boards player and preserves shop")
  game.leave_shop()
  check(game.state == "travel" and game.player.position == game.portal, "automatic extraction follows normal travel path")

@@ -30,6 +30,7 @@ func run() -> void:
 	game.set_physics_process(false)
 	game.set_process(false)
 	verify_loop(game.menu_loop_stream,"menu")
+	verify_loop(game.get_node("GameAudio").alarm_voice.stream,"alarm")
 	game.start_run()
 	game.player.set_physics_process(false)
 	for sector in 3:

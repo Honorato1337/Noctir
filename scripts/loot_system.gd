@@ -196,3 +196,12 @@ func swap_device_nearby() -> bool:
 	game.play_sfx("item_pickup",game.player.position)
 	queue_redraw()
 	return true
+
+func discard_remaining() -> Dictionary:
+	var lost := {"coins":0,"items":0}
+	for drop in drops:
+		if drop.type == "coin": lost.coins += int(drop.value)
+		else: lost.items += 1
+	drops.clear()
+	queue_redraw()
+	return lost
