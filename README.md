@@ -1,5 +1,7 @@
 # One More Orbit
 
+**Baixar v0.2.1:** [Windows (.exe)](https://github.com/Honorato1337/Noctir/releases/download/v0.2.1/OneMoreOrbit.exe) · [Android (.apk)](https://github.com/Honorato1337/Noctir/releases/download/v0.2.1/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
+
 Protótipo 2D de arena para Godot **4.7.2 Standard / GDScript**, criado nesta pasta. Importe `project.godot` no gerenciador do Godot e aperte **F6** com a cena principal aberta, ou **F5** para executar o projeto. Não precisa instalar plugins nem baixar assets.
 
 **Para editar o visual no editor:** veja [Editar no Godot](docs/EDITAR_NO_GODOT.md). Menu, controles, HUD, pausa, upgrades, resultado, arena e atores agora possuem cenas `.tscn` próprias em `scenes/`. O tema compartilhado está em `ui_theme.tres`. Importe o `project.godot` da raiz, não o arquivo existente dentro de `docs`.
@@ -57,7 +59,7 @@ python tools/export_game.py
 python tools/verify_exports.py
 ```
 
-O script prepara os templates e as ferramentas Android em `.godot/export-tools`. Os pacotes ficam em `builds/windows` e `builds/android`. Builds, logs, arquivos temporários e chaves de assinatura são locais e não são enviados ao repositório. Guarde um backup privado de `.export-signing` para atualizar o mesmo APK. Consulte [Exportação](docs/EXPORTACAO.md).
+O script prepara os templates e as ferramentas Android em `.godot/export-tools`. Os pacotes ficam em `builds/windows` e `builds/android`. Builds, logs, arquivos temporários e chaves de assinatura não são versionados no Git. Os arquivos públicos para jogar são distribuídos pela seção Releases do GitHub. Guarde um backup privado de `.export-signing` para atualizar o mesmo APK. Consulte [Exportação](docs/EXPORTACAO.md).
 
 ## O que já funciona
 
