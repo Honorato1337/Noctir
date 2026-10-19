@@ -1,5 +1,18 @@
 # Exportação Windows, Linux e Android
 
+## Linux AppImage 0.3.3
+
+Pacote: `OneMoreOrbit-x86_64.AppImage`, 56.482.296 bytes. É a mesma exportação Linux x86_64, encapsulada em um AppImage tipo 2. Para abrir:
+
+```sh
+chmod +x OneMoreOrbit-x86_64.AppImage
+./OneMoreOrbit-x86_64.AppImage
+```
+
+Se o sistema não permitir montar por FUSE, tente `./OneMoreOrbit-x86_64.AppImage --appimage-extract-and-run`. O driver gráfico ainda precisa suportar OpenGL 3.3. Estrutura, permissões internas, checksum do runtime e identidade do executável extraído foram verificados; execução nativa Linux permanece pendente.
+
+Empacotamento no Windows: `python tools/package_appimage.py`, após gerar a exportação Linux. As ferramentas locais ficam em `.godot/export-tools/appimage`: [runtime oficial AppImage](https://github.com/AppImage/type2-runtime), `runtime-source.json` com URL e digest fornecidos pela API da release, e [SquashFS tools NG oficial para Windows](https://infraroot.at/pub/squashfs/windows/squashfs-tools-ng-1.3.2-mingw64.zip), extraído na subpasta `squashfs`. O relatório é salvo em `builds/linux/appimage-report.json`. Fontes e licenças do runtime estão no repositório oficial; as ferramentas de empacotamento não são incluídas no jogo.
+
 ## Ports locais — 18/10/2026
 
 O preset `Linux` exporta x86_64 com o pacote de recursos incorporado. Execute `python tools/export_ports.py` com `GODOT_BIN` apontando para o Godot 4.7.2. O arquivo `builds/linux/OneMoreOrbit-Linux-x86_64.tar.gz` preserva a permissão de execução. Extraia e execute `./OneMoreOrbit.x86_64`; se necessário, use `chmod +x OneMoreOrbit.x86_64`. Requer suporte a OpenGL 3.3. A estrutura ELF e o conteúdo empacotado foram verificados no Windows; execução nativa Linux ainda precisa ser validada.

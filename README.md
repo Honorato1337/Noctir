@@ -8,6 +8,8 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 
 Versão **0.3.3** para Windows, Linux x64 e Android, com molduras pixeladas nos slots 1, 2, 3 e Eco, nome ECO abaixo do ícone e indicação de recarga. Inclui as otimizações de desempenho, botão Sair e dano de 1000× exclusivo do Teste. Os novos ports passaram nas verificações de pacote; execução em Linux e aparelho Android ainda não foi validada. **O APK usa assinatura nova: pode exigir desinstalar a versão antiga, apagando o progresso.** [Instruções e verificações](docs/EXPORTACAO.md).
 
+Linux também disponível em [**AppImage x86_64**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit-x86_64.AppImage). Dê permissão com `chmod +x OneMoreOrbit-x86_64.AppImage` e execute o arquivo.
+
 [**Vídeo de 30 segundos na arena final**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit-Nexo-30s.mp4) · [**Dez prints em ZIP**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/one-more-orbit-prints.zip)
 
 O vídeo é uma demonstração controlada por script, com atributos e módulos elevados, dano ativo e uma continuação após morte. [Detalhes da gravação](docs/GRAVACAO.md).
