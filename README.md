@@ -4,9 +4,9 @@ Um traje. Treze arenas. Cinco segundos para mudar tudo.
 
 **Sobreviva às hordas, rebobine o combate e alcance a extração antes que o tempo acabe.** One More Orbit é um jogo 2D de ação em pixel art, com campanha pelo Sistema Solar, sobrevivência infinita e progressão entre tentativas.
 
-[**Baixar para Windows — v0.3.3**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit.exe) · [**Baixar para Android — v0.3.0**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.0/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
+[**Windows — v0.3.3**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit.exe) · [**Linux x64 — v0.3.3**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit-Linux-x86_64.tar.gz) · [**Android — v0.3.3**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit.apk) · [Todas as versões](https://github.com/Honorato1337/Noctir/releases)
 
-Windows: **v0.3.3**, com molduras pixeladas nos slots 1, 2, 3 e Eco, nome ECO abaixo do ícone e indicação de recarga. Inclui as otimizações de desempenho, botão Sair e dano de 1000× exclusivo do Teste. Android: último APK publicado **v0.3.0**; não foi gerado um novo APK nesta atualização.
+Versão **0.3.3** para Windows, Linux x64 e Android, com molduras pixeladas nos slots 1, 2, 3 e Eco, nome ECO abaixo do ícone e indicação de recarga. Inclui as otimizações de desempenho, botão Sair e dano de 1000× exclusivo do Teste. Os novos ports passaram nas verificações de pacote; execução em Linux e aparelho Android ainda não foi validada. **O APK usa assinatura nova: pode exigir desinstalar a versão antiga, apagando o progresso.** [Instruções e verificações](docs/EXPORTACAO.md).
 
 [**Vídeo de 30 segundos na arena final**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/OneMoreOrbit-Nexo-30s.mp4) · [**Dez prints em ZIP**](https://github.com/Honorato1337/Noctir/releases/download/v0.3.3/one-more-orbit-prints.zip)
 
@@ -26,7 +26,7 @@ Vai continuar em outro computador? Leia o [guia de continuidade](docs/CONTINUAR_
 - **Bomba com alcance limitado:** no máximo 12 alvos próximos, com dano de 100%/50%/25% nas faixas de 120/240/360 px.
 - **Extração urgente:** quinze segundos para coletar e embarcar. Atrasar custa os três slots e um terço das moedas da run.
 - **Escolhas entre partidas:** melhorias permanentes, contratos por SpaceCoin, habilidades, Prestígio e skins.
-- **Perfil móvel no código atual:** menos inimigos por horda, até 24 ativos, partículas reduzidas e renderização interna com limites próprios de efeitos. O APK 0.3.0 usa os limites anteriores.
+- **Perfil móvel:** menos inimigos por horda, até 24 ativos, partículas reduzidas e renderização interna com limites próprios de efeitos, incluídos no APK 0.3.3.
 - **Três dificuldades:** Fácil, Médio e Difícil; teclado, joystick e controles por toque.
 
 [Ver a espingarda em Loja → Equipamentos](docs/media/equipamentos-espingarda.png). Compra permanente de **3 SpaceCoins**, seleção salva e arma original gratuita.

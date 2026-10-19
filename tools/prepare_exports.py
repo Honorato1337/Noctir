@@ -10,7 +10,8 @@ def read_range(url,start,end):
  while len(data)<end-start+1:
   before=len(data)
   try:
-   with request(url,{'Range':f'bytes={start+len(data)}-{end}'}) as r:
+   ranged=url+('&' if '?' in url else '?')+f'export_range={start+len(data)}-{end}'
+   with request(ranged,{'Range':f'bytes={start+len(data)}-{end}'}) as r:
     if r.status!=206:raise RuntimeError('Range unavailable')
     while len(data)<end-start+1:
      chunk=r.read(min(65536,end-start+1-len(data)))
@@ -47,8 +48,7 @@ def download(url,path,sha=None):
 class RemoteZip(io.RawIOBase):
  def __init__(self,url,size):
   self.url=url;self.size=size;self.pos=0
-  with request(url,{'Range':f'bytes={size-65536}-{size-1}'}) as r:
-   self.url=r.geturl()
+  with request(url+f'?export_range={size-65536}-{size-1}',{'Range':f'bytes={size-65536}-{size-1}'}) as r:
    if r.status!=206: raise RuntimeError('Server requires full template download')
    self.tail=r.read();self.tail_start=size-len(self.tail)
  def seekable(self): return True

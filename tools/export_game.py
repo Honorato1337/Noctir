@@ -1,5 +1,5 @@
 """Build local standalone Windows EXE and signed Android APK with Godot 4.7.2."""
-import hashlib, json, os, re, secrets, shutil, subprocess
+import hashlib, json, os, re, secrets, shutil, subprocess, sys
 from pathlib import Path
 import prepare_exports
 ROOT=Path(__file__).resolve().parents[1]
@@ -24,6 +24,9 @@ def main():
   candidates=[os.environ.get('GODOT_BIN'),shutil.which('godot'),shutil.which('godot4'),Path.home()/'Downloads'/'Godot_v4.7.2-stable_win64.exe'/'Godot_v4.7.2-stable_win64.exe']
   source=next((Path(item) for item in candidates if item and Path(item).is_file()),None)
   if source is None:raise RuntimeError('Set GODOT_BIN to your Godot 4.7.2 executable before exporting.')
+  # The Windows console executable is a wrapper requiring its original sibling name.
+  if source.name.endswith('_console.exe'):
+   source=source.with_name(source.name.replace('_console.exe','.exe'))
   shutil.copy2(source,engine)
  (engine.parent/'_sc_').touch()
  settings=engine.parent/'editor_data';settings.mkdir(exist_ok=True)
@@ -49,7 +52,9 @@ def main():
  text=replace_values(text,'preset.1.options',{'custom_template/release':quote(BASE/'templates'/'windows_release_x86_64.exe')})
  try:
   presets.write_text(text,encoding='utf-8')
-  for preset,output in [('Windows Desktop',ROOT/'builds'/'windows'/'OneMoreOrbit.exe'),('Android',ROOT/'builds'/'android'/'OneMoreOrbit.apk')]:
+  targets=[('Windows Desktop',ROOT/'builds'/'windows'/'OneMoreOrbit.exe'),('Android',ROOT/'builds'/'android'/'OneMoreOrbit.apk')]
+  if '--android-only' in sys.argv:targets=[targets[1]]
+  for preset,output in targets:
    output.parent.mkdir(parents=True,exist_ok=True)
    log=ROOT/'builds'/('export-windows.log' if preset=='Windows Desktop' else 'export-android.log')
    print('Exporting '+preset,flush=True)
@@ -60,5 +65,5 @@ def main():
    print(f'Built {output.name}: {output.stat().st_size:,} bytes',flush=True)
  finally:
   presets.write_text(original_presets,encoding='utf-8')
- print('Both export files ready',flush=True)
+ print('Requested export files ready',flush=True)
 if __name__=='__main__':main()

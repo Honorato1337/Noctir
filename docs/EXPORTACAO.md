@@ -1,4 +1,14 @@
-# Exportação Windows e Android
+# Exportação Windows, Linux e Android
+
+## Ports locais — 18/10/2026
+
+O preset `Linux` exporta x86_64 com o pacote de recursos incorporado. Execute `python tools/export_ports.py` com `GODOT_BIN` apontando para o Godot 4.7.2. O arquivo `builds/linux/OneMoreOrbit-Linux-x86_64.tar.gz` preserva a permissão de execução. Extraia e execute `./OneMoreOrbit.x86_64`; se necessário, use `chmod +x OneMoreOrbit.x86_64`. Requer suporte a OpenGL 3.3. A estrutura ELF e o conteúdo empacotado foram verificados no Windows; execução nativa Linux ainda precisa ser validada.
+
+Para tentar apenas Android, execute `python tools/export_game.py --android-only`. O preset agora usa versão 0.3.3, código 22, ARM64 e ARM de 32 bits. O script prepara ferramentas oficiais isoladas em `.godot/export-tools` e cria uma chave local nova quando não existe uma. Não é a assinatura do APK antigo: uma instalação anterior pode precisar ser removida, apagando seu progresso. Guarde backup privado de `.export-signing`; nunca publique essa pasta. Execute `python tools/verify_ports.py` após ambas as exportações para verificar integridade, assinatura e alinhamento. Essa verificação não substitui testes em aparelho Android.
+
+As seções abaixo registram o estado das releases já publicadas, anterior aos novos ports locais.
+
+Resultado da exportação: Linux `.tar.gz` de 55.153.065 bytes; APK release de 77.743.455 bytes. Ambos são 0.3.3 e estão disponíveis na [release 0.3.3](https://github.com/Honorato1337/Noctir/releases/tag/v0.3.3). Linux passou na conferência ELF x86_64, integridade do arquivo e permissão de execução; o teste de mecânicas com seus recursos empacotados terminou com zero falhas. APK passou na assinatura, integridade ZIP e alinhamento de 16 KB; manifesto com minSdk 24 (Android 7), targetSdk 36, `arm64-v8a` e `armeabi-v7a`. Checksums em `builds/checksums-ports.json` e detalhes em `builds/verify-ports.log`. Nenhum dos dois foi executado no sistema alvo.
 
 ## Estado atual — 18/10/2026
 
